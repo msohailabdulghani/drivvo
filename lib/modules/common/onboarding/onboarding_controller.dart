@@ -47,7 +47,7 @@ class OnboardingController extends GetxController {
   }
 
   void skipToLogin() {
-    //appService.setBoring(value: true);
+    appService.setBoring(value: true);
     Get.offAllNamed(AppRoutes.LOGIN);
   }
 
