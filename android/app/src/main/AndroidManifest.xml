@@ -3,6 +3,14 @@
         android:label="Drivvo"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+
+        <!-- Image cropper activity -->
+        <activity
+          android:name="com.yalantis.ucrop.UCropActivity"
+          android:screenOrientation="portrait"
+          android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drivvo/services/app_service.dart';
 import 'package:drivvo/utils/constants.dart';
+import 'package:drivvo/utils/database_tables.dart';
 import 'package:drivvo/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -7,11 +9,16 @@ import 'package:get/get.dart';
 class MoreController extends GetxController {
   late AppService appService;
   var currentLanguage = "english".obs;
+  bool get isUrdu => Get.locale?.languageCode == Constants.URDU_LANGUAGE_CODE;
+
+  var registeredVehicles = 0.obs;
 
   @override
   void onInit() {
     appService = Get.find<AppService>();
     super.onInit();
+
+    getAllVehicleList();
 
     // Load saved language
     final savedLanguageCode = appService.savedLanguage;
@@ -22,7 +29,22 @@ class MoreController extends GetxController {
     }
   }
 
-  bool get isUrdu => Get.locale?.languageCode == Constants.URDU_LANGUAGE_CODE;
+  Future<void> getAllVehicleList() async {
+    try {
+      final snapshot = await FirebaseFirestore.instance
+          .collection(DatabaseTables.USER_PROFILE)
+          .doc(appService.appUser.value.id)
+          .collection(DatabaseTables.VEHICLES)
+          .get();
+
+      if (snapshot.docs.isNotEmpty) {
+        registeredVehicles.value = snapshot.docs.length;
+      }
+    } catch (e) {
+      // Log error or set default value
+      registeredVehicles.value = 0;
+    }
+  }
 
   void showLanguageDialog() {
     Get.dialog(

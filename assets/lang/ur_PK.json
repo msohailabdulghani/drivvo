@@ -129,5 +129,13 @@
   "reminder": "یاد دہانی",
   "more": "مزید",
   "update_profile": "پروفائل اپ ڈیٹ کریں",
-  "update": "اپ ڈیٹ کریں"
+  "update": "اپ ڈیٹ کریں",
+  "success": "کامیاب",
+  "failed": "ناکام",
+  "profile_updated_success": "پروفائل کامیابی کے ساتھ اپ ڈیٹ ہو گئی۔",
+  "choose_option": "ایک آپشن منتخب کریں",
+  "take_photo": "تصویر لیں",
+  "gallery": "گیلری سے تصویر منتخب کریں",
+  "vehicles_registered_ur": "رجسٹرڈ گاڑیاں",
+  "vehicle_registered": "گاڑی رجسٹرڈ"
 }

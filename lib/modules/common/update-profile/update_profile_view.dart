@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:drivvo/custom-widget/button/custom_button.dart';
-import 'package:drivvo/custom-widget/custom_app_bar.dart';
-import 'package:drivvo/custom-widget/profile_image.dart';
+import 'package:drivvo/custom-widget/common/custom_app_bar.dart';
+import 'package:drivvo/custom-widget/common/profile_image.dart';
 import 'package:drivvo/custom-widget/text-input-field/text_input_field.dart';
 import 'package:drivvo/modules/common/update-profile/update_profile_controller.dart';
 import 'package:flutter/material.dart';
@@ -99,6 +99,7 @@ class UpdateProfileView extends GetView<UpdateProfileController> {
                         ),
                         const SizedBox(height: 40),
                         TextInputField(
+                          isUrdu: controller.isUrdu,
                           isRequired: false,
                           isNext: true,
                           obscureText: false,
@@ -118,6 +119,7 @@ class UpdateProfileView extends GetView<UpdateProfileController> {
                         ),
                         const SizedBox(height: 20),
                         TextInputField(
+                          isUrdu: controller.isUrdu,
                           isRequired: false,
                           isNext: true,
                           obscureText: false,

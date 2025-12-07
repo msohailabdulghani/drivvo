@@ -1,4 +1,4 @@
-import 'package:drivvo/custom-widget/profile_network_image.dart';
+import 'package:drivvo/custom-widget/common/profile_network_image.dart';
 import 'package:flutter/material.dart';
 
 class ProfileImage extends StatelessWidget {

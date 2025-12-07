@@ -70,7 +70,7 @@ class SignupController extends GetxController {
                   success: true,
                 );
                 Future.delayed(const Duration(milliseconds: 500), () {
-                  Get.offAllNamed(AppRoutes.LOGIN);
+                  Get.offAllNamed(AppRoutes.LOGIN_VIEW);
                 });
               })
               .catchError((error) {

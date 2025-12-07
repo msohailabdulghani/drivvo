@@ -1,8 +1,7 @@
-import 'package:drivvo/custom-widget/common/label_text.dart';
 import 'package:drivvo/custom-widget/text-input-field/form_label_text.dart';
 import 'package:flutter/material.dart';
 
-class TextInputField extends StatelessWidget {
+class CardTextInputField extends StatelessWidget {
   final bool isRequired;
   final bool isNext;
   final bool obscureText;
@@ -19,10 +18,10 @@ class TextInputField extends StatelessWidget {
   final Function()? onTap;
   final String? initialValue;
   final int? maxLength;
-  final int? maxLines;
   final bool isUrdu;
+  final TextEditingController controller;
 
-  const TextInputField({
+  const CardTextInputField({
     super.key,
     required this.isRequired,
     required this.isNext,
@@ -40,8 +39,8 @@ class TextInputField extends StatelessWidget {
     this.onTap,
     this.initialValue,
     this.maxLength,
-    this.maxLines,
     required this.isUrdu,
+    required this.controller,
   });
 
   @override
@@ -62,15 +61,11 @@ class TextInputField extends StatelessWidget {
         //         : "D-FONT-R",
         //   ),
         // ),
-        isRequired
-            ? FormLabelText(title: labelText, isUrdu: isUrdu)
-            : LabelText(title: labelText, isUrdu: isUrdu),
+        FormLabelText(title: labelText, isUrdu: isUrdu),
         const SizedBox(height: 8),
         TextFormField(
+          controller: controller,
           readOnly: readOnly,
-          maxLines: maxLines,
-          maxLength: maxLength,
-          initialValue: initialValue,
           obscureText: obscureText,
           keyboardType: type,
           textInputAction: inputAction,

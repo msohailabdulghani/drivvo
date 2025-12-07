@@ -1,4 +1,4 @@
-import 'package:drivvo/custom-widget/custom_app_bar.dart';
+import 'package:drivvo/custom-widget/common/card_header_text.dart';
 import 'package:drivvo/modules/more/more_controller.dart';
 import 'package:drivvo/routes/app_routes.dart';
 import 'package:drivvo/utils/utils.dart';
@@ -11,21 +11,27 @@ class MoreView extends GetView<MoreController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        name: "more_options".tr,
-        isUrdu: controller.isUrdu,
-        actions: [
-          IconButton(
-            onPressed: () => controller.appService.logOut(),
-            icon: Icon(Icons.logout),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        surfaceTintColor: Colors.transparent,
+        title: Text(
+          "more_options".tr,
+          style: Utils.getTextStyle(
+            baseSize: 18,
+            isBold: true,
+            color: Colors.black,
+            isUrdu: controller.isUrdu,
           ),
-        ],
+        ),
       ),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           children: [
-            _buildSectionHeader('section_account_data'.tr),
+            CardHeaderText(
+              title: 'section_account_data'.tr,
+              isUrdu: controller.isUrdu,
+            ),
             _buildSectionCard([
               _buildTile(
                 icon: Icons.sim_card_outlined,
@@ -38,7 +44,7 @@ class MoreView extends GetView<MoreController> {
                 icon: Icons.person_outline,
                 title: 'my_account'.tr,
                 subtitle: 'my_account_sub'.tr,
-                onTap: () => Get.toNamed(AppRoutes.UPDATE_PROFILE),
+                onTap: () => Get.toNamed(AppRoutes.UPDATE_PROFILE_VIEW),
               ),
               _buildDivider(),
               _buildTile(
@@ -64,13 +70,20 @@ class MoreView extends GetView<MoreController> {
                 onTap: () {},
               ),
             ]),
-            _buildSectionHeader('section_vehicles'.tr),
+            CardHeaderText(
+              title: 'section_vehicles'.tr,
+              isUrdu: controller.isUrdu,
+            ),
             _buildSectionCard([
-              _buildTile(
-                icon: Icons.directions_car_outlined,
-                title: 'my_vehicles'.tr,
-                subtitle: 'my_vehicles_sub'.tr,
-                onTap: () {},
+              Obx(
+                () => _buildTile(
+                  icon: Icons.directions_car_outlined,
+                  title: 'my_vehicles'.tr,
+                  subtitle: controller.registeredVehicles.value > 1
+                      ? '${controller.registeredVehicles.value} ${"vehicles_registered".tr}'
+                      : '${controller.registeredVehicles.value} ${"vehicle_registered".tr}',
+                  onTap: () => Get.toNamed(AppRoutes.VEHICLES_VIEW),
+                ),
               ),
               _buildDivider(),
               _buildTile(
@@ -87,8 +100,10 @@ class MoreView extends GetView<MoreController> {
                 onTap: () {},
               ),
             ]),
-
-            _buildSectionHeader('section_tracking'.tr),
+            CardHeaderText(
+              title: 'section_tracking'.tr,
+              isUrdu: controller.isUrdu,
+            ),
             _buildSectionCard([
               _buildTile(
                 icon: Icons.local_gas_station_outlined,
@@ -110,16 +125,11 @@ class MoreView extends GetView<MoreController> {
                 subtitle: 'places_sub'.tr,
                 onTap: () {},
               ),
-              _buildDivider(),
-              _buildTile(
-                icon: Icons.build_outlined,
-                title: 'types_service'.tr,
-                subtitle: 'types_service_sub'.tr,
-                onTap: () {},
-              ),
             ]),
-
-            _buildSectionHeader('section_financial'.tr),
+            CardHeaderText(
+              title: 'section_financial'.tr,
+              isUrdu: controller.isUrdu,
+            ),
             _buildSectionCard([
               _buildTile(
                 icon: Icons.attach_money,
@@ -132,6 +142,13 @@ class MoreView extends GetView<MoreController> {
                 icon: Icons.money_off,
                 title: 'types_income'.tr,
                 subtitle: 'types_income_sub'.tr,
+                onTap: () {},
+              ),
+              _buildDivider(),
+              _buildTile(
+                icon: Icons.build_outlined,
+                title: 'types_service'.tr,
+                subtitle: 'types_service_sub'.tr,
                 onTap: () {},
               ),
               _buildDivider(),
@@ -149,8 +166,10 @@ class MoreView extends GetView<MoreController> {
                 onTap: () {},
               ),
             ]),
-
-            _buildSectionHeader('section_tools'.tr),
+            CardHeaderText(
+              title: 'section_tools'.tr,
+              isUrdu: controller.isUrdu,
+            ),
             _buildSectionCard([
               _buildTile(
                 icon: Icons.description_outlined,
@@ -184,7 +203,10 @@ class MoreView extends GetView<MoreController> {
               ),
             ]),
 
-            _buildSectionHeader('section_preferences'.tr),
+            CardHeaderText(
+              title: 'section_preferences'.tr,
+              isUrdu: controller.isUrdu,
+            ),
             _buildSectionCard([
               _buildTile(
                 icon: Icons.settings_outlined,
@@ -200,8 +222,10 @@ class MoreView extends GetView<MoreController> {
                 onTap: () => controller.showLanguageDialog(),
               ),
             ]),
-
-            _buildSectionHeader('section_support'.tr),
+            CardHeaderText(
+              title: 'section_support'.tr,
+              isUrdu: controller.isUrdu,
+            ),
             _buildSectionCard([
               _buildTile(
                 icon: Icons.help_outline,
@@ -219,21 +243,6 @@ class MoreView extends GetView<MoreController> {
             ]),
             const SizedBox(height: 80),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSectionHeader(String title) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 4.0, bottom: 8.0),
-      child: Text(
-        title,
-        style: Utils.getTextStyle(
-          baseSize: 16,
-          isBold: true,
-          color: Colors.black,
-          isUrdu: controller.isUrdu,
         ),
       ),
     );

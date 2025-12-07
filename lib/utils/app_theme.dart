@@ -11,10 +11,10 @@ class AppTheme {
 
       //dialogBackgroundColor: Colors.white,
       progressIndicatorTheme: ProgressIndicatorThemeData(
-        color: Color(0XffFB5C7C),
+        color: Color(0xFF047772),
       ),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
-        backgroundColor: Color(0xFF45AE91),
+        backgroundColor: Color(0xFF047772),
         shape: CircleBorder(),
         foregroundColor: Colors.white,
       ),
@@ -22,27 +22,27 @@ class AppTheme {
         backgroundColor: Colors.white,
         secondaryLabelStyle: const TextStyle(color: Colors.white),
         checkmarkColor: Colors.white,
-        selectedColor: const Color(0xFF00796B),
+        selectedColor: const Color(0xFF047772),
         shape: const RoundedRectangleBorder(
-          side: BorderSide(color: Color(0xFF00796B)),
+          side: BorderSide(color: Color(0xFF047772)),
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
       ),
-      dropdownMenuTheme: const DropdownMenuThemeData(
-        menuStyle: MenuStyle(
-          backgroundColor: WidgetStatePropertyAll(Colors.white),
-        ),
-        inputDecorationTheme: InputDecorationTheme(
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.white),
-            borderRadius: BorderRadius.all(Radius.circular(12.0)),
-          ),
-          filled: true,
-          fillColor: Colors.white,
-          isDense: true,
-          contentPadding: EdgeInsets.symmetric(horizontal: 10),
-        ),
-      ),
+      // dropdownMenuTheme: const DropdownMenuThemeData(
+      //   menuStyle: MenuStyle(
+      //     backgroundColor: WidgetStatePropertyAll(Colors.white),
+      //   ),
+      //   inputDecorationTheme: InputDecorationTheme(
+      //     enabledBorder: OutlineInputBorder(
+      //       borderSide: BorderSide(color: Colors.white),
+      //       borderRadius: BorderRadius.all(Radius.circular(12.0)),
+      //     ),
+      //     filled: true,
+      //     fillColor: Colors.white,
+      //     isDense: true,
+      //     contentPadding: EdgeInsets.symmetric(horizontal: 10),
+      //   ),
+      // ),
       // bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       //   backgroundColor: Colors.white,
       //   selectedItemColor: Color(0XffFB5C7C),
@@ -60,21 +60,28 @@ class AppTheme {
       // ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: Colors.grey[100],
+        //fillColor: Colors.grey[100],
+        fillColor: const Color(0xFFF7F7F7),
         floatingLabelBehavior: FloatingLabelBehavior.auto,
         contentPadding: const EdgeInsets.only(top: 14, bottom: 14, left: 12),
         hintStyle: const TextStyle(color: Color(0xFF8B8B8F)),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16.0),
-          borderSide: BorderSide(color: Colors.grey[200]!, width: 2),
+          borderSide: BorderSide(color: const Color(0xFF047772), width: 1),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16.0),
-          borderSide: BorderSide(color: Colors.grey[200]!, width: 2),
+          borderSide: BorderSide(
+            color: Color.fromARGB(255, 244, 244, 246),
+            width: 2,
+          ),
         ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16.0),
-          borderSide: BorderSide(color: Colors.grey[200]!, width: 2),
+          borderSide: BorderSide(
+            color: Color.fromARGB(255, 244, 244, 246),
+            width: 2,
+          ),
         ),
       ),
       popupMenuTheme: const PopupMenuThemeData(

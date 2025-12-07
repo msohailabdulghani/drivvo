@@ -58,7 +58,7 @@ class LoginController extends GetxController {
                 if (appService.importData) {
                   Get.offAllNamed(AppRoutes.ROOT_VIEW);
                 } else {
-                  Get.offAllNamed(AppRoutes.IMPORT_DATA);
+                  Get.offAllNamed(AppRoutes.IMPORT_DATA_VIEW);
                 }
                 appService.getUserProfile();
               } else {
@@ -135,7 +135,7 @@ class LoginController extends GetxController {
               if (appService.importData) {
                 Get.offAllNamed(AppRoutes.ROOT_VIEW);
               } else {
-                Get.offAllNamed(AppRoutes.IMPORT_DATA);
+                Get.offAllNamed(AppRoutes.IMPORT_DATA_VIEW);
               }
               appService.getUserProfile();
               // await IAPService.to.checkSubscriptionStatus();

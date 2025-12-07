@@ -51,7 +51,7 @@ class OnboardingController extends GetxController {
 
   void skipToLogin() {
     appService.setOnboarding(value: true);
-    Get.offAllNamed(AppRoutes.LOGIN);
+    Get.offAllNamed(AppRoutes.LOGIN_VIEW);
   }
 
   void onPageChange(int index) {

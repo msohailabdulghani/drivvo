@@ -25,13 +25,13 @@ class _SplashScreenState extends State<SplashScreen> {
           if (appService.importData) {
             Get.offAllNamed(AppRoutes.ROOT_VIEW);
           } else {
-            Get.offAllNamed(AppRoutes.IMPORT_DATA);
+            Get.offAllNamed(AppRoutes.IMPORT_DATA_VIEW);
           }
         } else {
-          Get.offAllNamed(AppRoutes.LOGIN);
+          Get.offAllNamed(AppRoutes.LOGIN_VIEW);
         }
       } else {
-        Get.offAllNamed(AppRoutes.ON_BOARDING);
+        Get.offAllNamed(AppRoutes.ON_BOARDING_VIEW);
       }
     });
   }

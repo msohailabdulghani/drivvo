@@ -36,6 +36,7 @@ class LoginView extends GetView<LoginController> {
                   child: Column(
                     children: [
                       TextInputField(
+                        isUrdu: controller.isUrdu,
                         isRequired: true,
                         isNext: true,
                         obscureText: false,
@@ -104,7 +105,8 @@ class LoginView extends GetView<LoginController> {
                 Align(
                   alignment: Alignment.centerRight,
                   child: TextButton(
-                    onPressed: () => Get.toNamed(AppRoutes.FORGOT_PASSWORD),
+                    onPressed: () =>
+                        Get.toNamed(AppRoutes.FORGOT_PASSWORD_VIEW),
                     style: TextButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
                         vertical: 0,
@@ -205,7 +207,7 @@ class LoginView extends GetView<LoginController> {
             ),
             Text(" "),
             GestureDetector(
-              onTap: () => Get.toNamed(AppRoutes.SIGNUP),
+              onTap: () => Get.toNamed(AppRoutes.SIGNUP_VIEW),
               child: Text(
                 'sign_up'.tr,
                 style: Utils.getTextStyle(

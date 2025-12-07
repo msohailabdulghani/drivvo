@@ -109,7 +109,7 @@ class AppService extends GetxService {
       }
       await FirebaseAuth.instance.signOut();
       setProfile(AppUser());
-      Get.offAllNamed(AppRoutes.LOGIN);
+      Get.offAllNamed(AppRoutes.LOGIN_VIEW);
       Utils.showSnackBar(message: "You have been logged out.", success: true);
     } catch (e) {
       Utils.showSnackBar(

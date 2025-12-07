@@ -47,6 +47,7 @@ class SignupView extends GetView<SignupController> {
                 child: Column(
                   children: [
                     TextInputField(
+                      isUrdu: controller.isUrdu,
                       isRequired: true,
                       isNext: true,
                       obscureText: false,
@@ -72,6 +73,7 @@ class SignupView extends GetView<SignupController> {
                     ),
                     const SizedBox(height: 20),
                     TextInputField(
+                      isUrdu: controller.isUrdu,
                       isRequired: true,
                       isNext: true,
                       obscureText: false,
@@ -251,7 +253,7 @@ class SignupView extends GetView<SignupController> {
                   ),
                   Text(" "),
                   GestureDetector(
-                    onTap: () => Get.offAllNamed(AppRoutes.LOGIN),
+                    onTap: () => Get.offAllNamed(AppRoutes.LOGIN_VIEW),
                     child: Text(
                       "sign_in".tr,
                       style: Utils.getTextStyle(

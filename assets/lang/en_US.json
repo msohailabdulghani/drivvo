@@ -127,6 +127,15 @@
   "report": "Report",
   "setting": "Settings",
   "reminder": "Reminder",
-  "more": "More",  "update_profile": "Update Profile",
-  "update": "Update"
+  "more": "More",
+  "update_profile": "Update Profile",
+  "update": "Update",
+  "success": "Success",
+  "failed": "Failed",
+  "profile_updated_success": "Profile updated successfully.",
+  "choose_option": "Choose an option",
+  "take_photo": "Take Photo",
+  "gallery": "Choose from Gallery",
+  "vehicles_registered": "Vehicles registered",
+  "vehicle_registered": "Vehicle registered"
 }

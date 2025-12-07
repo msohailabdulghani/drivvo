@@ -77,6 +77,7 @@ class ForgotPasswordView extends GetView<ForgotPasswordController> {
                     const SizedBox(height: 7),
 
                     TextInputField(
+                      isUrdu: controller.isUrdu,
                       isRequired: true,
                       isNext: true,
                       obscureText: false,
