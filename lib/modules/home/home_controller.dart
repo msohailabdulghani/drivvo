@@ -12,4 +12,10 @@ class HomeController extends GetxController {
   }
 
   bool get isUrdu => Get.locale?.languageCode == Constants.URDU_LANGUAGE_CODE;
+
+  var isFabExpanded = false.obs;
+
+  void toggleFab() {
+    isFabExpanded.value = !isFabExpanded.value;
+  }
 }

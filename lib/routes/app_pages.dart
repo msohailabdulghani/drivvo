@@ -6,10 +6,16 @@ import 'package:drivvo/modules/authentication/login/login_bindings.dart';
 import 'package:drivvo/modules/authentication/login/login_view.dart';
 import 'package:drivvo/modules/authentication/signup/signup_bindings.dart';
 import 'package:drivvo/modules/authentication/signup/signup_view.dart';
+import 'package:drivvo/modules/common/date-range/date_range_bindings.dart';
+import 'package:drivvo/modules/common/date-range/date_range_view.dart';
 import 'package:drivvo/modules/common/onboarding/onboarding_bindings.dart';
 import 'package:drivvo/modules/common/onboarding/onboarding_view.dart';
 import 'package:drivvo/modules/common/update-profile/update_profile_bindings.dart';
 import 'package:drivvo/modules/common/update-profile/update_profile_view.dart';
+import 'package:drivvo/modules/home/filter/home_filter_binding.dart';
+import 'package:drivvo/modules/home/filter/home_filter_view.dart';
+import 'package:drivvo/modules/home/refueling/create_refueling_binding.dart';
+import 'package:drivvo/modules/home/refueling/create_refueling_view.dart';
 import 'package:drivvo/modules/more/general/create/create_general_bindings.dart';
 import 'package:drivvo/modules/more/general/create/create_general_view.dart';
 import 'package:drivvo/modules/more/general/general_bindings.dart';
@@ -103,9 +109,27 @@ class AppPages {
     ),
 
     GetPage(
-      name: AppRoutes.SETTINGS,
+      name: AppRoutes.SETTING_VIEW,
       page: () => SettingView(),
       binding: SettingBindings(),
+    ),
+
+    GetPage(
+      name: AppRoutes.HOME_FILTER_VIEW,
+      page: () => HomeFilterView(),
+      binding: HomeFilterBinding(),
+    ),
+
+    GetPage(
+      name: AppRoutes.DATE_RANGE,
+      page: () => DateRangeView(),
+      binding: DateRangeBindings(),
+    ),
+
+    GetPage(
+      name: AppRoutes.CREATE_REFUELING_VIEW,
+      page: () => CreateRefuelingView(),
+      binding: CreateRefuelingBinding(),
     ),
   ];
 }

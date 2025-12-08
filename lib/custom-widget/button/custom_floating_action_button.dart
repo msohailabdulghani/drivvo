@@ -1,3 +1,4 @@
+import 'package:drivvo/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 class CustomFloatingActionButton extends StatelessWidget {
@@ -11,7 +12,7 @@ class CustomFloatingActionButton extends StatelessWidget {
       onPressed: () => onPressed(),
       shape: const CircleBorder(),
       foregroundColor: Colors.white,
-      backgroundColor: const Color(0xFF047772),
+      backgroundColor: Utils.appColor,
       child: const Icon(Icons.add, color: Colors.white),
     );
   }

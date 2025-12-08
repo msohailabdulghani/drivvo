@@ -3,8 +3,8 @@ import 'package:drivvo/modules/more/more_controller.dart';
 import 'package:drivvo/routes/app_routes.dart';
 import 'package:drivvo/utils/constants.dart';
 import 'package:drivvo/utils/utils.dart';
-import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class MoreView extends GetView<MoreController> {
   const MoreView({super.key});
@@ -238,7 +238,7 @@ class MoreView extends GetView<MoreController> {
                 title: 'settings'.tr,
                 subtitle: 'settings_sub'.tr,
                 onTap: () {
-                  Get.toNamed(AppRoutes.SETTINGS);
+                  Get.toNamed(AppRoutes.SETTING_VIEW);
                 },
               ),
               _buildDivider(),

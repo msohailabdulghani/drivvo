@@ -1,4 +1,5 @@
 import 'package:drivvo/modules/home/home_controller.dart';
+import 'package:drivvo/routes/app_routes.dart';
 import 'package:drivvo/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -6,12 +7,66 @@ import 'package:get/get.dart';
 class HomeView extends GetView<HomeController> {
   const HomeView({super.key});
 
-  static const Color primaryColor = Color(0xFF047772);
-  static const Color darkTealColor = Color(0xFF1A3A3A);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: Obx(
+        () => Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            if (controller.isFabExpanded.value) ...[
+              _buildFabMenuItem(
+                icon: Icons.local_gas_station_outlined,
+                label: 'refueling'.tr,
+                onTap: () {
+                  Get.toNamed(AppRoutes.CREATE_REFUELING_VIEW);
+                  controller.toggleFab();
+                  // Handle Refueling action
+                },
+              ),
+              const SizedBox(height: 12),
+              _buildFabMenuItem(
+                icon: Icons.receipt_long_outlined,
+                label: 'expense'.tr,
+                onTap: () {
+                  controller.toggleFab();
+                  // Handle Expense action
+                },
+              ),
+              const SizedBox(height: 12),
+              _buildFabMenuItem(
+                icon: Icons.build_outlined,
+                label: 'service'.tr,
+                onTap: () {
+                  controller.toggleFab();
+                  // Handle Service action
+                },
+              ),
+              const SizedBox(height: 12),
+              _buildFabMenuItem(
+                icon: Icons.attach_money,
+                label: 'income'.tr,
+                onTap: () {
+                  controller.toggleFab();
+                  // Handle Income action
+                },
+              ),
+              const SizedBox(height: 12),
+            ],
+            FloatingActionButton(
+              onPressed: controller.toggleFab,
+              shape: const CircleBorder(),
+              foregroundColor: Colors.white,
+              backgroundColor: Utils.appColor,
+              child: Icon(
+                controller.isFabExpanded.value ? Icons.close : Icons.add,
+                color: Colors.white,
+              ),
+            ),
+          ],
+        ),
+      ),
       backgroundColor: const Color(0xFFF5F5F5),
       body: CustomScrollView(
         slivers: [
@@ -54,7 +109,7 @@ class HomeView extends GetView<HomeController> {
       collapsedHeight: collapsedHeight,
       pinned: true,
       floating: false,
-      backgroundColor: primaryColor,
+      backgroundColor: Utils.appColor,
       surfaceTintColor: Colors.transparent,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
@@ -93,8 +148,8 @@ class HomeView extends GetView<HomeController> {
             borderRadius: BorderRadius.circular(12),
           ),
           child: IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.tune, color: Colors.white, size: 22),
+            onPressed: () => Get.toNamed(AppRoutes.HOME_FILTER_VIEW),
+            icon: const Icon(Icons.tune, color: Colors.white, size: 22),
           ),
         ),
         const SizedBox(width: 12),
@@ -155,7 +210,7 @@ class HomeView extends GetView<HomeController> {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: primaryColor,
+              color: Utils.appColor,
               borderRadius: BorderRadius.circular(12),
             ),
             child: const Icon(
@@ -208,7 +263,7 @@ class HomeView extends GetView<HomeController> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
             decoration: BoxDecoration(
-              color: primaryColor.withOpacity(0.1),
+              color: Utils.appColor.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Text(
@@ -216,7 +271,7 @@ class HomeView extends GetView<HomeController> {
               style: Utils.getTextStyle(
                 baseSize: 13,
                 isBold: true,
-                color: primaryColor,
+                color: Utils.appColor,
                 isUrdu: controller.isUrdu,
               ),
             ),
@@ -234,7 +289,7 @@ class HomeView extends GetView<HomeController> {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -249,7 +304,7 @@ class HomeView extends GetView<HomeController> {
               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: primaryColor,
+                  color: Utils.appColor,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: const Icon(
@@ -323,9 +378,11 @@ class HomeView extends GetView<HomeController> {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 16),
         decoration: BoxDecoration(
-          color: isSelected ? primaryColor.withOpacity(0.08) : Colors.grey[50],
+          color: isSelected
+              ? Utils.appColor.withValues(alpha: 0.08)
+              : Colors.grey[50],
           border: Border.all(
-            color: isSelected ? primaryColor : Colors.grey[300]!,
+            color: isSelected ? Utils.appColor : Colors.grey[300]!,
             width: isSelected ? 2 : 1,
           ),
           borderRadius: BorderRadius.circular(14),
@@ -334,7 +391,7 @@ class HomeView extends GetView<HomeController> {
           children: [
             Icon(
               icon,
-              color: isSelected ? primaryColor : Colors.grey[600],
+              color: isSelected ? Utils.appColor : Colors.grey[600],
               size: 26,
             ),
             const SizedBox(height: 8),
@@ -343,7 +400,7 @@ class HomeView extends GetView<HomeController> {
               style: Utils.getTextStyle(
                 baseSize: 13,
                 isBold: isSelected,
-                color: isSelected ? primaryColor : Colors.grey[700]!,
+                color: isSelected ? Utils.appColor : Colors.grey[700]!,
                 isUrdu: controller.isUrdu,
               ),
             ),
@@ -374,7 +431,7 @@ class HomeView extends GetView<HomeController> {
           title: 'started_monitoring_expenses'.tr,
           subtitle: 'your_vehicle_expenses_tracking_journey_begins_here'.tr,
           date: '25 Nov',
-          iconBgColor: primaryColor,
+          iconBgColor: Utils.appColor,
         ),
         const SizedBox(height: 12),
         _buildActivityItem(
@@ -382,7 +439,7 @@ class HomeView extends GetView<HomeController> {
           title: 'welcome_to_drivvo'.tr,
           subtitle: 'setup_is_completed_successfully'.tr,
           date: '25 Nov',
-          iconBgColor: primaryColor,
+          iconBgColor: Utils.appColor,
         ),
       ],
     );
@@ -469,6 +526,50 @@ class HomeView extends GetView<HomeController> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildFabMenuItem({
+    required IconData icon,
+    required String label,
+    required VoidCallback onTap,
+  }) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.1),
+                blurRadius: 4,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: Text(
+            label,
+            style: Utils.getTextStyle(
+              baseSize: 14,
+              isBold: true,
+              color: Colors.black87,
+              isUrdu: controller.isUrdu,
+            ),
+          ),
+        ),
+        const SizedBox(width: 12),
+        FloatingActionButton.small(
+          onPressed: onTap,
+          shape: const CircleBorder(),
+          foregroundColor: Colors.white,
+          backgroundColor: Utils.appColor,
+          heroTag: null,
+          child: Icon(icon, color: Colors.white, size: 20),
+        ),
+      ],
     );
   }
 }

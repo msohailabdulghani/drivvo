@@ -1,3 +1,4 @@
+import 'package:drivvo/model/date_range_model.dart';
 import 'package:drivvo/model/general_model.dart';
 import 'package:drivvo/utils/constants.dart';
 import 'package:flutter/material.dart';
@@ -192,4 +193,132 @@ class Utils {
     GeneralModel(id: "50", name: "Infiniti"),
     GeneralModel(id: "51", name: "Isuzu"),
   ];
+
+  static List<DateRangeModel> getDateRangeList({required List<String> titles}) {
+    List<DateRangeModel> list = [];
+
+    final date = DateTime.now();
+    for (final (i, e) in titles.indexed) {
+      if (e == "today") {
+        final dateStr =
+            "${Utils.formatDate(date: date)} To ${Utils.formatDate(date: date)}";
+        list.add(
+          DateRangeModel(
+            id: i,
+            title: e,
+            startDate: date,
+            endDate: date,
+            dateString: dateStr,
+          ),
+        );
+      } else if (e == "yesterday") {
+        final yesterdayDate = date.subtract(const Duration(days: 1));
+        final dateStr =
+            "${Utils.formatDate(date: yesterdayDate)} To ${Utils.formatDate(date: yesterdayDate)}";
+        list.add(
+          DateRangeModel(
+            id: i,
+            title: e,
+            startDate: yesterdayDate,
+            endDate: yesterdayDate,
+            dateString: dateStr,
+          ),
+        );
+      } else if (e == "this_week") {
+        final fromDate = date.subtract(const Duration(days: 7));
+        final toDate = date;
+        final dateStr =
+            "${Utils.formatDate(date: fromDate)} To ${Utils.formatDate(date: toDate)}";
+        list.add(
+          DateRangeModel(
+            id: i,
+            title: e,
+            startDate: fromDate,
+            endDate: toDate,
+            dateString: dateStr,
+          ),
+        );
+      } else if (e == "this_month") {
+        final fromDate = DateTime(date.year, date.month, 1);
+        final toDate = date;
+        final dateStr =
+            "${Utils.formatDate(date: fromDate)} To ${Utils.formatDate(date: toDate)}";
+        list.add(
+          DateRangeModel(
+            id: i,
+            title: e,
+            startDate: fromDate,
+            endDate: toDate,
+            dateString: dateStr,
+          ),
+        );
+      } else if (e == "last_month") {
+        // final fromDate = DateTime(date.year, date.month - 1, 1);
+        // final toDate = DateTime(date.year, date.month, 0);
+
+        final lastMonth = DateTime(date.year, date.month - 1);
+        final fromDate = DateTime(lastMonth.year, lastMonth.month, 1);
+        final toDate = DateTime(date.year, date.month, 0);
+        final dateStr =
+            "${Utils.formatDate(date: fromDate)} To ${Utils.formatDate(date: toDate)}";
+        list.add(
+          DateRangeModel(
+            id: i,
+            title: e,
+            startDate: fromDate,
+            endDate: toDate,
+            dateString: dateStr,
+          ),
+        );
+      } else if (e == "last_6_months") {
+        // final fromDate = DateTime(date.year, date.month - 6, 1);
+        // final toDate = DateTime(date.year, date.month, 0);
+        final sixMonthsAgo = DateTime(date.year, date.month - 6);
+        final fromDate = DateTime(sixMonthsAgo.year, sixMonthsAgo.month, 1);
+        final toDate = DateTime(date.year, date.month, 0);
+        final dateStr =
+            "${Utils.formatDate(date: fromDate)} To ${Utils.formatDate(date: toDate)}";
+        list.add(
+          DateRangeModel(
+            id: i,
+            title: e,
+            startDate: fromDate,
+            endDate: toDate,
+            dateString: dateStr,
+          ),
+        );
+      } else if (e == "this_year") {
+        final fromDate = DateTime(date.year, 1, 1);
+        final toDate = date;
+        final dateStr =
+            "${Utils.formatDate(date: fromDate)} To ${Utils.formatDate(date: toDate)}";
+        list.add(
+          DateRangeModel(
+            id: i,
+            title: e,
+            startDate: fromDate,
+            endDate: toDate,
+            dateString: dateStr,
+          ),
+        );
+      } else if (e == "last_year") {
+        final fromDate = DateTime(date.year - 1, 1, 1);
+        final toDate = DateTime(date.year - 1, 12, 31);
+        final dateStr =
+            "${Utils.formatDate(date: fromDate)} To ${Utils.formatDate(date: toDate)}";
+        list.add(
+          DateRangeModel(
+            id: i,
+            title: e,
+            startDate: fromDate,
+            endDate: toDate,
+            dateString: dateStr,
+          ),
+        );
+      } else if (e == "custom_date" || e == "all_the_time") {
+        list.add(DateRangeModel(id: i, title: e, dateString: e));
+      }
+    }
+    return list;
+  }
 }

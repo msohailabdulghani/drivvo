@@ -24,5 +24,11 @@ abstract class AppRoutes {
   // ignore: constant_identifier_names
   static const CREATE_GENERAL_VIEW = '/more/create_general_view';
   // ignore: constant_identifier_names
-  static const SETTINGS = '/more/settings';
+  static const SETTING_VIEW = '/more/settings_view';
+  // ignore: constant_identifier_names
+  static const HOME_FILTER_VIEW = '/home/home_filter_view';
+  // ignore: constant_identifier_names
+  static const DATE_RANGE = '/common/date_range';
+  // ignore: constant_identifier_names
+  static const CREATE_REFUELING_VIEW = '/home/create_refueling_view';
 }
