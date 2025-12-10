@@ -1,3 +1,4 @@
+import 'package:drivvo/custom-widget/common/label_text.dart';
 import 'package:drivvo/custom-widget/text-input-field/form_label_text.dart';
 import 'package:drivvo/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -9,15 +10,12 @@ class CardTextInputField extends StatelessWidget {
   final bool readOnly;
   final String labelText;
   final String hintText;
-  final TextInputAction inputAction;
-  final TextInputType type;
   final Icon? prefixIcon;
   final Icon? sufixIcon;
   final Function(String? value) onSaved;
   final Function(String? value) onValidate;
   final Function(String? value)? onChange;
   final Function()? onTap;
-  final String? initialValue;
   final int? maxLength;
   final bool isUrdu;
   final TextEditingController controller;
@@ -30,15 +28,12 @@ class CardTextInputField extends StatelessWidget {
     required this.readOnly,
     required this.labelText,
     required this.hintText,
-    required this.inputAction,
-    required this.type,
     this.prefixIcon,
     this.sufixIcon,
     required this.onSaved,
     required this.onValidate,
     this.onChange,
     this.onTap,
-    this.initialValue,
     this.maxLength,
     required this.isUrdu,
     required this.controller,
@@ -49,45 +44,21 @@ class CardTextInputField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Text(
-        //   labelText,
-        //   style: TextStyle(
-        //     fontWeight: FontWeight.normal,
-        //     color: Colors.black,
-        //     fontSize: Get.locale?.languageCode == Constants.URDU_LANGUAGE_CODE
-        //         ? 16
-        //         : 14,
-        //     fontFamily: Get.locale?.languageCode == Constants.URDU_LANGUAGE_CODE
-        //         ? "U-FONT-R"
-        //         : "D-FONT-R",
-        //   ),
-        // ),
-        FormLabelText(title: labelText, isUrdu: isUrdu),
-        const SizedBox(height: 8),
+        isRequired
+            ? FormLabelText(title: labelText, isUrdu: isUrdu)
+            : LabelText(title: labelText, isUrdu: isUrdu),
         TextFormField(
           controller: controller,
           readOnly: readOnly,
           obscureText: obscureText,
-          keyboardType: type,
           style: Utils.getTextStyle(
             baseSize: 14,
             isBold: false,
             color: Colors.black,
             isUrdu: isUrdu,
           ),
-          textInputAction: inputAction,
           decoration: InputDecoration(
-            filled: true,
-            errorStyle: Utils.getTextStyle(
-              baseSize: 14,
-              isBold: false,
-              color: Colors.red,
-              isUrdu: isUrdu,
-            ),
             hintText: hintText,
-            contentPadding: prefixIcon != null
-                ? const EdgeInsets.symmetric(vertical: 16)
-                : const EdgeInsets.all(16),
             prefixIcon: prefixIcon,
             suffixIcon: sufixIcon,
           ),

@@ -1,4 +1,6 @@
 import 'package:drivvo/custom-widget/common/custom_app_bar.dart';
+import 'package:drivvo/custom-widget/text-input-field/card_text_input_field.dart';
+import 'package:drivvo/custom-widget/text-input-field/form_label_text.dart';
 import 'package:drivvo/custom-widget/text-input-field/text_input_field.dart';
 import 'package:drivvo/modules/more/general/create/create_general_controller.dart';
 import 'package:drivvo/utils/constants.dart';
@@ -166,6 +168,166 @@ class CreateGeneralView extends GetView<CreateGeneralController> {
                     }
                     return null;
                   },
+                ),
+              ),
+
+            if (controller.title == Constants.FUEL)
+              Form(
+                key: controller.formStateKey,
+                child: Column(
+                  children: [
+                    FormLabelText(
+                      title: 'fuel_type'.tr,
+                      isUrdu: controller.isUrdu,
+                    ),
+                    const SizedBox(height: 4),
+                    DropdownButtonFormField<String>(
+                      initialValue: null,
+                      icon: const Icon(Icons.keyboard_arrow_down),
+                      style: const TextStyle(color: Colors.black, fontSize: 16),
+                      items: controller.fuelTypeList
+                          .map<DropdownMenuItem<String>>((element) {
+                            return DropdownMenuItem<String>(
+                              value: element,
+                              child: Text(
+                                element.tr,
+                                style: Utils.getTextStyle(
+                                  baseSize: 14,
+                                  isBold: false,
+                                  color: Colors.black,
+                                  isUrdu: controller.isUrdu,
+                                ),
+                              ),
+                            );
+                          })
+                          .toList(),
+                      onChanged: (String? value) =>
+                          controller.onSelectFuelType(value!),
+                      validator: (value) {
+                        if (value == null || value == "") {
+                          return "fuel_type_required".tr;
+                        } else {
+                          return null;
+                        }
+                      },
+                    ),
+                    SizedBox(height: 16),
+                    TextInputField(
+                      isUrdu: controller.isUrdu,
+                      isRequired: true,
+                      isNext: true,
+                      obscureText: false,
+                      readOnly: false,
+                      labelText: "fuel".tr,
+                      hintText: "cng".tr,
+                      inputAction: TextInputAction.next,
+                      type: TextInputType.name,
+                      onTap: () {},
+                      onSaved: (value) {
+                        controller.name = value!;
+                      },
+                      onValidate: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'fuel_name_required'.tr;
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
+                ),
+              ),
+
+            if (controller.title == Constants.GAS_STATIONS)
+              Form(
+                key: controller.formStateKey,
+                child: Column(
+                  children: [
+                    TextInputField(
+                      isUrdu: controller.isUrdu,
+                      isRequired: true,
+                      isNext: true,
+                      obscureText: false,
+                      readOnly: false,
+                      labelText: "name".tr,
+                      hintText: "PSO".tr,
+                      inputAction: TextInputAction.next,
+                      type: TextInputType.name,
+                      onTap: () {},
+                      onSaved: (value) {
+                        controller.name = value!;
+                      },
+                      onValidate: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'gas_station_name_required'.tr;
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 16),
+                    CardTextInputField(
+                      isUrdu: controller.isUrdu,
+                      isRequired: false,
+                      isNext: false,
+                      obscureText: false,
+                      readOnly: true,
+                      sufixIcon: Icon(Icons.add_location_rounded),
+                      controller: controller.locationController,
+                      labelText: "location".tr,
+                      hintText: "select_location".tr,
+                      onTap: () {
+                        Utils.showSnackBar(message: "abc", success: true);
+                      },
+                      onSaved: (value) {},
+                      onValidate: (value) => null,
+                    ),
+                  ],
+                ),
+              ),
+
+            if (controller.title == Constants.PLACES)
+              Form(
+                key: controller.formStateKey,
+                child: Column(
+                  children: [
+                    TextInputField(
+                      isUrdu: controller.isUrdu,
+                      isRequired: true,
+                      isNext: true,
+                      obscureText: false,
+                      readOnly: false,
+                      labelText: "name".tr,
+                      hintText: "multan".tr,
+                      inputAction: TextInputAction.next,
+                      type: TextInputType.name,
+                      onTap: () {},
+                      onSaved: (value) {
+                        controller.name = value!;
+                      },
+                      onValidate: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'place_name_required'.tr;
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 16),
+                    CardTextInputField(
+                      isUrdu: controller.isUrdu,
+                      isRequired: false,
+                      isNext: false,
+                      obscureText: false,
+                      readOnly: true,
+                      sufixIcon: Icon(Icons.add_location_rounded),
+                      controller: controller.locationController,
+                      labelText: "location".tr,
+                      hintText: "select_location".tr,
+                      onTap: () {
+                        Utils.showSnackBar(message: "abc", success: true);
+                      },
+                      onSaved: (value) {},
+                      onValidate: (value) => null,
+                    ),
+                  ],
                 ),
               ),
           ],

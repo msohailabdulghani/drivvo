@@ -121,8 +121,6 @@ class CreateVehiclesView extends GetView<CreateVehiclesController> {
                       isUrdu: controller.isUrdu,
                       labelText: "manufacturer".tr,
                       hintText: "manufacturer_hint".tr,
-                      inputAction: TextInputAction.next,
-                      type: TextInputType.name,
                       sufixIcon: Icon(Icons.info_outline),
                       onSaved: (value) {},
                       onTap: () {

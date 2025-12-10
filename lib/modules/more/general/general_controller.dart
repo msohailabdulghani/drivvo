@@ -50,6 +50,15 @@ class GeneralController extends GetxController {
       case Constants.REASONS:
         fetchGeneralList(DatabaseTables.REASONS);
         break;
+      case Constants.FUEL:
+        fetchGeneralList(DatabaseTables.FUEL);
+        break;
+      case Constants.GAS_STATIONS:
+        fetchGeneralList(DatabaseTables.GAS_STATIONS);
+        break;
+      case Constants.PLACES:
+        fetchGeneralList(DatabaseTables.PLACES);
+        break;
     }
   }
 
@@ -116,6 +125,12 @@ class GeneralController extends GetxController {
         return DatabaseTables.PAYMENT_METHOD;
       case Constants.REASONS:
         return DatabaseTables.REASONS;
+      case Constants.FUEL:
+        return DatabaseTables.FUEL;
+      case Constants.GAS_STATIONS:
+        return DatabaseTables.GAS_STATIONS;
+      case Constants.PLACES:
+        return DatabaseTables.PLACES;
       default:
         return "";
     }

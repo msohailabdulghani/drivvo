@@ -3,7 +3,7 @@ import 'package:drivvo/custom-widget/text-input-field/form_label_text.dart';
 import 'package:drivvo/utils/utils.dart';
 import 'package:flutter/material.dart';
 
-class TextInputField extends StatelessWidget {
+class TextInputFieldWithController extends StatelessWidget {
   final bool isRequired;
   final bool isNext;
   final bool obscureText;
@@ -22,8 +22,9 @@ class TextInputField extends StatelessWidget {
   final int? maxLength;
   final int? maxLines;
   final bool isUrdu;
+  final TextEditingController controller;
 
-  const TextInputField({
+  const TextInputFieldWithController({
     super.key,
     required this.isRequired,
     required this.isNext,
@@ -43,6 +44,7 @@ class TextInputField extends StatelessWidget {
     this.maxLength,
     this.maxLines,
     required this.isUrdu,
+    required this.controller,
   });
 
   @override
@@ -64,18 +66,29 @@ class TextInputField extends StatelessWidget {
             isUrdu: isUrdu,
           ),
           maxLength: maxLength,
-          initialValue: initialValue,
+          controller: controller,
           obscureText: obscureText,
           keyboardType: type,
           textInputAction: inputAction,
           decoration: InputDecoration(
+            filled: true,
+            errorStyle: Utils.getTextStyle(
+              baseSize: 14,
+              isBold: false,
+              color: Colors.red,
+              isUrdu: isUrdu,
+            ),
             hintText: hintText,
+            contentPadding: prefixIcon != null
+                ? const EdgeInsets.symmetric(vertical: 16)
+                : const EdgeInsets.all(16),
             prefixIcon: prefixIcon,
             suffixIcon: sufixIcon,
           ),
           onTap: onTap != null ? () => onTap!() : null,
           onSaved: (value) => onSaved(value),
           validator: (value) => onValidate(value),
+          onChanged: onChange != null ? (value) => onChange!(value) : null,
         ),
       ],
     );

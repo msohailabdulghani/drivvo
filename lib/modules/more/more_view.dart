@@ -110,21 +110,36 @@ class MoreView extends GetView<MoreController> {
                 icon: Icons.local_gas_station_outlined,
                 title: 'fuel'.tr,
                 subtitle: 'fuel_sub'.tr,
-                onTap: () {},
+                onTap: () {
+                  Get.toNamed(
+                    AppRoutes.GENERAL_VIEW,
+                    arguments: Constants.FUEL,
+                  );
+                },
               ),
               _buildDivider(),
               _buildTile(
                 icon: Icons.store_mall_directory_outlined,
                 title: 'gas_stations'.tr,
                 subtitle: 'gas_stations_sub'.tr,
-                onTap: () {},
+                onTap: () {
+                  Get.toNamed(
+                    AppRoutes.GENERAL_VIEW,
+                    arguments: Constants.GAS_STATIONS,
+                  );
+                },
               ),
               _buildDivider(),
               _buildTile(
                 icon: Icons.place_outlined,
                 title: 'places'.tr,
                 subtitle: 'places_sub'.tr,
-                onTap: () {},
+                onTap: () {
+                  Get.toNamed(
+                    AppRoutes.GENERAL_VIEW,
+                    arguments: Constants.PLACES,
+                  );
+                },
               ),
             ]),
             CardHeaderText(
@@ -344,10 +359,10 @@ class MoreView extends GetView<MoreController> {
                 ),
               ),
               style: OutlinedButton.styleFrom(
-                backgroundColor: Colors.red.withValues(alpha: 0.2),
+                backgroundColor: Colors.red.withValues(alpha: 0.1),
                 foregroundColor: Colors.red, // Text and Icon color
                 side: BorderSide(color: Colors.red), // Border color
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),

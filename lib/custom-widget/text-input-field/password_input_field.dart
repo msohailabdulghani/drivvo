@@ -71,18 +71,7 @@ class PasswordInputField extends StatelessWidget {
             isUrdu: isUrdu,
           ),
           decoration: InputDecoration(
-            filled: true,
-            errorStyle: Utils.getTextStyle(
-              baseSize: 14,
-              isBold: false,
-              color: Colors.red,
-              isUrdu: isUrdu,
-            ),
             hintText: hintText,
-            contentPadding: const EdgeInsets.symmetric(
-              vertical: 16,
-              horizontal: 16,
-            ),
             suffixIcon: suffixIcon,
           ),
           onChanged: (value) => onChanged(value),

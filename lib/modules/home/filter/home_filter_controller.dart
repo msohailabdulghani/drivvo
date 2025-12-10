@@ -22,7 +22,7 @@ class FilterController extends GetxController {
   }
 
   // Expanded options state
-  var moreOptionsExpanded = true.obs;
+  var moreOptionsExpanded = false.obs;
 
   bool get isUrdu => Get.locale?.languageCode == Constants.URDU_LANGUAGE_CODE;
 

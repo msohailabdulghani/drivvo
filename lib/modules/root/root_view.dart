@@ -68,7 +68,7 @@ class RootView extends GetView<RootController> {
                       height: 28,
                       fit: BoxFit.cover,
                       color: controller.currentIndex.value == 0
-                          ? Color(0xFF00796B)
+                          ? Utils.appColor
                           : Colors.grey,
                     ),
                     label: "home".tr,
@@ -80,14 +80,10 @@ class RootView extends GetView<RootController> {
                       height: 28,
                       fit: BoxFit.cover,
                       color: controller.currentIndex.value == 1
-                          ? Color(0xFF00796B)
+                          ? Utils.appColor
                           : Colors.grey,
                     ),
                     label: "report".tr,
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.settings),
-                    label: "setting".tr,
                   ),
                   BottomNavigationBarItem(
                     icon: Image.asset(
@@ -95,8 +91,8 @@ class RootView extends GetView<RootController> {
                       width: 28,
                       height: 28,
                       fit: BoxFit.cover,
-                      color: controller.currentIndex.value == 3
-                          ? Color(0xFF00796B)
+                      color: controller.currentIndex.value == 2
+                          ? Utils.appColor
                           : Colors.grey,
                     ),
                     label: "reminder".tr,
@@ -107,8 +103,8 @@ class RootView extends GetView<RootController> {
                       width: 28,
                       height: 28,
                       fit: BoxFit.cover,
-                      color: controller.currentIndex.value == 4
-                          ? Color(0xFF00796B)
+                      color: controller.currentIndex.value == 3
+                          ? Utils.appColor
                           : Colors.grey,
                     ),
                     label: "more".tr,

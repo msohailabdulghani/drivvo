@@ -9,6 +9,12 @@ class Constants {
   static const String PAYMENT_METHOD = "payment_methods";
   // ignore: constant_identifier_names
   static const String REASONS = "reasons";
+  // ignore: constant_identifier_names
+  static const String FUEL = "fuel";
+  // ignore: constant_identifier_names
+  static const String GAS_STATIONS = "gas_stations";
+  // ignore: constant_identifier_names
+  static const String PLACES = "places";
 
   // ignore: constant_identifier_names
   static const String ONBOARDING = "Onboarding";

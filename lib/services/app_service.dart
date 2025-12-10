@@ -119,6 +119,39 @@ class AppService extends GetxService {
     }
   }
 
+  Future<void> deleteAccount() async {
+    final user = FirebaseAuth.instance.currentUser;
+
+    if (user == null) {
+      Utils.showSnackBar(message: "something_went_wrong".tr, success: false);
+      return;
+    }
+
+    Utils.showProgressDialog(Get.context!);
+
+    try {
+      await user.delete();
+
+      Get.back(); // close progress dialog
+      await FirebaseAuth.instance.signOut();
+
+      Get.offAllNamed(AppRoutes.LOGIN_VIEW);
+
+      Utils.showSnackBar(message: "account_deleted".tr, success: true);
+    } on FirebaseAuthException catch (e) {
+      Get.back();
+
+      if (e.code == 'requires-recent-login') {
+        Utils.showSnackBar(message: "login_again_to_delete".tr, success: false);
+      } else {
+        Utils.showSnackBar(message: "account_delete_failed".tr, success: false);
+      }
+    } catch (e) {
+      Get.back();
+      Utils.showSnackBar(message: "something_went_wrong".tr, success: false);
+    }
+  }
+
   void changeLanguage(String langCode, String country) {
     _languageCode = langCode;
     _countryCode = country;

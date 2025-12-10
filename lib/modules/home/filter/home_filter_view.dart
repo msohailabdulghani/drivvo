@@ -1,4 +1,5 @@
 import 'package:drivvo/custom-widget/button/custom_button.dart';
+import 'package:drivvo/custom-widget/button/more_option_button.dart';
 import 'package:drivvo/custom-widget/common/card_header_text.dart';
 import 'package:drivvo/model/date_range_model.dart';
 import 'package:drivvo/modules/home/filter/home_filter_controller.dart';
@@ -172,8 +173,13 @@ class HomeFilterView extends GetView<FilterController> {
                   ),
 
                   const SizedBox(height: 24),
-                  Obx(() => _buildMoreOptionsButton(controller)),
-
+                  Obx(
+                    () => MoreOptionButton(
+                      isUrdu: controller.isUrdu,
+                      moreOptionsExpanded: controller.moreOptionsExpanded.value,
+                      onTap: () => controller.toggleMoreOptions(),
+                    ),
+                  ),
                   // More Options Expanded Section
                   Obx(() {
                     if (controller.moreOptionsExpanded.value) {
@@ -305,41 +311,6 @@ class HomeFilterView extends GetView<FilterController> {
             activeThumbColor: Utils.appColor,
             activeTrackColor: Utils.appColor.withValues(alpha: 0.2),
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildMoreOptionsButton(FilterController controller) {
-    const Color primaryColor = Color(0xFF047772);
-    return InkWell(
-      onTap: controller.toggleMoreOptions,
-      borderRadius: BorderRadius.circular(24),
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 12),
-        decoration: BoxDecoration(
-          border: Border.all(color: primaryColor),
-          borderRadius: BorderRadius.circular(24),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              controller.moreOptionsExpanded.value ? Icons.remove : Icons.add,
-              color: primaryColor,
-              size: 20,
-            ),
-            const SizedBox(width: 8),
-            Text(
-              'more_options'.tr,
-              style: Utils.getTextStyle(
-                baseSize: 15,
-                isBold: true,
-                color: primaryColor,
-                isUrdu: controller.isUrdu,
-              ),
-            ),
-          ],
         ),
       ),
     );

@@ -13,4 +13,10 @@ class DatabaseTables {
   static const String PAYMENT_METHOD = "PaymentMethod";
   // ignore: constant_identifier_names
   static const String REASONS = "Reasons";
+  // ignore: constant_identifier_names
+  static const String FUEL = "Fuel";
+  // ignore: constant_identifier_names
+  static const String GAS_STATIONS = "GasStations";
+  // ignore: constant_identifier_names
+  static const String PLACES = "Places";
 }

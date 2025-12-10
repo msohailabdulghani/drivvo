@@ -1,10 +1,19 @@
+import 'dart:io';
+
+import 'package:drivvo/custom-widget/button/more_option_button.dart';
+import 'package:drivvo/custom-widget/common/build_custom_card.dart';
 import 'package:drivvo/custom-widget/common/card_header_text.dart';
 import 'package:drivvo/custom-widget/common/label_text.dart';
-import 'package:drivvo/custom-widget/text-input-field/form_label_text.dart';
+import 'package:drivvo/custom-widget/text-input-field/card_text_input_field.dart';
+import 'package:drivvo/custom-widget/text-input-field/text_input_field.dart';
+import 'package:drivvo/custom-widget/text-input-field/text_input_field_with_controller.dart';
 import 'package:drivvo/modules/home/refueling/create_refueling_controller.dart';
+import 'package:drivvo/routes/app_routes.dart';
+import 'package:drivvo/utils/constants.dart';
 import 'package:drivvo/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 class CreateRefuelingView extends GetView<CreateRefuelingController> {
   const CreateRefuelingView({super.key});
@@ -14,29 +23,40 @@ class CreateRefuelingView extends GetView<CreateRefuelingController> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Utils.appColor,
         elevation: 0,
-        surfaceTintColor: Colors.transparent,
         leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Get.back(),
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
         ),
         title: Text(
           'refueling'.tr,
           style: Utils.getTextStyle(
             baseSize: 18,
             isBold: true,
-            color: Colors.black,
+            color: Colors.white,
             isUrdu: controller.isUrdu,
           ),
         ),
         actions: [
           IconButton(
-            onPressed: controller.saveRefueling,
-            icon: const Icon(Icons.check, color: Colors.black),
+            onPressed: () => controller.saveRefueling(),
+            icon: Text(
+              "save".tr,
+              style: Utils.getTextStyle(
+                baseSize: 14,
+                isBold: true,
+                color: Colors.white,
+                isUrdu: controller.isUrdu,
+              ),
+            ),
           ),
         ],
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
+        ),
       ),
+
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Form(
@@ -44,18 +64,78 @@ class CreateRefuelingView extends GetView<CreateRefuelingController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Date & Time Section
               CardHeaderText(
-                title: 'date_and_time'.tr,
+                title: "date_and_time".tr,
                 isUrdu: controller.isUrdu,
               ),
-              _buildDateTimeCard(),
-
-              const SizedBox(height: 24),
-
-              // Odometer Section
-              FormLabelText(title: 'odometer'.tr, isUrdu: controller.isUrdu),
-              _buildOdometerField(),
+              BuildCustomCard(
+                child: Column(
+                  children: [
+                    CardTextInputField(
+                      isRequired: true,
+                      isNext: true,
+                      obscureText: false,
+                      readOnly: true,
+                      controller: controller.dateController,
+                      isUrdu: controller.isUrdu,
+                      labelText: "date".tr,
+                      hintText: "select_date".tr,
+                      sufixIcon: Icon(Icons.date_range),
+                      onSaved: (value) {},
+                      onTap: () => controller.selectDate(),
+                      onValidate: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'date_required'.tr;
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    CardTextInputField(
+                      isRequired: true,
+                      isNext: true,
+                      obscureText: false,
+                      readOnly: true,
+                      controller: controller.timeController,
+                      isUrdu: controller.isUrdu,
+                      labelText: "time".tr,
+                      hintText: "select_time".tr,
+                      sufixIcon: Icon(Icons.av_timer),
+                      onSaved: (value) {},
+                      onTap: () => controller.selectTime(),
+                      onValidate: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'time_required'.tr;
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
+              TextInputField(
+                isUrdu: controller.isUrdu,
+                isRequired: true,
+                isNext: true,
+                obscureText: false,
+                readOnly: false,
+                labelText: "odometer".tr,
+                hintText: "100".tr,
+                inputAction: TextInputAction.next,
+                type: TextInputType.number,
+                onTap: () {},
+                onSaved: (value) {
+                  controller.model.value.odometer =
+                      double.tryParse(value ?? '') ?? 0.0;
+                },
+                onValidate: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'odometer_required'.tr;
+                  }
+                  return null;
+                },
+              ),
               Align(
                 alignment: Alignment.centerRight,
                 child: Padding(
@@ -71,376 +151,318 @@ class CreateRefuelingView extends GetView<CreateRefuelingController> {
                   ),
                 ),
               ),
-
-              const SizedBox(height: 24),
-
-              // Fuel Section
-              FormLabelText(title: 'fuel'.tr, isUrdu: controller.isUrdu),
-              _buildDropdownField(hintText: 'gas_premium'.tr, onTap: () {}),
-
-              const SizedBox(height: 24),
-
-              // Price & Gal Section
-              FormLabelText(
-                title: 'price_and_gal'.tr,
-                isUrdu: controller.isUrdu,
-              ),
-              _buildPriceGallonsCard(),
-
               const SizedBox(height: 16),
 
-              // Are you filling this tank?
+              // Fuel Section
+              CardHeaderText(
+                title: "fuel_and_price".tr,
+                isUrdu: controller.isUrdu,
+              ),
+              BuildCustomCard(
+                child: Column(
+                  children: [
+                    CardTextInputField(
+                      isUrdu: controller.isUrdu,
+                      isRequired: true,
+                      isNext: true,
+                      obscureText: false,
+                      readOnly: true,
+                      labelText: "fuel".tr,
+                      hintText: "select_fuel".tr,
+                      controller: controller.fuelController,
+                      sufixIcon: Icon(Icons.keyboard_arrow_down),
+                      onTap: () {
+                        Get.toNamed(
+                          AppRoutes.GENERAL_VIEW,
+                          arguments: Constants.FUEL,
+                        )?.then((e) => controller.fuelController.text = e);
+                      },
+                      onSaved: (value) {},
+                      onValidate: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'fuel_required'.tr;
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    TextInputFieldWithController(
+                      isUrdu: controller.isUrdu,
+                      isRequired: true,
+                      isNext: true,
+                      obscureText: false,
+                      readOnly: false,
+                      labelText: "price".tr,
+                      hintText: "amount".tr,
+                      controller: controller.priceController,
+                      inputAction: TextInputAction.next,
+                      type: TextInputType.number,
+                      onChange: (value) {
+                        controller.model.value.price = double.parse(value!);
+                        controller.onPriceChanged(value);
+                      },
+                      onTap: () {},
+                      onSaved: (value) {},
+                      onValidate: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'amount_required'.tr;
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    TextInputFieldWithController(
+                      isUrdu: controller.isUrdu,
+                      isRequired: true,
+                      isNext: true,
+                      obscureText: false,
+                      readOnly: false,
+                      labelText: "total_cost".tr,
+                      hintText: "cost".tr,
+                      controller: controller.totalCostController,
+                      inputAction: TextInputAction.next,
+                      type: TextInputType.number,
+                      onChange: (value) {
+                        controller.model.value.totalCost = double.parse(value!);
+                        controller.onTotalCostChanged(value);
+                      },
+                      onTap: () {},
+                      onSaved: (value) {},
+                      onValidate: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'cost_required'.tr;
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    TextInputFieldWithController(
+                      isUrdu: controller.isUrdu,
+                      isRequired: true,
+                      isNext: true,
+                      obscureText: false,
+                      readOnly: false,
+                      labelText: "liters".tr,
+                      hintText: "70".tr,
+                      controller: controller.litersController,
+                      inputAction: TextInputAction.next,
+                      type: TextInputType.number,
+                      onChange: (value) {
+                        controller.model.value.liter = double.parse(value!);
+                        controller.onLitersChanged(value);
+                      },
+                      onTap: () {},
+                      onSaved: (value) {},
+                      onValidate: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'cost_required'.tr;
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
               _buildSwitchRow(
                 icon: Icons.local_gas_station_outlined,
                 label: 'are_you_filling_this_tank'.tr,
                 value: controller.isFillingTank,
                 onChanged: (val) => controller.isFillingTank.value = val,
               ),
-
               const SizedBox(height: 16),
-
-              // Fuel + Button
-              _buildAddButton('fuel'.tr),
-
-              const SizedBox(height: 24),
-
-              // Driver Section
-              FormLabelText(title: 'driver'.tr, isUrdu: controller.isUrdu),
-              _buildTextField(hintText: 'Amir'),
-
-              const SizedBox(height: 24),
-
-              // Gas Station Section
-              FormLabelText(title: 'gas_station'.tr, isUrdu: controller.isUrdu),
-              _buildDropdownField(
-                hintText: 'Shell - Downtown Boston',
-                onTap: () {},
-              ),
-
-              const SizedBox(height: 24),
-
-              // Payment Method Section
-              FormLabelText(
-                title: 'payment_method'.tr,
+              TextInputField(
                 isUrdu: controller.isUrdu,
+                isRequired: false,
+                isNext: true,
+                obscureText: false,
+                readOnly: false,
+                labelText: "driver".tr,
+                hintText: "Amir".tr,
+                inputAction: TextInputAction.next,
+                type: TextInputType.name,
+                onTap: () {},
+                onSaved: (value) {
+                  controller.model.value.odometer = double.parse(value!);
+                },
+                onValidate: (value) => null,
               ),
-              _buildDropdownField(hintText: 'Visa****4321', onTap: () {}),
-
-              const SizedBox(height: 24),
-
-              // Reason Section
-              FormLabelText(title: 'reason'.tr, isUrdu: controller.isUrdu),
-              _buildDropdownField(hintText: 'Trip', onTap: () {}),
-
               const SizedBox(height: 16),
-
-              // Missed previous refueling?
-              _buildSwitchRow(
-                icon: Icons.local_gas_station_outlined,
-                label: 'missed_previous_refueling'.tr,
-                value: controller.missedPreviousRefueling,
-                onChanged: (val) =>
-                    controller.missedPreviousRefueling.value = val,
+              Obx(
+                () => !controller.moreOptionsExpanded.value
+                    ? Column(
+                        children: [
+                          const SizedBox(height: 30),
+                          MoreOptionButton(
+                            isUrdu: controller.isUrdu,
+                            moreOptionsExpanded:
+                                controller.moreOptionsExpanded.value,
+                            onTap: () => controller.toggleMoreOptions(),
+                          ),
+                        ],
+                      )
+                    : SizedBox(),
               ),
+              Obx(
+                () => controller.moreOptionsExpanded.value
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CardTextInputField(
+                            isUrdu: controller.isUrdu,
+                            isRequired: false,
+                            isNext: true,
+                            obscureText: false,
+                            readOnly: true,
+                            labelText: "gas_station".tr,
+                            hintText: "select_gas_station".tr,
+                            controller: controller.gasStationCostController,
+                            sufixIcon: Icon(Icons.keyboard_arrow_down),
+                            onTap: () {
+                              Get.toNamed(
+                                AppRoutes.GENERAL_VIEW,
+                                arguments: Constants.GAS_STATIONS,
+                              )?.then(
+                                (e) =>
+                                    controller.gasStationCostController.text =
+                                        e,
+                              );
+                            },
+                            onSaved: (value) {},
+                            onValidate: (value) => null,
+                          ),
+                          const SizedBox(height: 16),
+                          CardTextInputField(
+                            isUrdu: controller.isUrdu,
+                            isRequired: false,
+                            isNext: true,
+                            obscureText: false,
+                            readOnly: true,
+                            labelText: "payment_method".tr,
+                            hintText: "select_payment_method".tr,
+                            controller: controller.paymentMethodController,
+                            sufixIcon: Icon(Icons.keyboard_arrow_down),
+                            onTap: () {
+                              Get.toNamed(
+                                AppRoutes.GENERAL_VIEW,
+                                arguments: Constants.PAYMENT_METHOD,
+                              )?.then(
+                                (e) =>
+                                    controller.paymentMethodController.text = e,
+                              );
+                            },
+                            onSaved: (value) {},
+                            onValidate: (value) => null,
+                          ),
+                          const SizedBox(height: 16),
+                          CardTextInputField(
+                            isUrdu: controller.isUrdu,
+                            isRequired: false,
+                            isNext: true,
+                            obscureText: false,
+                            readOnly: true,
+                            labelText: "reason".tr,
+                            hintText: "select_reason".tr,
+                            controller: controller.reasonController,
+                            sufixIcon: Icon(Icons.keyboard_arrow_down),
+                            onTap: () {
+                              Get.toNamed(
+                                AppRoutes.GENERAL_VIEW,
+                                arguments: Constants.REASONS,
+                              )?.then(
+                                (e) => controller.reasonController.text = e,
+                              );
+                            },
+                            onSaved: (value) {},
+                            onValidate: (value) => null,
+                          ),
+                          const SizedBox(height: 16),
 
-              const SizedBox(height: 16),
-
-              // Attach file button
-              _buildAddButton('attach_file'.tr),
-
-              const SizedBox(height: 24),
-
-              // Notes Section
-              LabelText(title: 'notes'.tr, isUrdu: controller.isUrdu),
-              _buildNotesField(),
-
+                          // Missed previous refueling?
+                          _buildSwitchRow(
+                            icon: Icons.local_gas_station_outlined,
+                            label: 'missed_previous_refueling'.tr,
+                            value: controller.missedPreviousRefueling,
+                            onChanged: (val) =>
+                                controller.missedPreviousRefueling.value = val,
+                          ),
+                          const SizedBox(height: 16),
+                          LabelText(
+                            title: "attach_file".tr,
+                            isUrdu: controller.isUrdu,
+                          ),
+                          GestureDetector(
+                            onTap: () => showImagePicker(),
+                            child: Container(
+                              width: double.maxFinite,
+                              height: 200,
+                              decoration: BoxDecoration(
+                                color: Utils.appColor.withValues(alpha: 0.1),
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
+                                border: Border.all(
+                                  color: Utils.appColor,
+                                  style: BorderStyle.solid,
+                                ),
+                              ),
+                              child: Obx(
+                                () => Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    const Icon(
+                                      Icons.add_a_photo,
+                                      color: Utils.appColor,
+                                    ),
+                                    if (controller.filePath.value.isNotEmpty)
+                                      Image.file(
+                                        File(controller.filePath.value),
+                                      ),
+                                    if (controller.filePath.value.isNotEmpty)
+                                      Align(
+                                        alignment: Alignment.topRight,
+                                        child: IconButton(
+                                          onPressed: () => {
+                                            controller.filePath.value = "",
+                                          },
+                                          icon: const Icon(
+                                            Icons.cancel,
+                                            color: Colors.red,
+                                          ),
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          TextInputField(
+                            isUrdu: controller.isUrdu,
+                            isRequired: false,
+                            isNext: false,
+                            obscureText: false,
+                            readOnly: false,
+                            maxLines: 4,
+                            maxLength: 250,
+                            labelText: "notes".tr,
+                            hintText: "enter_your_notes".tr,
+                            inputAction: TextInputAction.done,
+                            type: TextInputType.name,
+                            onTap: () {},
+                            onSaved: (value) {
+                              controller.model.value.notes = value!;
+                            },
+                            onValidate: (value) => null,
+                          ),
+                        ],
+                      )
+                    : SizedBox(),
+              ),
               const SizedBox(height: 40),
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildDateTimeCard() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.grey[50],
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey[200]!),
-      ),
-      child: Row(
-        children: [
-          // Date Field
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'date'.tr,
-                  style: Utils.getTextStyle(
-                    baseSize: 12,
-                    isBold: false,
-                    color: Colors.grey[600]!,
-                    isUrdu: controller.isUrdu,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                GestureDetector(
-                  onTap: controller.selectDate,
-                  child: Obx(
-                    () => Text(
-                      controller.selectedDate.value,
-                      style: Utils.getTextStyle(
-                        baseSize: 14,
-                        isBold: false,
-                        color: Colors.black87,
-                        isUrdu: controller.isUrdu,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(width: 1, height: 40, color: Colors.grey[300]),
-          const SizedBox(width: 16),
-          // Time Field
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'time'.tr,
-                  style: Utils.getTextStyle(
-                    baseSize: 12,
-                    isBold: false,
-                    color: Colors.grey[600]!,
-                    isUrdu: controller.isUrdu,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                GestureDetector(
-                  onTap: controller.selectTime,
-                  child: Obx(
-                    () => Text(
-                      controller.selectedTime.value,
-                      style: Utils.getTextStyle(
-                        baseSize: 14,
-                        isBold: false,
-                        color: Colors.black87,
-                        isUrdu: controller.isUrdu,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildOdometerField() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      decoration: BoxDecoration(
-        color: Colors.grey[50],
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey[200]!),
-      ),
-      child: TextFormField(
-        controller: controller.odometerController,
-        keyboardType: TextInputType.number,
-        style: Utils.getTextStyle(
-          baseSize: 14,
-          isBold: false,
-          color: Colors.black,
-          isUrdu: controller.isUrdu,
-        ),
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          hintText: 'Km',
-          hintStyle: Utils.getTextStyle(
-            baseSize: 14,
-            isBold: false,
-            color: Colors.grey[400]!,
-            isUrdu: controller.isUrdu,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDropdownField({
-    required String hintText,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        decoration: BoxDecoration(
-          color: Colors.grey[50],
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.grey[200]!),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              hintText,
-              style: Utils.getTextStyle(
-                baseSize: 14,
-                isBold: false,
-                color: Colors.black87,
-                isUrdu: controller.isUrdu,
-              ),
-            ),
-            Icon(Icons.keyboard_arrow_down, color: Colors.grey[600]),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildPriceGallonsCard() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.grey[50],
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey[200]!),
-      ),
-      child: Row(
-        children: [
-          // Price Field
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'price'.tr,
-                  style: Utils.getTextStyle(
-                    baseSize: 12,
-                    isBold: false,
-                    color: Colors.grey[600]!,
-                    isUrdu: controller.isUrdu,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                TextFormField(
-                  controller: controller.priceController,
-                  keyboardType: TextInputType.number,
-                  style: Utils.getTextStyle(
-                    baseSize: 14,
-                    isBold: false,
-                    color: Colors.black,
-                    isUrdu: controller.isUrdu,
-                  ),
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    isDense: true,
-                    contentPadding: EdgeInsets.zero,
-                    hintText: 'amount'.tr,
-                    hintStyle: Utils.getTextStyle(
-                      baseSize: 14,
-                      isBold: false,
-                      color: Colors.grey[400]!,
-                      isUrdu: controller.isUrdu,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(width: 1, height: 40, color: Colors.grey[300]),
-          const SizedBox(width: 16),
-          // Total Cost Field
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'total_cost'.tr,
-                  style: Utils.getTextStyle(
-                    baseSize: 12,
-                    isBold: false,
-                    color: Colors.grey[600]!,
-                    isUrdu: controller.isUrdu,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                TextFormField(
-                  controller: controller.totalCostController,
-                  keyboardType: TextInputType.number,
-                  style: Utils.getTextStyle(
-                    baseSize: 14,
-                    isBold: false,
-                    color: Colors.black,
-                    isUrdu: controller.isUrdu,
-                  ),
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    isDense: true,
-                    contentPadding: EdgeInsets.zero,
-                    hintText: 'cost'.tr,
-                    hintStyle: Utils.getTextStyle(
-                      baseSize: 14,
-                      isBold: false,
-                      color: Colors.grey[400]!,
-                      isUrdu: controller.isUrdu,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(width: 1, height: 40, color: Colors.grey[300]),
-          const SizedBox(width: 16),
-          // Gallons Field
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'gallons'.tr,
-                  style: Utils.getTextStyle(
-                    baseSize: 12,
-                    isBold: false,
-                    color: Colors.grey[600]!,
-                    isUrdu: controller.isUrdu,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                TextFormField(
-                  controller: controller.gallonsController,
-                  keyboardType: TextInputType.number,
-                  style: Utils.getTextStyle(
-                    baseSize: 14,
-                    isBold: false,
-                    color: Colors.black,
-                    isUrdu: controller.isUrdu,
-                  ),
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    isDense: true,
-                    contentPadding: EdgeInsets.zero,
-                    hintText: 'Gallons',
-                    hintStyle: Utils.getTextStyle(
-                      baseSize: 14,
-                      isBold: false,
-                      color: Colors.grey[400]!,
-                      isUrdu: controller.isUrdu,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -451,114 +473,122 @@ class CreateRefuelingView extends GetView<CreateRefuelingController> {
     required RxBool value,
     required ValueChanged<bool> onChanged,
   }) {
-    return Row(
-      children: [
-        Icon(icon, color: Colors.grey[600], size: 22),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Text(
-            label,
-            style: Utils.getTextStyle(
-              baseSize: 14,
-              isBold: false,
-              color: Colors.black87,
-              isUrdu: controller.isUrdu,
+    return Container(
+      padding: controller.isUrdu
+          ? EdgeInsets.only(right: 10)
+          : EdgeInsets.only(left: 10),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF7F7F7),
+        border: Border.all(color: Colors.grey.shade400),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        children: [
+          Icon(icon, color: Colors.grey[600], size: 22),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              label,
+              style: Utils.getTextStyle(
+                baseSize: 14,
+                isBold: false,
+                color: Colors.black87,
+                isUrdu: controller.isUrdu,
+              ),
             ),
           ),
-        ),
-        Obx(
-          () => Transform.scale(
-            scale: 0.8,
-            child: Switch(
-              value: value.value,
-              onChanged: onChanged,
-              activeColor: Utils.appColor,
-              activeTrackColor: Utils.appColor.withValues(alpha: 0.2),
+          Obx(
+            () => Transform.scale(
+              scale: 0.8,
+              child: Switch(
+                value: value.value,
+                onChanged: onChanged,
+                activeThumbColor: Utils.appColor,
+                activeTrackColor: Utils.appColor.withValues(alpha: 0.2),
+              ),
             ),
           ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildAddButton(String label) {
-    return OutlinedButton.icon(
-      onPressed: () {},
-      style: OutlinedButton.styleFrom(
-        foregroundColor: Utils.appColor,
-        side: BorderSide(color: Utils.appColor),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      ),
-      icon: const Icon(Icons.add, size: 18),
-      label: Text(
-        label,
-        style: Utils.getTextStyle(
-          baseSize: 14,
-          isBold: true,
-          color: Utils.appColor,
-          isUrdu: controller.isUrdu,
-        ),
+        ],
       ),
     );
   }
 
-  Widget _buildTextField({required String hintText}) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      decoration: BoxDecoration(
-        color: Colors.grey[50],
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey[200]!),
-      ),
-      child: TextFormField(
-        controller: controller.driverController,
-        style: Utils.getTextStyle(
-          baseSize: 14,
-          isBold: false,
-          color: Colors.black,
-          isUrdu: controller.isUrdu,
-        ),
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          hintText: hintText,
-          hintStyle: Utils.getTextStyle(
-            baseSize: 14,
-            isBold: false,
-            color: Colors.grey[400]!,
-            isUrdu: controller.isUrdu,
-          ),
-        ),
-      ),
-    );
-  }
+  void showImagePicker() async {
+    final ImagePicker imgPicker = ImagePicker();
 
-  Widget _buildNotesField() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      decoration: BoxDecoration(
-        color: Colors.grey[50],
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey[200]!),
+    Get.defaultDialog(
+      title: "choose_option".tr,
+      titleStyle: Utils.getTextStyle(
+        baseSize: 16,
+        isBold: true,
+        color: Colors.black,
+        isUrdu: controller.isUrdu,
       ),
-      child: TextFormField(
-        controller: controller.notesController,
-        maxLines: 4,
-        style: Utils.getTextStyle(
-          baseSize: 14,
-          isBold: false,
-          color: Colors.black,
-          isUrdu: controller.isUrdu,
-        ),
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          hintText: 'Note...',
-          hintStyle: Utils.getTextStyle(
-            baseSize: 14,
-            isBold: false,
-            color: Colors.grey[400]!,
-            isUrdu: controller.isUrdu,
-          ),
+      backgroundColor: Colors.white,
+      content: Padding(
+        padding: const EdgeInsets.only(top: 10, left: 16, right: 16),
+        child: Column(
+          children: [
+            GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () async {
+                Get.back();
+                final pickedFile = await imgPicker.pickImage(
+                  source: ImageSource.camera,
+                  imageQuality: 100,
+                );
+                if (pickedFile != null) {
+                  controller.onPickedFile(pickedFile);
+                }
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "take_photo".tr,
+                    style: Utils.getTextStyle(
+                      baseSize: 14,
+                      isBold: false,
+                      color: Colors.black,
+                      isUrdu: controller.isUrdu,
+                    ),
+                  ),
+                  const Icon(Icons.camera_alt, color: Colors.black, size: 18),
+                ],
+              ),
+            ),
+            const SizedBox(height: 5),
+            const Divider(thickness: 0.5, color: Color(0x20000000)),
+            const SizedBox(height: 5),
+            GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () async {
+                Get.back();
+                final pickedFile = await imgPicker.pickImage(
+                  source: ImageSource.gallery,
+                  imageQuality: 100,
+                );
+                if (pickedFile != null) {
+                  controller.onPickedFile(pickedFile);
+                }
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "gallery".tr,
+                    style: Utils.getTextStyle(
+                      baseSize: 14,
+                      isBold: false,
+                      color: Colors.black,
+                      isUrdu: controller.isUrdu,
+                    ),
+                  ),
+                  const Icon(Icons.camera_alt, color: Colors.black, size: 18),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

@@ -1,3 +1,5 @@
+import 'package:drivvo/utils/constants.dart';
+import 'package:drivvo/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -63,29 +65,40 @@ class AppTheme {
         //fillColor: Colors.grey[100],
         fillColor: const Color(0xFFF7F7F7),
         floatingLabelBehavior: FloatingLabelBehavior.auto,
-        contentPadding: const EdgeInsets.only(top: 14, bottom: 14, left: 12),
+        contentPadding: const EdgeInsets.all(16),
         hintStyle: const TextStyle(color: Color(0xFF8B8B8F)),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16.0),
-          borderSide: BorderSide(color: const Color(0xFF047772), width: 1),
+          borderSide: BorderSide(color: Utils.appColor, width: 2),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        errorStyle: Utils.getTextStyle(
+          baseSize: 12,
+          isBold: false,
+          color: Colors.red,
+          isUrdu: Get.locale?.languageCode == Constants.URDU_LANGUAGE_CODE
+              ? true
+              : false,
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16.0),
-          borderSide: BorderSide(
-            color: Color.fromARGB(255, 244, 244, 246),
-            width: 2,
-          ),
+          borderSide: BorderSide(color: Colors.grey.shade400),
+          borderRadius: BorderRadius.circular(8),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16.0),
+          borderRadius: BorderRadius.circular(8.0),
           borderSide: BorderSide(color: Colors.red, width: 1),
         ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.0),
+          borderSide: BorderSide(color: Colors.red, width: 2),
+        ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16.0),
-          borderSide: BorderSide(
-            color: Color.fromARGB(255, 244, 244, 246),
-            width: 2,
-          ),
+          borderSide: BorderSide(color: Colors.grey.shade400),
+          borderRadius: BorderRadius.circular(8),
+          // borderRadius: BorderRadius.circular(16.0),
+          // borderSide: BorderSide(
+          //   color: Color.fromARGB(255, 244, 244, 246),
+          //   width: 2,
+          // ),
         ),
       ),
       popupMenuTheme: const PopupMenuThemeData(

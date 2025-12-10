@@ -9,16 +9,26 @@ import 'package:get/get.dart';
 class CreateGeneralController extends GetxController {
   late AppService appService;
   final formStateKey = GlobalKey<FormState>();
+  TextEditingController locationController = TextEditingController();
 
   var title = "";
   var name = "";
+
+  final List<String> fuelTypeList = [
+    'Liquids',
+    'Liquefied petroleum gas',
+    'Compressed natural gas',
+    'Electrical',
+  ];
+
+  var fuelType = "";
 
   bool get isUrdu => Get.locale?.languageCode == Constants.URDU_LANGUAGE_CODE;
 
   @override
   void onInit() {
     appService = Get.find<AppService>();
-    title = Get.arguments ?? ""; // Added null safety
+    title = Get.arguments ?? "";
     super.onInit();
   }
 
@@ -50,6 +60,18 @@ class CreateGeneralController extends GetxController {
           collectionPath = DatabaseTables.REASONS;
           successMessage = "reason_added".tr;
           break;
+        case Constants.FUEL:
+          collectionPath = DatabaseTables.FUEL;
+          successMessage = "fuel_added".tr;
+          break;
+        case Constants.GAS_STATIONS:
+          collectionPath = DatabaseTables.GAS_STATIONS;
+          successMessage = "gas_station_added".tr;
+          break;
+        case Constants.PLACES:
+          collectionPath = DatabaseTables.PLACES;
+          successMessage = "place_added".tr;
+          break;
         default:
           debugPrint("Unknown title: $title");
           return;
@@ -68,6 +90,14 @@ class CreateGeneralController extends GetxController {
           final id = ref.doc().id;
           final map = {"id": id, "name": name};
 
+          if (title == Constants.FUEL) {
+            map["fuel_type"] = fuelType;
+          }
+
+          if (title == Constants.GAS_STATIONS || title == Constants.PLACES) {
+            map["location"] = locationController.text.trim();
+          }
+
           await ref.doc(id).set(map);
 
           if (Get.isDialogOpen == true) Get.back();
@@ -81,6 +111,12 @@ class CreateGeneralController extends GetxController {
           Utils.showSnackBar(message: "something_wrong".tr, success: false);
         }
       }
+    }
+  }
+
+  void onSelectFuelType(String? type) {
+    if (type != null) {
+      fuelType = type;
     }
   }
 }
