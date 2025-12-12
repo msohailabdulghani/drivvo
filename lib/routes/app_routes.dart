@@ -43,4 +43,8 @@ abstract class AppRoutes {
   static const CRAETE_SERVICE_VIEW = '/home/create_service_view';
   // ignore: constant_identifier_names
   static const CRAETE_ROUTE_VIEW = '/home/create_route_view';
+  // ignore: constant_identifier_names
+  static const CREATE_REMINDER_VIEW = '/reminder/create_reminder_view';
+  // ignore: constant_identifier_names
+  static const MAP_VIEW = '/common/map_view';
 }

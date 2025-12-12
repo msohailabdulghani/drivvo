@@ -29,4 +29,6 @@ class DatabaseTables {
   static const String SERVICES = "Services";
   // ignore: constant_identifier_names
   static const String ROUTES = "Routes";
+  // ignore: constant_identifier_names
+  static const String REMINDER = "Reminders";
 }

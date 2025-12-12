@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:drivvo/model/app_user.dart';
 import 'package:drivvo/routes/app_routes.dart';
 import 'package:drivvo/services/app_service.dart';
 import 'package:drivvo/utils/constants.dart';
@@ -13,7 +14,8 @@ class SignupController extends GetxController {
 
   final formStateKey = GlobalKey<FormState>();
 
-  final nameController = TextEditingController();
+  final firstNameController = TextEditingController();
+  final lastNameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
@@ -49,9 +51,8 @@ class SignupController extends GetxController {
 
           map["id"] = id;
           map["email"] = emailController.text;
-          map["name"] = nameController.text;
-          map["phone"] = "";
-          map["photoUrl"] = "";
+          map["first_name"] = firstNameController.text.trim();
+          map["last_name"] = lastNameController.text.trim();
           map["sign_in_method"] = "email";
 
           await db
@@ -60,7 +61,8 @@ class SignupController extends GetxController {
               .set(map)
               .then((_) {
                 Get.back();
-                nameController.text = "";
+                firstNameController.text = "";
+                lastNameController.text = "";
                 emailController.text = "";
                 passwordController.text = "";
                 formStateKey.currentState?.reset();
@@ -69,6 +71,15 @@ class SignupController extends GetxController {
                   message: "user_registered_success",
                   success: true,
                 );
+
+                final appUser = AppUser();
+                appUser.id = id;
+                appUser.email = emailController.text;
+                appUser.firstName = firstNameController.text;
+                appUser.lastName = lastNameController.text;
+
+                appService.setProfile(appUser);
+
                 Future.delayed(const Duration(milliseconds: 500), () {
                   Get.offAllNamed(AppRoutes.LOGIN_VIEW);
                 });
@@ -91,5 +102,15 @@ class SignupController extends GetxController {
         Utils.showSnackBar(message: 'save_data_failed', success: false);
       }
     }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    firstNameController.dispose();
+    lastNameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
   }
 }

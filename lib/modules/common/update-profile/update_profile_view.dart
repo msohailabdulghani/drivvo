@@ -1,7 +1,9 @@
 import 'dart:io';
+
 import 'package:drivvo/custom-widget/button/custom_button.dart';
-import 'package:drivvo/custom-widget/common/custom_app_bar.dart';
+import 'package:drivvo/custom-widget/common/icon_with_text.dart';
 import 'package:drivvo/custom-widget/common/profile_image.dart';
+import 'package:drivvo/custom-widget/text-input-field/card_text_input_field.dart';
 import 'package:drivvo/custom-widget/text-input-field/text_input_field.dart';
 import 'package:drivvo/modules/common/update-profile/update_profile_controller.dart';
 import 'package:drivvo/utils/utils.dart';
@@ -15,11 +17,26 @@ class UpdateProfileView extends GetView<UpdateProfileController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        name: "update_profile".tr,
-        isUrdu: controller.isUrdu,
+      appBar: AppBar(
+        backgroundColor: Utils.appColor,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Get.back(),
+        ),
         centerTitle: true,
-        arrowColor: Colors.black,
+        title: Text(
+          'update_profile'.tr,
+          style: Utils.getTextStyle(
+            baseSize: 18,
+            isBold: true,
+            color: Colors.white,
+            isUrdu: controller.isUrdu,
+          ),
+        ),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
+        ),
       ),
       body: SafeArea(
         child: Column(
@@ -98,6 +115,13 @@ class UpdateProfileView extends GetView<UpdateProfileController> {
                           ),
                         ),
                         const SizedBox(height: 40),
+                        IconWithText(
+                          isUrdu: controller.isUrdu,
+                          imagePath: "assets/images/info.png",
+                          textColor: Utils.appColor,
+                          title: "personal_information".tr,
+                        ),
+                        const SizedBox(height: 20),
                         TextInputField(
                           isUrdu: controller.isUrdu,
                           isRequired: false,
@@ -105,19 +129,39 @@ class UpdateProfileView extends GetView<UpdateProfileController> {
                           obscureText: false,
                           readOnly: false,
                           initialValue:
-                              controller.appService.appUser.value.name,
-                          labelText: "name".tr,
-                          hintText: "enter_your_name".tr,
+                              controller.appService.appUser.value.firstName,
+                          labelText: "first_name".tr,
+                          hintText: "enter_your_first_name".tr,
                           inputAction: TextInputAction.next,
                           type: TextInputType.name,
                           onSaved: (value) {
                             value != null
-                                ? controller.name = value
-                                : controller.name = "";
+                                ? controller.model.firstName = value
+                                : controller.model.firstName = "";
                           },
                           onValidate: (value) {},
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 16),
+                        TextInputField(
+                          isUrdu: controller.isUrdu,
+                          isRequired: false,
+                          isNext: true,
+                          obscureText: false,
+                          readOnly: false,
+                          initialValue:
+                              controller.appService.appUser.value.lastName,
+                          labelText: "last_name".tr,
+                          hintText: "enter_your_last_name".tr,
+                          inputAction: TextInputAction.next,
+                          type: TextInputType.name,
+                          onSaved: (value) {
+                            value != null
+                                ? controller.model.lastName = value
+                                : controller.model.lastName = "";
+                          },
+                          onValidate: (value) {},
+                        ),
+                        const SizedBox(height: 16),
                         TextInputField(
                           isUrdu: controller.isUrdu,
                           isRequired: false,
@@ -133,12 +177,128 @@ class UpdateProfileView extends GetView<UpdateProfileController> {
                           onSaved: (value) => {},
                           onValidate: (value) {},
                         ),
-                        const SizedBox(height: 40),
+                        const SizedBox(height: 16),
+                        TextInputField(
+                          isUrdu: controller.isUrdu,
+                          isRequired: false,
+                          isNext: true,
+                          obscureText: false,
+                          readOnly: false,
+                          labelText: "phone_number".tr,
+                          hintText: "enter_your_phone_number".tr,
+                          inputAction: TextInputAction.next,
+                          initialValue:
+                              controller.appService.appUser.value.phone,
+                          type: TextInputType.number,
+                          onSaved: (value) {
+                            value != null
+                                ? controller.model.phone = value
+                                : controller.model.phone = "";
+                          },
+                          onValidate: (value) {},
+                        ),
+                        const SizedBox(height: 30),
+                        IconWithText(
+                          isUrdu: controller.isUrdu,
+                          imagePath: "assets/images/additional.png",
+                          textColor: Utils.appColor,
+                          title: "driver_license_info".tr,
+                        ),
+                        const SizedBox(height: 16),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: CardTextInputField(
+                                isRequired: false,
+                                isNext: true,
+                                obscureText: false,
+                                readOnly: true,
+                                controller: controller.issueDateController,
+                                isUrdu: controller.isUrdu,
+                                labelText: "issue_date".tr,
+                                hintText: "select_date".tr,
+                                sufixIcon: Icon(
+                                  Icons.date_range,
+                                  color: Utils.appColor,
+                                ),
+                                onSaved: (value) {},
+                                onTap: () =>
+                                    controller.selectDate(isIssueDate: true),
+                                onValidate: (value) => null,
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: CardTextInputField(
+                                isRequired: false,
+                                isNext: true,
+                                obscureText: false,
+                                readOnly: true,
+                                controller: controller.expiryDateController,
+                                isUrdu: controller.isUrdu,
+                                labelText: "expiry_date".tr,
+                                hintText: "select_date".tr,
+                                sufixIcon: Icon(
+                                  Icons.date_range,
+                                  color: Utils.appColor,
+                                ),
+                                onSaved: (value) {},
+                                onTap: () =>
+                                    controller.selectDate(isIssueDate: false),
+                                onValidate: (value) => null,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        TextInputField(
+                          isUrdu: controller.isUrdu,
+                          isRequired: false,
+                          isNext: true,
+                          obscureText: false,
+                          readOnly: false,
+                          initialValue:
+                              controller.appService.appUser.value.licenseNumber,
+                          labelText: "license_number".tr,
+                          hintText: "enter_your_license_number".tr,
+                          inputAction: TextInputAction.next,
+                          type: TextInputType.name,
+                          onSaved: (value) {
+                            value != null
+                                ? controller.model.licenseNumber = value
+                                : controller.model.licenseNumber = "";
+                          },
+                          onValidate: (value) {},
+                        ),
+                        const SizedBox(height: 16),
+                        TextInputField(
+                          isUrdu: controller.isUrdu,
+                          isRequired: false,
+                          isNext: false,
+                          obscureText: false,
+                          readOnly: false,
+                          labelText: "category".tr,
+                          hintText: "license_category".tr,
+                          initialValue: controller
+                              .appService
+                              .appUser
+                              .value
+                              .licenseCategory,
+                          inputAction: TextInputAction.done,
+                          type: TextInputType.name,
+                          onSaved: (value) {
+                            value != null
+                                ? controller.model.licenseCategory = value
+                                : controller.model.licenseCategory = "";
+                          },
+                          onValidate: (value) {},
+                        ),
+                        const SizedBox(height: 16),
                         CustomButton(
                           title: "update".tr,
                           onTap: () => controller.saveData(),
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 40),
                       ],
                     ),
                   ),

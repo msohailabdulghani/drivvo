@@ -1,7 +1,8 @@
 import 'package:drivvo/modules/reminder/reminder_controller.dart';
+import 'package:drivvo/routes/app_routes.dart';
 import 'package:drivvo/utils/utils.dart';
-import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ReminderView extends GetView<ReminderController> {
   const ReminderView({super.key});
@@ -10,7 +11,7 @@ class ReminderView extends GetView<ReminderController> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () => Get.toNamed(AppRoutes.CREATE_REMINDER_VIEW),
         shape: const CircleBorder(),
         foregroundColor: Colors.white,
         backgroundColor: const Color(0xFF00796B),

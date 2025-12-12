@@ -128,7 +128,7 @@ class LoginController extends GetxController {
               final appUser = AppUser();
               appUser.id = id;
               appUser.email = user.email ?? "";
-              appUser.name = user.displayName ?? "";
+              appUser.firstName = user.displayName ?? "";
               appService.setProfile(appUser);
               Get.back();
               Get.back();

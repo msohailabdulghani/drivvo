@@ -1,4 +1,5 @@
 import 'package:drivvo/custom-widget/button/custom_button.dart';
+import 'package:drivvo/custom-widget/common/custom_app_bar.dart';
 import 'package:drivvo/custom-widget/text-input-field/password_input_field.dart';
 import 'package:drivvo/custom-widget/text-input-field/text_input_field.dart';
 import 'package:drivvo/modules/authentication/signup/signup_controller.dart';
@@ -13,35 +14,19 @@ class SignupView extends GetView<SignupController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        surfaceTintColor: Colors.transparent,
+      appBar: CustomAppBar(
+        name: "signup_to_continue".tr,
+        isUrdu: controller.isUrdu,
+        bgColor: Utils.appColor,
+        textColor: Colors.white,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 10.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // IconButton(
-              //   icon: const Icon(Icons.arrow_back),
-              //   padding: EdgeInsets.zero,
-              //   alignment: Alignment.centerLeft,
-              //   onPressed: () {
-              //     // Handle back navigation
-              //   },
-              // ),
-              // const SizedBox(height: 20),
-              Text(
-                "signup_to_continue".tr,
-                style: Utils.getTextStyle(
-                  baseSize: 28,
-                  isBold: true,
-                  color: Colors.black,
-                  isUrdu: controller.isUrdu,
-                ),
-              ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 20),
               Form(
                 key: controller.formStateKey,
                 child: Column(
@@ -52,26 +37,41 @@ class SignupView extends GetView<SignupController> {
                       isNext: true,
                       obscureText: false,
                       readOnly: false,
-                      labelText: "name".tr,
-                      hintText: "enter_your_name".tr,
+                      labelText: "first_name".tr,
+                      hintText: "enter_your_first_name".tr,
                       inputAction: TextInputAction.next,
                       type: TextInputType.name,
                       onChange: (value) {
-                        controller.nameController.text = value!;
+                        controller.firstNameController.text = value!;
                       },
-                      onSaved: (value) {
-                        controller.nameController.text = value!;
-                      },
+                      onSaved: (value) {},
                       onValidate: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'name_required'.tr;
+                          return 'first_name_required'.tr;
                         } else if (value.length < 3) {
                           return "invalid_name".tr;
                         }
                         return null;
                       },
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 16),
+                    TextInputField(
+                      isUrdu: controller.isUrdu,
+                      isRequired: false,
+                      isNext: true,
+                      obscureText: false,
+                      readOnly: false,
+                      labelText: "last_name".tr,
+                      hintText: "enter_your_last_name".tr,
+                      inputAction: TextInputAction.next,
+                      type: TextInputType.name,
+                      onChange: (value) {
+                        controller.lastNameController.text = value!;
+                      },
+                      onSaved: (value) {},
+                      onValidate: (value) => null,
+                    ),
+                    const SizedBox(height: 16),
                     TextInputField(
                       isUrdu: controller.isUrdu,
                       isRequired: true,
@@ -85,9 +85,7 @@ class SignupView extends GetView<SignupController> {
                       onChange: (value) {
                         controller.emailController.text = value!;
                       },
-                      onSaved: (value) {
-                        controller.emailController.text = value!;
-                      },
+                      onSaved: (value) {},
                       onValidate: (value) {
                         if (value == null || value.isEmpty) {
                           return 'email_required'.tr;
@@ -103,7 +101,7 @@ class SignupView extends GetView<SignupController> {
                         return null;
                       },
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 16),
                     Obx(
                       () => PasswordInputField(
                         isRequired: true,
@@ -138,12 +136,12 @@ class SignupView extends GetView<SignupController> {
                             : null,
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 16),
                     Obx(
                       () => PasswordInputField(
                         isRequired: true,
                         isNext: true,
-                        obscureText: controller.showConPwd.value,
+                        obscureText: controller.showPwd.value,
                         readOnly: false,
                         isUrdu: controller.isUrdu,
                         labelText: "confirm_password".tr,
@@ -152,11 +150,11 @@ class SignupView extends GetView<SignupController> {
                         type: TextInputType.visiblePassword,
                         suffixIcon: IconButton(
                           onPressed: () {
-                            controller.showConPwd.value =
-                                !controller.showConPwd.value;
+                            controller.showPwd.value =
+                                !controller.showPwd.value;
                           },
                           icon: Icon(
-                            controller.showConPwd.value
+                            controller.showPwd.value
                                 ? Icons.visibility_off
                                 : Icons.visibility,
                           ),
@@ -176,7 +174,7 @@ class SignupView extends GetView<SignupController> {
                         },
                       ),
                     ),
-                    const SizedBox(height: 40),
+                    const SizedBox(height: 30),
                     CustomButton(
                       title: "create_account".tr,
                       onTap: () => controller.onTapSignUp(),
@@ -185,7 +183,6 @@ class SignupView extends GetView<SignupController> {
                   ],
                 ),
               ),
-              const SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: RichText(
@@ -240,7 +237,7 @@ class SignupView extends GetView<SignupController> {
                   ),
                 ),
               ),
-              const SizedBox(height: 50),
+              const SizedBox(height: 30),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -268,7 +265,7 @@ class SignupView extends GetView<SignupController> {
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 70),
             ],
           ),
         ),

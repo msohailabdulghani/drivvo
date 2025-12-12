@@ -3,6 +3,7 @@ import 'package:drivvo/custom-widget/text-input-field/card_text_input_field.dart
 import 'package:drivvo/custom-widget/text-input-field/form_label_text.dart';
 import 'package:drivvo/custom-widget/text-input-field/text_input_field.dart';
 import 'package:drivvo/modules/more/general/create/create_general_controller.dart';
+import 'package:drivvo/routes/app_routes.dart';
 import 'package:drivvo/utils/constants.dart';
 import 'package:drivvo/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -275,7 +276,7 @@ class CreateGeneralView extends GetView<CreateGeneralController> {
                       labelText: "location".tr,
                       hintText: "select_location".tr,
                       onTap: () {
-                        Utils.showSnackBar(message: "abc", success: true);
+                        Get.toNamed(AppRoutes.MAP_VIEW);
                       },
                       onSaved: (value) {},
                       onValidate: (value) => null,

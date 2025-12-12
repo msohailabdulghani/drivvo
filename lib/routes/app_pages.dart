@@ -8,6 +8,8 @@ import 'package:drivvo/modules/authentication/signup/signup_bindings.dart';
 import 'package:drivvo/modules/authentication/signup/signup_view.dart';
 import 'package:drivvo/modules/common/date-range/date_range_bindings.dart';
 import 'package:drivvo/modules/common/date-range/date_range_view.dart';
+import 'package:drivvo/modules/common/map/map_bindings.dart';
+import 'package:drivvo/modules/common/map/map_view.dart';
 import 'package:drivvo/modules/common/onboarding/onboarding_bindings.dart';
 import 'package:drivvo/modules/common/onboarding/onboarding_view.dart';
 import 'package:drivvo/modules/common/update-profile/update_profile_bindings.dart';
@@ -36,6 +38,8 @@ import 'package:drivvo/modules/more/vehicles/create/create_vehicles_bindings.dar
 import 'package:drivvo/modules/more/vehicles/create/create_vehicles_view.dart';
 import 'package:drivvo/modules/more/vehicles/vehicles_bindings.dart';
 import 'package:drivvo/modules/more/vehicles/vehicles_view.dart';
+import 'package:drivvo/modules/reminder/create/create_reminder_binding.dart';
+import 'package:drivvo/modules/reminder/create/create_reminder_view.dart';
 import 'package:drivvo/modules/root/root_bindings.dart';
 import 'package:drivvo/modules/root/root_view.dart';
 import 'package:drivvo/modules/setting/setting_bindings.dart';
@@ -178,6 +182,18 @@ class AppPages {
       name: AppRoutes.CRAETE_ROUTE_VIEW,
       page: () => CreateRouteView(),
       binding: CreateRouteBinding(),
+    ),
+
+    GetPage(
+      name: AppRoutes.CREATE_REMINDER_VIEW,
+      page: () => CreateReminderView(),
+      binding: CreateReminderBinding(),
+    ),
+
+    GetPage(
+      name: AppRoutes.MAP_VIEW,
+      page: () => MapView(),
+      binding: MapBindings(),
     ),
   ];
 }

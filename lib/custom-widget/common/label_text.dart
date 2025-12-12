@@ -9,16 +9,13 @@ class LabelText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 4.0, bottom: 6.0),
-      child: Text(
-        title,
-        style: Utils.getTextStyle(
-          baseSize: 14,
-          isBold: false,
-          color: Colors.black,
-          isUrdu: isUrdu,
-        ),
+    return Text(
+      title,
+      style: Utils.getTextStyle(
+        baseSize: 14,
+        isBold: false,
+        color: Colors.black,
+        isUrdu: isUrdu,
       ),
     );
   }
