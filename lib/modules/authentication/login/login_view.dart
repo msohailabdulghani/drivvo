@@ -37,7 +37,7 @@ class LoginView extends GetView<LoginController> {
                     children: [
                       TextInputField(
                         isUrdu: controller.isUrdu,
-                        isRequired: true,
+                        isRequired: false,
                         isNext: true,
                         obscureText: false,
                         readOnly: false,
@@ -61,14 +61,13 @@ class LoginView extends GetView<LoginController> {
                           if (!regex.hasMatch(value)) {
                             return 'enter_valid_email'.tr;
                           }
-
                           return null;
                         },
                       ),
                       const SizedBox(height: 20),
                       Obx(
                         () => PasswordInputField(
-                          isRequired: true,
+                          isRequired: false,
                           isNext: true,
                           obscureText: controller.showPwd.value,
                           readOnly: false,

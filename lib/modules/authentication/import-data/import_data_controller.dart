@@ -18,4 +18,9 @@ class ImportDataController extends GetxController {
     appService.setImportData(value: true);
     Get.offAllNamed(AppRoutes.ROOT_VIEW);
   }
+
+  void navigateVehicleView() {
+    appService.setImportData(value: true);
+    Get.offAllNamed(AppRoutes.VEHICLES_VIEW);
+  }
 }

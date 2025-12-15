@@ -13,50 +13,54 @@ class MoreView extends GetView<MoreController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Utils.appColor,
         surfaceTintColor: Colors.transparent,
         title: Text(
           "more_options".tr,
           style: Utils.getTextStyle(
-            baseSize: 18,
+            baseSize: 20,
             isBold: true,
-            color: Colors.black,
+            color: Colors.white,
             isUrdu: controller.isUrdu,
           ),
+        ),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
         ),
       ),
       body: SafeArea(
         child: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
           children: [
             CardHeaderText(
               title: 'section_account_data'.tr,
               isUrdu: controller.isUrdu,
+              color: Utils.appColor,
             ),
             _buildSectionCard([
               _buildTile(
-                icon: Icons.sim_card_outlined,
+                imagePath: "assets/images/more/plan.png",
                 title: 'premium_plans'.tr,
                 subtitle: 'premium_plans_sub'.tr,
                 onTap: () {},
               ),
               _buildDivider(),
               _buildTile(
-                icon: Icons.person_outline,
+                imagePath: "assets/images/more/account.png",
                 title: 'my_account'.tr,
                 subtitle: 'my_account_sub'.tr,
                 onTap: () => Get.toNamed(AppRoutes.UPDATE_PROFILE_VIEW),
               ),
               _buildDivider(),
               _buildTile(
-                icon: Icons.sync,
+                imagePath: "assets/images/more/syncronize_data.png",
                 title: 'sync_data'.tr,
                 subtitle: 'sync_data_sub'.tr,
                 onTap: () {},
               ),
               _buildDivider(),
               _buildTile(
-                icon: Icons.storage,
+                imagePath: "assets/images/more/storage.png",
                 title: 'storage'.tr,
                 subtitle: 'storage_sub'.tr,
                 trailingInfo: '85%',
@@ -65,7 +69,7 @@ class MoreView extends GetView<MoreController> {
               ),
               _buildDivider(),
               _buildTile(
-                icon: Icons.swap_horiz,
+                imagePath: "assets/images/more/transfer.png",
                 title: 'transfer'.tr,
                 subtitle: 'transfer_sub'.tr,
                 onTap: () {},
@@ -74,11 +78,12 @@ class MoreView extends GetView<MoreController> {
             CardHeaderText(
               title: 'section_vehicles'.tr,
               isUrdu: controller.isUrdu,
+              color: Utils.appColor,
             ),
             _buildSectionCard([
               Obx(
                 () => _buildTile(
-                  icon: Icons.directions_car_outlined,
+                  imagePath: "assets/images/more/vehicle.png",
                   title: 'my_vehicles'.tr,
                   subtitle: controller.registeredVehicles.value > 1
                       ? '${controller.registeredVehicles.value} ${"vehicles_registered".tr}'
@@ -88,14 +93,14 @@ class MoreView extends GetView<MoreController> {
               ),
               _buildDivider(),
               _buildTile(
-                icon: Icons.people_outline,
+                imagePath: "assets/images/more/users.png",
                 title: 'users'.tr,
                 subtitle: 'users_sub'.tr,
                 onTap: () {},
               ),
               _buildDivider(),
               _buildTile(
-                icon: Icons.settings_applications_outlined,
+                imagePath: "assets/images/more/vehicle_user.png",
                 title: 'vehicle_user'.tr,
                 subtitle: 'vehicle_user_sub'.tr,
                 onTap: () {},
@@ -104,10 +109,11 @@ class MoreView extends GetView<MoreController> {
             CardHeaderText(
               title: 'section_tracking'.tr,
               isUrdu: controller.isUrdu,
+              color: Utils.appColor,
             ),
             _buildSectionCard([
               _buildTile(
-                icon: Icons.local_gas_station_outlined,
+                imagePath: "assets/images/more/fuel.png",
                 title: 'fuel'.tr,
                 subtitle: 'fuel_sub'.tr,
                 onTap: () {
@@ -119,7 +125,7 @@ class MoreView extends GetView<MoreController> {
               ),
               _buildDivider(),
               _buildTile(
-                icon: Icons.store_mall_directory_outlined,
+                imagePath: "assets/images/more/gas_station.png",
                 title: 'gas_stations'.tr,
                 subtitle: 'gas_stations_sub'.tr,
                 onTap: () {
@@ -134,7 +140,7 @@ class MoreView extends GetView<MoreController> {
               ),
               _buildDivider(),
               _buildTile(
-                icon: Icons.place_outlined,
+                imagePath: "assets/images/more/places.png",
                 title: 'places'.tr,
                 subtitle: 'places_sub'.tr,
                 onTap: () {
@@ -151,10 +157,11 @@ class MoreView extends GetView<MoreController> {
             CardHeaderText(
               title: 'section_financial'.tr,
               isUrdu: controller.isUrdu,
+              color: Utils.appColor,
             ),
             _buildSectionCard([
               _buildTile(
-                icon: Icons.attach_money,
+                imagePath: "assets/images/more/expenses.png",
                 title: 'types_expense'.tr,
                 subtitle: 'types_expense_sub'.tr,
                 onTap: () {
@@ -169,7 +176,7 @@ class MoreView extends GetView<MoreController> {
               ),
               _buildDivider(),
               _buildTile(
-                icon: Icons.money_off,
+                imagePath: "assets/images/more/income.png",
                 title: 'types_income'.tr,
                 subtitle: 'types_income_sub'.tr,
                 onTap: () {
@@ -184,7 +191,7 @@ class MoreView extends GetView<MoreController> {
               ),
               _buildDivider(),
               _buildTile(
-                icon: Icons.build_outlined,
+                imagePath: "assets/images/more/services.png",
                 title: 'types_service'.tr,
                 subtitle: 'types_service_sub'.tr,
                 onTap: () {
@@ -199,7 +206,7 @@ class MoreView extends GetView<MoreController> {
               ),
               _buildDivider(),
               _buildTile(
-                icon: Icons.credit_card,
+                imagePath: "assets/images/more/payment_method.png",
                 title: 'payment_methods'.tr,
                 subtitle: 'payment_methods_sub'.tr,
                 onTap: () {
@@ -214,7 +221,7 @@ class MoreView extends GetView<MoreController> {
               ),
               _buildDivider(),
               _buildTile(
-                icon: Icons.label_outline,
+                imagePath: "assets/images/more/reason.png",
                 title: 'reasons'.tr,
                 subtitle: 'reasons_sub'.tr,
                 onTap: () {
@@ -231,31 +238,32 @@ class MoreView extends GetView<MoreController> {
             CardHeaderText(
               title: 'section_tools'.tr,
               isUrdu: controller.isUrdu,
+              color: Utils.appColor,
             ),
             _buildSectionCard([
               _buildTile(
-                icon: Icons.description_outlined,
+                imagePath: "assets/images/more/form.png",
                 title: 'forms'.tr,
                 subtitle: 'forms_sub'.tr,
                 onTap: () {},
               ),
               _buildDivider(),
               _buildTile(
-                icon: Icons.map_outlined,
+                imagePath: "assets/images/more/my_places.png",
                 title: 'my_places'.tr,
                 subtitle: 'my_places_sub'.tr,
                 onTap: () {},
               ),
               _buildDivider(),
               _buildTile(
-                icon: Icons.calculate_outlined,
+                imagePath: "assets/images/more/calculater.png",
                 title: 'flex_calculator'.tr,
                 subtitle: 'flex_calculator_sub'.tr,
                 onTap: () {},
               ),
               _buildDivider(),
               _buildTile(
-                icon: Icons.emoji_events_outlined,
+                imagePath: "assets/images/more/achievements.png",
                 title: 'achievements'.tr,
                 subtitle: 'achievements_sub'.tr,
                 trailingInfo: 'achievements_new'.tr,
@@ -267,10 +275,11 @@ class MoreView extends GetView<MoreController> {
             CardHeaderText(
               title: 'section_preferences'.tr,
               isUrdu: controller.isUrdu,
+              color: Utils.appColor,
             ),
             _buildSectionCard([
               _buildTile(
-                icon: Icons.settings_outlined,
+                imagePath: "assets/images/more/setting.png",
                 title: 'settings'.tr,
                 subtitle: 'settings_sub'.tr,
                 onTap: () {
@@ -279,7 +288,7 @@ class MoreView extends GetView<MoreController> {
               ),
               _buildDivider(),
               _buildTile(
-                icon: Icons.translate,
+                imagePath: "assets/images/more/translation.png",
                 title: 'translation'.tr,
                 subtitle: 'translation_sub'.tr,
                 onTap: () => controller.showLanguageDialog(),
@@ -288,17 +297,18 @@ class MoreView extends GetView<MoreController> {
             CardHeaderText(
               title: 'section_support'.tr,
               isUrdu: controller.isUrdu,
+              color: Utils.appColor,
             ),
             _buildSectionCard([
               _buildTile(
-                icon: Icons.help_outline,
+                imagePath: "assets/images/more/contact.png",
                 title: 'contact'.tr,
                 subtitle: 'contact_sub'.tr,
                 onTap: () {},
               ),
               _buildDivider(),
               _buildTile(
-                icon: Icons.info_outline,
+                imagePath: "assets/images/more/about.png",
                 title: 'about'.tr,
                 subtitle: 'about_sub'.tr,
                 onTap: () {},
@@ -418,7 +428,7 @@ class MoreView extends GetView<MoreController> {
   }
 
   Widget _buildTile({
-    required IconData icon,
+    required String imagePath,
     required String title,
     required String subtitle,
     required Function onTap,
@@ -440,7 +450,8 @@ class MoreView extends GetView<MoreController> {
             color: Color(0xFF00796B).withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(8),
           ),
-          child: Icon(icon, color: Color(0xFF00796B), size: 22),
+          // child: Icon(icon, color: Color(0xFF00796B), size: 22),
+          child: Image.asset(imagePath),
         ),
         title: Text(
           title,

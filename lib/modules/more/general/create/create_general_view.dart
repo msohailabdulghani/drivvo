@@ -271,12 +271,17 @@ class CreateGeneralView extends GetView<CreateGeneralController> {
                       isNext: false,
                       obscureText: false,
                       readOnly: true,
-                      sufixIcon: Icon(Icons.add_location_rounded),
+                      sufixIcon: Icon(
+                        Icons.add_location_rounded,
+                        color: Utils.appColor,
+                      ),
                       controller: controller.locationController,
                       labelText: "location".tr,
                       hintText: "select_location".tr,
                       onTap: () {
-                        Get.toNamed(AppRoutes.MAP_VIEW);
+                        Get.toNamed(
+                          AppRoutes.MAP_VIEW,
+                        )?.then((e) => controller.locationController.text = e);
                       },
                       onSaved: (value) {},
                       onValidate: (value) => null,
@@ -323,7 +328,9 @@ class CreateGeneralView extends GetView<CreateGeneralController> {
                       labelText: "location".tr,
                       hintText: "select_location".tr,
                       onTap: () {
-                        Utils.showSnackBar(message: "abc", success: true);
+                        Get.toNamed(
+                          AppRoutes.MAP_VIEW,
+                        )?.then((e) => controller.locationController.text = e);
                       },
                       onSaved: (value) {},
                       onValidate: (value) => null,

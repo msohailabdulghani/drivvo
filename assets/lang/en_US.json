@@ -394,5 +394,10 @@
   "error_getting_location": "Error getting location. Please try again.",
   "map": "Map",
   "nearby_places": "Nearby Places",
-  "select_on_map": "Select on Map"
+  "select_on_map": "Select on Map",
+  "no_gas_stations_found": "No gas stations found nearby",
+  "location": "Location",
+  "service_details": "Service Details",
+  "total_service_cost": "Total Service Cost",
+  "end_time": "End Time"
 }

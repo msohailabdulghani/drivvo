@@ -17,6 +17,7 @@ class CardTextInputField extends StatelessWidget {
   final Function(String? value)? onChange;
   final Function()? onTap;
   final int? maxLength;
+  final int? maxLines;
   final bool isUrdu;
   final TextEditingController controller;
 
@@ -35,6 +36,7 @@ class CardTextInputField extends StatelessWidget {
     this.onChange,
     this.onTap,
     this.maxLength,
+    this.maxLines,
     required this.isUrdu,
     required this.controller,
   });
@@ -47,9 +49,11 @@ class CardTextInputField extends StatelessWidget {
         isRequired
             ? FormLabelText(title: labelText, isUrdu: isUrdu)
             : LabelText(title: labelText, isUrdu: isUrdu),
+        const SizedBox(height: 4),  
         TextFormField(
           controller: controller,
           readOnly: readOnly,
+          maxLines: maxLines,
           obscureText: obscureText,
           style: Utils.getTextStyle(
             baseSize: 14,

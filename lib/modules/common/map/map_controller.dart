@@ -1,5 +1,7 @@
 import 'dart:async';
+
 import 'package:drivvo/services/app_service.dart';
+import 'package:drivvo/services/places_service.dart';
 import 'package:drivvo/utils/constants.dart';
 import 'package:drivvo/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -23,11 +25,12 @@ class MapController extends GetxController {
   var currentAddress = "".obs;
   var isLoadingLocation = true.obs;
   var isLoadingAddress = false.obs;
+  var isLoadingPlaces = false.obs;
 
   // Markers
   var markers = <Marker>{}.obs;
 
-  // Nearby places (mock data for gas stations)
+  // Nearby gas stations from Google Places API
   var nearbyPlaces = <NearbyPlace>[].obs;
 
   @override
@@ -101,14 +104,11 @@ class MapController extends GetxController {
       // Get address for current location
       await _getAddressFromLatLng(selectedPosition.value);
 
-      // Load nearby places
-      _loadNearbyPlaces();
+      // Load nearby gas stations from Google Places API
+      await _loadNearbyGasStations();
     } catch (e) {
       debugPrint('Error getting location: $e');
-      Utils.showSnackBar(
-        message: 'error_getting_location'.tr,
-        success: false,
-      );
+      Utils.showSnackBar(message: 'error_getting_location'.tr, success: false);
     } finally {
       isLoadingLocation.value = false;
     }
@@ -116,14 +116,13 @@ class MapController extends GetxController {
 
   /// Update marker on map
   void _updateMarker(LatLng position) {
+    // ignore: invalid_use_of_protected_member
     markers.value = {
       Marker(
         markerId: const MarkerId('selected_location'),
         position: position,
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange),
-        infoWindow: InfoWindow(
-          title: 'selected_location'.tr,
-        ),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRose),
+        infoWindow: InfoWindow(title: 'selected_location'.tr),
       ),
     };
   }
@@ -133,10 +132,7 @@ class MapController extends GetxController {
     if (googleMapController != null) {
       await googleMapController!.animateCamera(
         CameraUpdate.newCameraPosition(
-          CameraPosition(
-            target: position,
-            zoom: 16.0,
-          ),
+          CameraPosition(target: position, zoom: 16.0),
         ),
       );
     }
@@ -186,35 +182,58 @@ class MapController extends GetxController {
     return addressParts.join(', ');
   }
 
-  /// Load nearby places (mock data for gas stations)
-  void _loadNearbyPlaces() {
-    // This is mock data - in production, you would integrate with Google Places API
-    nearbyPlaces.value = [
-      NearbyPlace(
-        id: '1',
-        name: 'Shell Shujabad Filling Station',
-        address: 'Multan, Pakistan',
-        iconPath: 'assets/images/placeholder.png',
-        type: PlaceType.gasStation,
-        distance: 0.5,
+  /// Load nearby gas stations from Google Places API
+  Future<void> _loadNearbyGasStations() async {
+    isLoadingPlaces.value = true;
+    try {
+      final places = await PlacesService.getNearbyGasStations(
+        location: currentPosition.value,
+        radius: 5000, // 5km radius
+      );
+
+      // Sort by distance
+      places.sort((a, b) => a.distance.compareTo(b.distance));
+
+      nearbyPlaces.value = places;
+
+      // Add markers for nearby gas stations
+      _addGasStationMarkers(places);
+    } catch (e) {
+      debugPrint('Error loading nearby gas stations: $e');
+    } finally {
+      isLoadingPlaces.value = false;
+    }
+  }
+
+  /// Add markers for gas stations on the map
+  void _addGasStationMarkers(List<NearbyPlace> places) {
+    Set<Marker> allMarkers = {
+      // Keep the selected location marker
+      Marker(
+        markerId: const MarkerId('selected_location'),
+        position: selectedPosition.value,
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRose),
+        infoWindow: InfoWindow(title: 'selected_location'.tr),
       ),
-      NearbyPlace(
-        id: '2',
-        name: 'Crystal Filling Station',
-        address: '10 B, Officers Colony, Bosan Road Chungi # 09\nMultan., Multan 60000, Pakistan',
-        iconPath: 'assets/images/placeholder.png',
-        type: PlaceType.gasStation,
-        distance: 1.2,
-      ),
-      NearbyPlace(
-        id: '3',
-        name: 'PSO Filling Station',
-        address: 'Khursheed Colony Rd, Multan, Pakistan',
-        iconPath: 'assets/images/placeholder.png',
-        type: PlaceType.gasStation,
-        distance: 1.8,
-      ),
-    ];
+    };
+
+    // Add gas station markers
+    for (final place in places) {
+      allMarkers.add(
+        Marker(
+          markerId: MarkerId(place.id),
+          position: LatLng(place.latitude, place.longitude),
+          icon: BitmapDescriptor.defaultMarkerWithHue(
+            BitmapDescriptor.hueOrange,
+          ),
+          infoWindow: InfoWindow(title: place.name, snippet: place.address),
+          onTap: () => selectNearbyPlace(place),
+        ),
+      );
+    }
+
+    // ignore: invalid_use_of_protected_member
+    markers.value = allMarkers;
   }
 
   /// Called when map is created
@@ -253,6 +272,9 @@ class MapController extends GetxController {
       _updateMarker(selectedPosition.value);
       await _moveCamera(currentPosition.value);
       await _getAddressFromLatLng(selectedPosition.value);
+
+      // Reload nearby gas stations for new location
+      await _loadNearbyGasStations();
     } catch (e) {
       debugPrint('Error moving to current location: $e');
     } finally {
@@ -262,46 +284,19 @@ class MapController extends GetxController {
 
   /// Select the current location and return
   void selectLocation() {
-    Get.back(result: {
-      'latitude': selectedPosition.value.latitude,
-      'longitude': selectedPosition.value.longitude,
-      'address': currentAddress.value,
-    });
+    Get.back(
+      // result: {
+      //   'latitude': selectedPosition.value.latitude,
+      //   'longitude': selectedPosition.value.longitude,
+      //   'address': currentAddress.value,
+      // },
+      result: currentAddress.value,
+    );
   }
 
   /// Select a nearby place
   void selectNearbyPlace(NearbyPlace place) {
-    Get.back(result: {
-      'name': place.name,
-      'address': place.address,
-    });
+    //Get.back(result: {'name': place.name, 'address': place.address});
+    Get.back(result: place.address);
   }
-}
-
-/// Model class for nearby places
-class NearbyPlace {
-  final String id;
-  final String name;
-  final String address;
-  final String iconPath;
-  final PlaceType type;
-  final double distance;
-
-  NearbyPlace({
-    required this.id,
-    required this.name,
-    required this.address,
-    required this.iconPath,
-    required this.type,
-    required this.distance,
-  });
-}
-
-/// Enum for place types
-enum PlaceType {
-  gasStation,
-  restaurant,
-  parking,
-  service,
-  other,
 }

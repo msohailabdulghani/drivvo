@@ -13,7 +13,7 @@ class LabelText extends StatelessWidget {
       title,
       style: Utils.getTextStyle(
         baseSize: 14,
-        isBold: false,
+        isBold: true,
         color: Colors.black,
         isUrdu: isUrdu,
       ),

@@ -16,7 +16,7 @@ class FormLabelText extends StatelessWidget {
           title.tr,
           style: Utils.getTextStyle(
             baseSize: 14,
-            isBold: false,
+            isBold: true,
             color: Colors.black,
             isUrdu: isUrdu,
           ),

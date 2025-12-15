@@ -116,7 +116,6 @@ class LoginController extends GetxController {
         map["id"] = id;
         map["email"] = user.email;
         map["name"] = user.displayName;
-        map["phone"] = "";
         map["photoUrl"] = user.photoURL;
         map["sign_in_method"] = Constants.GOOGLE;
 

@@ -1,7 +1,7 @@
-import 'package:drivvo/utils/constants.dart';
+import 'package:drivvo/custom-widget/common/label_text.dart';
+import 'package:drivvo/custom-widget/text-input-field/form_label_text.dart';
 import 'package:drivvo/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class PasswordInputField extends StatelessWidget {
   final bool isRequired;
@@ -46,20 +46,10 @@ class PasswordInputField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          labelText,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-            fontSize: Get.locale?.languageCode == Constants.URDU_LANGUAGE_CODE
-                ? 16
-                : 14,
-            fontFamily: Get.locale?.languageCode == Constants.URDU_LANGUAGE_CODE
-                ? "U-FONT-R"
-                : "D-FONT-R",
-          ),
-        ),
-        const SizedBox(height: 8),
+        isRequired
+            ? FormLabelText(title: labelText, isUrdu: isUrdu)
+            : LabelText(title: labelText, isUrdu: isUrdu),
+        const SizedBox(height: 4),
         TextFormField(
           obscureText: obscureText,
           keyboardType: type,

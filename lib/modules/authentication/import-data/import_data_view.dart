@@ -51,7 +51,7 @@ class ImportDataView extends GetView<ImportDataController> {
                 imagePath: "assets/images/import_data.png",
                 title: 'import_yes'.tr,
                 subtitle: 'import_yes_sub'.tr,
-                onTap: () => controller.navigateToRootView(),
+                onTap: () {},
               ),
               const SizedBox(height: 16),
               ImportOptionButton(
@@ -97,7 +97,7 @@ class ImportOptionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color:  Utils.appColor,
+      color: Utils.appColor,
       borderRadius: BorderRadius.circular(12),
       child: InkWell(
         onTap: onTap,

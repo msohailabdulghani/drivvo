@@ -34,4 +34,12 @@ class Constants {
   static const String COUNTRY_CODE = "country_code";
   // ignore: constant_identifier_names
   static const String GOOGLE = "google";
+
+  /// Google Maps API Key - Used for Places API requests
+  // ignore: constant_identifier_names
+  // static const String GOOGLE_MAPS_API_KEY = "AIzaSyAexiJAGg7C3VbIr3QFtypZNVoQ4yFT8ug";
+  // ignore: constant_identifier_names
+  static const String GOOGLE_MAPS_API_KEY = String.fromEnvironment(
+    'DRIVVO_GOOGLE_MAPS_API_KEY',
+  );
 }

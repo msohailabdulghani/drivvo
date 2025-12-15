@@ -4,8 +4,14 @@ import 'package:flutter/material.dart';
 class CardHeaderText extends StatelessWidget {
   final String title;
   final bool isUrdu;
+  final Color color;
 
-  const CardHeaderText({super.key, required this.title, required this.isUrdu});
+  const CardHeaderText({
+    super.key,
+    required this.title,
+    required this.isUrdu,
+    this.color = Colors.black,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +22,7 @@ class CardHeaderText extends StatelessWidget {
         style: Utils.getTextStyle(
           baseSize: 16,
           isBold: true,
-          color: Colors.black,
+          color: color,
           isUrdu: isUrdu,
         ),
       ),

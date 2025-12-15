@@ -366,7 +366,8 @@
   "repeat_every": "بار بار دہرانا",
   "odometer_hint": "100",
   "reminder_notes_hint": "یاددہانی کے بارے میں اضافی نوٹس لکھیں",
-  "reminder_added": "یاددہانی کامیابی سے شامل کر دی گئی",  "select_expense_type": "اخراجات کی قسم منتخب کریں",
+  "reminder_added": "یاددہانی کامیابی سے شامل کر دی گئی",
+  "select_expense_type": "اخراجات کی قسم منتخب کریں",
   "select_service_type": "سروس کی قسم منتخب کریں",
   "personal_information": "ذاتی معلومات",
   "first_name": "پہلا نام",
@@ -392,5 +393,8 @@
   "error_getting_location": "لوکیشن حاصل کرنے میں خرابی۔ براہ کرم دوبارہ کوشش کریں۔",
   "map": "نقشہ",
   "nearby_places": "قریبی مقامات",
-  "select_on_map": "نقشے پر منتخب کریں"
+  "select_on_map": "نقشے پر منتخب کریں",
+  "no_gas_stations_found": "قریب میں کوئی پٹرول پمپ نہیں ملا",
+  "service_details": "سروس کی تفصیلات",
+  "total_service_cost": "کل سروس لاگت"
 }
