@@ -34,6 +34,8 @@ class Constants {
   static const String COUNTRY_CODE = "country_code";
   // ignore: constant_identifier_names
   static const String GOOGLE = "google";
+  // ignore: constant_identifier_names
+  static const String SELECTED_DATE_FORMAT = "SelectedDateFormat";
 
   /// Google Maps API Key - Used for Places API requests
   // ignore: constant_identifier_names
