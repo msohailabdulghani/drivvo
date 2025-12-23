@@ -305,6 +305,17 @@ class HomeController extends GetxController {
     }
   }
 
+  void selectVehicleError({required String routeName}) {
+    if (appService.currentVehicleId.value.isEmpty) {
+      Utils.showSnackBar(
+        message: "vehicle_must_be_selected_first".tr,
+        success: false,
+      );
+      return;
+    }else{
+      Get.toNamed(routeName);
+    }
+  }
   //! Load all timeline data from Firebase
   // Future<void> loadTimelineData() async {
   //   try {

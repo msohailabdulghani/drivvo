@@ -1,3 +1,7 @@
+import 'package:drivvo/custom-widget/report/custom_report_card.dart';
+import 'package:drivvo/custom-widget/report/distance_report_card.dart';
+import 'package:drivvo/custom-widget/report/report_date_range.dart';
+import 'package:drivvo/custom-widget/report/report_tab_bar.dart';
 import 'package:drivvo/modules/reports/reports_controller.dart';
 import 'package:drivvo/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -93,33 +97,32 @@ class ReportsView extends GetView<ReportsController> {
                         ),
                       ],
                     ),
-                    child: _buildTabBar(),
+                    child: ReportTabBar(
+                      tabs: controller.list
+                          .map((name) => Tab(text: name.tr))
+                          .toList(),
+                      isUrdu: controller.isUrdu,
+                      tabController: controller.tabController,
+                      onTap: (index) =>
+                          controller.onSelect(controller.list[index]),
+                    ),
                   ),
                 ),
               ],
             ),
             // Spacing for the overlapping tab bar
             const SizedBox(height: 30),
-            // Content
+            // Content (Swipeable tabs)
             Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Period selector
-                    _buildPeriodSelector(),
-                    const SizedBox(height: 16),
-
-                    // Cards based on selected tab
-                    _buildCardsForSelectedTab(),
-
-                    const SizedBox(height: 24),
-
-                    // Charts Section
-                    _buildChartsSection(),
-                  ],
-                ),
+              child: TabBarView(
+                controller: controller.tabController,
+                children: [
+                  _buildReportTab(_buildGeneralCards()),
+                  _buildRefuelingCardsTab(),
+                  _buildExpenseCardsTab(),
+                  _buildIncomeCardsTab(),
+                  _buildServiceCardsTab(),
+                ],
               ),
             ),
           ],
@@ -128,105 +131,30 @@ class ReportsView extends GetView<ReportsController> {
     );
   }
 
-  Widget _buildTabBar() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 4),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: controller.list.map((name) {
-            final isSelected = controller.selectedName.value == name;
-            return GestureDetector(
-              onTap: () => controller.onSelect(name),
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 10,
-                ),
-                decoration: BoxDecoration(
-                  color: isSelected ? Utils.appColor : Colors.transparent,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Text(
-                  name.tr,
-                  style: Utils.getTextStyle(
-                    baseSize: 13,
-                    isBold: isSelected,
-                    color: isSelected ? Colors.white : Colors.grey[600]!,
-                    isUrdu: controller.isUrdu,
-                  ),
-                ),
-              ),
-            );
-          }).toList(),
-        ),
+  Widget _buildReportTab(Widget content) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ReportDateRange(
+            isUrdu: controller.isUrdu,
+            formattedDateRange: controller.formattedDateRange,
+            selectDateRange: controller.selectDateRange,
+          ),
+          const SizedBox(height: 16),
+          content,
+          const SizedBox(height: 24),
+          _buildChartsSection(),
+        ],
       ),
     );
   }
 
-  Widget _buildPeriodSelector() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          "${"period".tr}:",
-          style: Utils.getTextStyle(
-            baseSize: 14,
-            isBold: false,
-            color: Colors.grey[600]!,
-            isUrdu: controller.isUrdu,
-          ),
-        ),
-        GestureDetector(
-          onTap: controller.selectDateRange,
-          child: Row(
-            children: [
-              Text(
-                controller.formattedDateRange,
-                style: Utils.getTextStyle(
-                  baseSize: 14,
-                  isBold: true,
-                  color: Colors.black87,
-                  isUrdu: controller.isUrdu,
-                ),
-              ),
-              const SizedBox(width: 8),
-              Container(
-                padding: const EdgeInsets.all(6),
-                decoration: BoxDecoration(
-                  color: Colors.grey[100],
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Icon(
-                  Icons.calendar_today_outlined,
-                  size: 18,
-                  color: Colors.grey[700],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildCardsForSelectedTab() {
-    switch (controller.selectedName.value) {
-      case "General":
-        return _buildGeneralCards();
-      case "Refueling":
-        return _buildRefuelingCards();
-      case "Expense":
-        return _buildExpenseCards();
-      case "Income":
-        return _buildIncomeCards();
-      case "Service":
-        return _buildServiceCards();
-      default:
-        return _buildGeneralCards();
-    }
-  }
+  Widget _buildRefuelingCardsTab() => _buildReportTab(_buildRefuelingCards());
+  Widget _buildExpenseCardsTab() => _buildReportTab(_buildExpenseCards());
+  Widget _buildIncomeCardsTab() => _buildReportTab(_buildIncomeCards());
+  Widget _buildServiceCardsTab() => _buildReportTab(_buildServiceCards());
 
   Widget _buildGeneralCards() {
     return Column(
@@ -234,8 +162,9 @@ class ReportsView extends GetView<ReportsController> {
         Row(
           children: [
             Expanded(
-              child: _buildReportCard(
-                icon: Icons.account_balance_wallet,
+              child: CustomReportCard(
+                isUrdu: controller.isUrdu,
+                imageUrl: "assets/images/reports/balance.png",
                 iconBgColor: const Color(0xFFE8F5F4),
                 iconColor: Utils.appColor,
                 title: "balance".tr,
@@ -249,8 +178,9 @@ class ReportsView extends GetView<ReportsController> {
             ),
             const SizedBox(width: 12),
             Expanded(
-              child: _buildReportCard(
-                icon: Icons.trending_down,
+              child: CustomReportCard(
+                isUrdu: controller.isUrdu,
+                imageUrl: "assets/images/reports/cost.png",
                 iconBgColor: const Color(0xFFFDE8E8),
                 iconColor: Colors.red,
                 title: "cost".tr,
@@ -266,10 +196,11 @@ class ReportsView extends GetView<ReportsController> {
         Row(
           children: [
             Expanded(
-              child: _buildReportCard(
-                icon: Icons.account_balance_wallet_outlined,
+              child: CustomReportCard(
+                isUrdu: controller.isUrdu,
+                imageUrl: "assets/images/reports/income.png",
                 iconBgColor: const Color(0xFFE8F5F4),
-                iconColor: Utils.appColor,
+                iconColor: Colors.green,
                 title: "income".tr,
                 total: controller.formatCurrency(controller.totalIncome.value),
                 totalColor: Colors.black87,
@@ -279,8 +210,9 @@ class ReportsView extends GetView<ReportsController> {
             ),
             const SizedBox(width: 12),
             Expanded(
-              child: _buildDistanceCard(
-                icon: Icons.route,
+              child: DistanceReportCard(
+                isUrdu: controller.isUrdu,
+                imageUrl: "assets/images/reports/distance.png",
                 iconBgColor: const Color(0xFFE3F2FD),
                 iconColor: Colors.blue,
                 title: "distance".tr,
@@ -302,8 +234,9 @@ class ReportsView extends GetView<ReportsController> {
     return Row(
       children: [
         Expanded(
-          child: _buildReportCard(
-            icon: Icons.local_gas_station,
+          child: CustomReportCard(
+            isUrdu: controller.isUrdu,
+            imageUrl: "assets/images/reports/cost2.png",
             iconBgColor: const Color(0xFFE8F5F4),
             iconColor: Utils.appColor,
             title: "cost".tr,
@@ -317,8 +250,9 @@ class ReportsView extends GetView<ReportsController> {
         ),
         const SizedBox(width: 12),
         Expanded(
-          child: _buildDistanceCard(
-            icon: Icons.route,
+          child: DistanceReportCard(
+            isUrdu: controller.isUrdu,
+            imageUrl: "assets/images/reports/distance.png",
             iconBgColor: const Color(0xFFE3F2FD),
             iconColor: Colors.blue,
             title: "distance".tr,
@@ -338,8 +272,9 @@ class ReportsView extends GetView<ReportsController> {
     return Row(
       children: [
         Expanded(
-          child: _buildReportCard(
-            icon: Icons.receipt_long,
+          child: CustomReportCard(
+            isUrdu: controller.isUrdu,
+            imageUrl: "assets/images/reports/cost2.png",
             iconBgColor: const Color(0xFFE8F5F4),
             iconColor: Utils.appColor,
             title: "cost".tr,
@@ -351,8 +286,9 @@ class ReportsView extends GetView<ReportsController> {
         ),
         const SizedBox(width: 12),
         Expanded(
-          child: _buildDistanceCard(
-            icon: Icons.route,
+          child: DistanceReportCard(
+            isUrdu: controller.isUrdu,
+            imageUrl: "assets/images/reports/distance.png",
             iconBgColor: const Color(0xFFE3F2FD),
             iconColor: Colors.blue,
             title: "distance".tr,
@@ -370,8 +306,9 @@ class ReportsView extends GetView<ReportsController> {
     return Row(
       children: [
         Expanded(
-          child: _buildReportCard(
-            icon: Icons.account_balance_wallet,
+          child: CustomReportCard(
+            isUrdu: controller.isUrdu,
+            imageUrl: "assets/images/reports/cost2.png",
             iconBgColor: const Color(0xFFE8F5F4),
             iconColor: Utils.appColor,
             title: "income".tr,
@@ -383,8 +320,9 @@ class ReportsView extends GetView<ReportsController> {
         ),
         const SizedBox(width: 12),
         Expanded(
-          child: _buildDistanceCard(
-            icon: Icons.route,
+          child: DistanceReportCard(
+            isUrdu: controller.isUrdu,
+            imageUrl: "assets/images/reports/distance.png",
             iconBgColor: const Color(0xFFE3F2FD),
             iconColor: Colors.blue,
             title: "distance".tr,
@@ -402,8 +340,9 @@ class ReportsView extends GetView<ReportsController> {
     return Row(
       children: [
         Expanded(
-          child: _buildReportCard(
-            icon: Icons.build_circle,
+          child: CustomReportCard(
+            isUrdu: controller.isUrdu,
+            imageUrl: "assets/images/reports/cost2.png",
             iconBgColor: const Color(0xFFE8F5F4),
             iconColor: Utils.appColor,
             title: "cost".tr,
@@ -415,8 +354,9 @@ class ReportsView extends GetView<ReportsController> {
         ),
         const SizedBox(width: 12),
         Expanded(
-          child: _buildDistanceCard(
-            icon: Icons.route,
+          child: DistanceReportCard(
+            isUrdu: controller.isUrdu,
+            imageUrl: "assets/images/reports/distance.png",
             iconBgColor: const Color(0xFFE3F2FD),
             iconColor: Colors.blue,
             title: "distance".tr,
@@ -427,230 +367,6 @@ class ReportsView extends GetView<ReportsController> {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildReportCard({
-    required IconData icon,
-    required Color iconBgColor,
-    required Color iconColor,
-    required String title,
-    required String total,
-    required Color totalColor,
-    required String byDay,
-    required String byKm,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: iconBgColor,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Icon(icon, color: iconColor, size: 20),
-              ),
-              const SizedBox(width: 8),
-              Text(
-                title,
-                style: Utils.getTextStyle(
-                  baseSize: 14,
-                  isBold: true,
-                  color: iconColor,
-                  isUrdu: controller.isUrdu,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Text(
-            "total".tr,
-            style: Utils.getTextStyle(
-              baseSize: 12,
-              isBold: false,
-              color: Colors.grey[500]!,
-              isUrdu: controller.isUrdu,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            total,
-            style: Utils.getTextStyle(
-              baseSize: 20,
-              isBold: true,
-              color: totalColor,
-              isUrdu: controller.isUrdu,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Container(height: 1, color: Colors.grey[200]),
-          const SizedBox(height: 8),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "by_day".tr,
-                    style: Utils.getTextStyle(
-                      baseSize: 10,
-                      isBold: false,
-                      color: Colors.grey[500]!,
-                      isUrdu: controller.isUrdu,
-                    ),
-                  ),
-                  Text(
-                    byDay,
-                    style: Utils.getTextStyle(
-                      baseSize: 13,
-                      isBold: true,
-                      color: Colors.black87,
-                      isUrdu: controller.isUrdu,
-                    ),
-                  ),
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "by_km".tr,
-                    style: Utils.getTextStyle(
-                      baseSize: 10,
-                      isBold: false,
-                      color: Colors.grey[500]!,
-                      isUrdu: controller.isUrdu,
-                    ),
-                  ),
-                  Text(
-                    byKm,
-                    style: Utils.getTextStyle(
-                      baseSize: 13,
-                      isBold: true,
-                      color: Colors.black87,
-                      isUrdu: controller.isUrdu,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildDistanceCard({
-    required IconData icon,
-    required Color iconBgColor,
-    required Color iconColor,
-    required String title,
-    required String total,
-    required String dailyAverage,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: iconBgColor,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Icon(icon, color: iconColor, size: 20),
-              ),
-              const SizedBox(width: 8),
-              Text(
-                title,
-                style: Utils.getTextStyle(
-                  baseSize: 14,
-                  isBold: true,
-                  color: Colors.blue,
-                  isUrdu: controller.isUrdu,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Text(
-            "total".tr,
-            style: Utils.getTextStyle(
-              baseSize: 12,
-              isBold: false,
-              color: Colors.grey[500]!,
-              isUrdu: controller.isUrdu,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            total,
-            style: Utils.getTextStyle(
-              baseSize: 20,
-              isBold: true,
-              color: Colors.black87,
-              isUrdu: controller.isUrdu,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Container(height: 1, color: Colors.grey[200]),
-          const SizedBox(height: 8),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "daily_average".tr,
-                style: Utils.getTextStyle(
-                  baseSize: 10,
-                  isBold: false,
-                  color: Colors.grey[500]!,
-                  isUrdu: controller.isUrdu,
-                ),
-              ),
-              Text(
-                dailyAverage,
-                style: Utils.getTextStyle(
-                  baseSize: 13,
-                  isBold: true,
-                  color: Colors.black87,
-                  isUrdu: controller.isUrdu,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
     );
   }
 

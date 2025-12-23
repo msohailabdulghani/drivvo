@@ -9,10 +9,13 @@ import 'package:drivvo/routes/app_routes.dart';
 import 'package:drivvo/services/app_service.dart';
 import 'package:drivvo/utils/constants.dart';
 import 'package:drivvo/utils/database_tables.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class ReportsController extends GetxController {
+class ReportsController extends GetxController
+    with GetSingleTickerProviderStateMixin {
+  late TabController tabController;
   late AppService appService;
   bool get isUrdu => Get.locale?.languageCode == Constants.URDU_LANGUAGE_CODE;
 
@@ -74,6 +77,13 @@ class ReportsController extends GetxController {
     appService = Get.find<AppService>();
     super.onInit();
 
+    tabController = TabController(length: list.length, vsync: this);
+    tabController.addListener(() {
+      if (!tabController.indexIsChanging) {
+        selectedName.value = list[tabController.index];
+      }
+    });
+
     final home = Get.find<HomeController>();
     startDate.value = home.getStartDate();
     endDate.value = home.getEndDate();
@@ -81,8 +91,18 @@ class ReportsController extends GetxController {
     calculateAllReports();
   }
 
+  @override
+  void onClose() {
+    tabController.dispose();
+    super.onClose();
+  }
+
   void onSelect(String name) {
     selectedName.value = name;
+    final index = list.indexOf(name);
+    if (index != -1 && tabController.index != index) {
+      tabController.animateTo(index);
+    }
   }
 
   String get formattedDateRange {

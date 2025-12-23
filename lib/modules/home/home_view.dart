@@ -33,7 +33,9 @@ class HomeView extends GetView<HomeController> {
             boxShadow: [],
             onTap: () {
               controller.circularMenuKey.currentState?.reverseAnimation();
-              Get.toNamed(AppRoutes.CREATE_REFUELING_VIEW);
+              controller.selectVehicleError(
+                routeName: AppRoutes.CREATE_REFUELING_VIEW,
+              );
             },
           ),
           CircularMenuItem(
@@ -43,7 +45,9 @@ class HomeView extends GetView<HomeController> {
             boxShadow: [],
             onTap: () {
               controller.circularMenuKey.currentState?.reverseAnimation();
-              Get.toNamed(AppRoutes.CREATE_EXPENSE_VIEW);
+              controller.selectVehicleError(
+                routeName: AppRoutes.CREATE_EXPENSE_VIEW,
+              );
             },
           ),
           CircularMenuItem(
@@ -53,7 +57,9 @@ class HomeView extends GetView<HomeController> {
             boxShadow: [],
             onTap: () {
               controller.circularMenuKey.currentState?.reverseAnimation();
-              Get.toNamed(AppRoutes.CRAETE_SERVICE_VIEW);
+              controller.selectVehicleError(
+                routeName: AppRoutes.CRAETE_SERVICE_VIEW,
+              );
             },
           ),
           CircularMenuItem(
@@ -63,7 +69,9 @@ class HomeView extends GetView<HomeController> {
             boxShadow: [],
             onTap: () {
               controller.circularMenuKey.currentState?.reverseAnimation();
-              Get.toNamed(AppRoutes.CRAETE_INCOME_VIEW);
+              controller.selectVehicleError(
+                routeName: AppRoutes.CRAETE_INCOME_VIEW,
+              );
             },
           ),
           CircularMenuItem(
@@ -73,7 +81,9 @@ class HomeView extends GetView<HomeController> {
             boxShadow: [],
             onTap: () {
               controller.circularMenuKey.currentState?.reverseAnimation();
-              Get.toNamed(AppRoutes.CRAETE_ROUTE_VIEW);
+              controller.selectVehicleError(
+                routeName: AppRoutes.CRAETE_ROUTE_VIEW,
+              );
             },
           ),
         ],
@@ -121,6 +131,7 @@ class HomeView extends GetView<HomeController> {
       expandedHeight: expandedHeight,
       collapsedHeight: collapsedHeight,
       pinned: true,
+      automaticallyImplyLeading: false,
       floating: false,
       backgroundColor: Utils.appColor,
       surfaceTintColor: Colors.transparent,
@@ -292,7 +303,7 @@ class HomeView extends GetView<HomeController> {
                       Obx(
                         () => Text(
                           controller.appService.currentVehicleId.value.isEmpty
-                              ? 'select_your_vehicle'
+                              ? 'select_your_vehicle'.tr
                               : controller.appService.currentVehicle.value,
                           style: Utils.getTextStyle(
                             baseSize: 16,
@@ -452,7 +463,7 @@ class HomeView extends GetView<HomeController> {
         onTap: () {
           if (controller.appService.currentVehicleId.value.isEmpty) {
             Utils.showSnackBar(
-              message: "Please first select vehicle to add a new entry",
+              message: "vehicle_must_be_selected_first".tr,
               success: false,
             );
             return;

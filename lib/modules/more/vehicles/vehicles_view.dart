@@ -16,9 +16,12 @@ class VehiclesView extends GetView<VehiclesController> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: CustomFloatingActionButton(
-        onPressed: () => Get.toNamed(AppRoutes.CREATE_VEHICLES_VIEW)?.then((e) {
-          controller.getVehicleList();
-        }),
+        onPressed: () =>
+            Get.toNamed(AppRoutes.CREATE_VEHICLES_VIEW, arguments: false)?.then(
+              (e) {
+                controller.getVehicleList();
+              },
+            ),
       ),
       appBar: CustomAppBar(
         name: "Vehicles",
@@ -74,17 +77,73 @@ class VehiclesView extends GetView<VehiclesController> {
                               ),
                               padding: const EdgeInsets.symmetric(
                                 vertical: 10,
-                                horizontal: 20,
+                                horizontal: 16,
                               ),
                               decoration: BoxDecoration(
-                                color: Colors.grey.shade200,
-                                borderRadius: const BorderRadius.all(
-                                  Radius.circular(10),
+                                color: Colors.white,
+                                border: Border.all(
+                                  color: Colors.grey.shade300,
+                                  width: 1,
                                 ),
+                                borderRadius: BorderRadius.circular(8),
                               ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [Text(model.name)],
+                              child: Row(
+                                children: [
+                                  Image.asset(
+                                    "assets/images/more/vehicle.png",
+                                    height: 36,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Icon(
+                                        Icons.directions_car,
+                                        size: 36,
+                                      );
+                                    },
+                                  ),
+                                  SizedBox(width: 10),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          model.name,
+                                          style: Utils.getTextStyle(
+                                            baseSize: 15,
+                                            isBold: true,
+                                            color: Colors.black,
+                                            isUrdu: controller.isUrdu,
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Flexible(
+                                              child: Text(
+                                                model.manufacturer,
+                                                style: Utils.getTextStyle(
+                                                  baseSize: 14,
+                                                  isBold: false,
+                                                  color: Colors.black,
+                                                  isUrdu: controller.isUrdu,
+                                                ),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                            Text(
+                                              " ${model.year}",
+                                              style: Utils.getTextStyle(
+                                                baseSize: 14,
+                                                isBold: true,
+                                                color: Utils.appColor,
+                                                isUrdu: controller.isUrdu,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           );

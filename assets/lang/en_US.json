@@ -429,5 +429,9 @@
   "select_vehicle": "Select Vehicle",
   "welcome_to": "Welcome to",
   "started_monitoring_your_vehicle": "Started monitoring your vehicle\nexpenses with Drivvo.",
-   "odometer_greater_than_last": "Odometer should be greater than last odometer"
+  "odometer_greater_than_last": "Odometer should be greater than last odometer",
+  "select_your_vehicle": "Select Your Vehicle",
+  "vehicle_must_be_selected_first": "Vehicle must be selected first",
+  "model_year": "Model Year",
+  "model_year_required": "Model year is required"
 }

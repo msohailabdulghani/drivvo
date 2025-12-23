@@ -47,4 +47,6 @@ abstract class AppRoutes {
   static const CREATE_REMINDER_VIEW = '/reminder/create_reminder_view';
   // ignore: constant_identifier_names
   static const MAP_VIEW = '/common/map_view';
+  // ignore: constant_identifier_names
+  static const PLAN_VIEW = '/more/plan_view';
 }

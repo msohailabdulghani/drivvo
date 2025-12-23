@@ -34,6 +34,8 @@ import 'package:drivvo/modules/more/general/create/create_general_bindings.dart'
 import 'package:drivvo/modules/more/general/create/create_general_view.dart';
 import 'package:drivvo/modules/more/general/general_bindings.dart';
 import 'package:drivvo/modules/more/general/general_view.dart';
+import 'package:drivvo/modules/more/plan/plan_bindings.dart';
+import 'package:drivvo/modules/more/plan/plan_view.dart';
 import 'package:drivvo/modules/more/vehicles/create/create_vehicles_bindings.dart';
 import 'package:drivvo/modules/more/vehicles/create/create_vehicles_view.dart';
 import 'package:drivvo/modules/more/vehicles/vehicles_bindings.dart';
@@ -194,6 +196,12 @@ class AppPages {
       name: AppRoutes.MAP_VIEW,
       page: () => MapView(),
       binding: MapBindings(),
+    ),
+
+    GetPage(
+      name: AppRoutes.PLAN_VIEW,
+      page: () => PlanView(),
+      binding: PlanBindings(),
     ),
   ];
 }

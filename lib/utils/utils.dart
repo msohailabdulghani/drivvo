@@ -228,7 +228,7 @@ class Utils {
   }
 
   static final years = List.generate(
-    20,
+    70,
     (index) => DateTime.now().year - index,
   );
 
@@ -284,6 +284,72 @@ class Utils {
     GeneralModel(id: "49", name: "Daihatsu"),
     GeneralModel(id: "50", name: "Infiniti"),
     GeneralModel(id: "51", name: "Isuzu"),
+    // --- Japanese ---
+    GeneralModel(id: "52", name: "Acura"),
+    GeneralModel(id: "53", name: "Scion"),
+    GeneralModel(id: "54", name: "Hino"),
+    GeneralModel(id: "55", name: "UD Trucks"),
+
+    // --- Korean ---
+    GeneralModel(id: "56", name: "Genesis"),
+    GeneralModel(id: "57", name: "Daewoo"),
+    GeneralModel(id: "58", name: "SsangYong"),
+
+    // --- Chinese ---
+    GeneralModel(id: "59", name: "FAW"),
+    GeneralModel(id: "60", name: "BAIC"),
+    GeneralModel(id: "61", name: "SAIC"),
+    GeneralModel(id: "62", name: "JAC"),
+    GeneralModel(id: "63", name: "Zotye"),
+    GeneralModel(id: "64", name: "NIO"),
+    GeneralModel(id: "65", name: "XPeng"),
+    GeneralModel(id: "66", name: "Li Auto"),
+    GeneralModel(id: "67", name: "Leapmotor"),
+    GeneralModel(id: "68", name: "Seres"),
+    GeneralModel(id: "69", name: "Hongqi"),
+    GeneralModel(id: "70", name: "Wuling"),
+
+    // --- Indian ---
+    GeneralModel(id: "71", name: "Mahindra"),
+    GeneralModel(id: "72", name: "Ashok Leyland"),
+    GeneralModel(id: "73", name: "Force Motors"),
+    GeneralModel(id: "74", name: "Hindustan Motors"),
+
+    // --- European ---
+    GeneralModel(id: "75", name: "Aston Martin"),
+    GeneralModel(id: "76", name: "Bugatti"),
+    GeneralModel(id: "77", name: "Lancia"),
+    GeneralModel(id: "78", name: "Smart"),
+    GeneralModel(id: "79", name: "Mini"),
+    GeneralModel(id: "80", name: "Cupra"),
+    GeneralModel(id: "81", name: "Polestar"),
+    GeneralModel(id: "82", name: "Koenigsegg"),
+    GeneralModel(id: "83", name: "Pagani"),
+
+    // --- American ---
+    GeneralModel(id: "84", name: "Cadillac"),
+    GeneralModel(id: "85", name: "Buick"),
+    GeneralModel(id: "86", name: "GMC"),
+    GeneralModel(id: "87", name: "Chrysler"),
+    GeneralModel(id: "88", name: "Lincoln"),
+    GeneralModel(id: "89", name: "Ram"),
+    GeneralModel(id: "90", name: "Rivian"),
+    GeneralModel(id: "91", name: "Lucid"),
+    GeneralModel(id: "92", name: "Fisker"),
+
+    // --- Electric / New Age ---
+    GeneralModel(id: "93", name: "VinFast"),
+    GeneralModel(id: "94", name: "Ather"),
+    GeneralModel(id: "95", name: "Ola Electric"),
+    GeneralModel(id: "96", name: "Proton"),
+    GeneralModel(id: "97", name: "Perodua"),
+
+    // --- Commercial / Heavy Vehicles ---
+    GeneralModel(id: "98", name: "MAN"),
+    GeneralModel(id: "99", name: "Scania"),
+    GeneralModel(id: "100", name: "Iveco"),
+    GeneralModel(id: "101", name: "Kamaz"),
+    GeneralModel(id: "102", name: "Ural"),
   ];
 
   static List<DateRangeModel> getDateRangeList({required List<String> titles}) {

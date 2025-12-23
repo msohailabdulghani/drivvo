@@ -87,6 +87,8 @@ class CreateGeneralController extends GetxController {
               .doc(appService.appUser.value.id)
               .collection(collectionPath);
 
+          //final ref = FirebaseFirestore.instance.collection(collectionPath);
+
           final id = ref.doc().id;
           final map = {"id": id, "name": name};
 

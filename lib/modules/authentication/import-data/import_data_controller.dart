@@ -14,13 +14,8 @@ class ImportDataController extends GetxController {
 
   bool get isUrdu => Get.locale?.languageCode == Constants.URDU_LANGUAGE_CODE;
 
-  void navigateToRootView() {
-    appService.setImportData(value: true);
-    Get.offAllNamed(AppRoutes.ROOT_VIEW);
-  }
-
   void navigateVehicleView() {
     appService.setImportData(value: true);
-    Get.offAllNamed(AppRoutes.VEHICLES_VIEW);
+    Get.offAllNamed(AppRoutes.CREATE_VEHICLES_VIEW, arguments: true);
   }
 }

@@ -79,6 +79,7 @@ flutter:
   assets:
     - assets/lang/
     - assets/images/
+    - assets/images/reports/
     - assets/images/more/
 
   # An image asset can refer to one or more resolution-specific "variants", see

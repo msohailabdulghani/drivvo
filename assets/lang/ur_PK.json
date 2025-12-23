@@ -426,5 +426,9 @@
   "select_vehicle": "گاڑی منتخب کریں",
   "welcome_to": "خوش آمدید",
   "started_monitoring_your_vehicle": "Drivvo کے ساتھ اپنی گاڑی کے\nاخراجات کی نگرانی شروع کی۔",
-    "odometer_greater_than_last": "اوڈومیٹر پچھلی ریڈنگ سے زیادہ ہونا چاہیے"
+  "odometer_greater_than_last": "اوڈومیٹر پچھلی ریڈنگ سے زیادہ ہونا چاہیے",
+  "select_your_vehicle": "اپنی گاڑی منتخب کریں",
+  "vehicle_must_be_selected_first": "پہلے گاڑی منتخب کرنا ضروری ہے",
+  "model_year": "ماڈل سال",
+  "model_year_required": "ماڈل سال درج کرنا ضروری ہے"
 }

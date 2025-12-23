@@ -77,6 +77,7 @@ class GeneralView extends GetView<GeneralController> {
                           onRefresh: () => controller.loadDataByTitle(),
                         )
                       : ListView.builder(
+                          padding: EdgeInsets.only(bottom: 66),
                           itemCount: controller.generalFilterList.length,
                           itemBuilder: (context, index) {
                             final model = controller.generalFilterList[index];
@@ -102,7 +103,7 @@ class GeneralView extends GetView<GeneralController> {
                                     color:
                                         controller.selectedTitle == model.name
                                         ? Utils.appColor
-                                        : Colors.grey.shade400,
+                                        : Colors.grey.shade300,
                                     width:
                                         controller.selectedTitle == model.name
                                         ? 2

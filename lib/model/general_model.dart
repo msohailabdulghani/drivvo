@@ -19,4 +19,13 @@ class GeneralModel {
       location: json["location"] ?? "",
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "id": id,
+      "name": name,
+      "fuel_type": fuelType,
+      "location": location,
+    };
+  }
 }

@@ -13,7 +13,6 @@ class VehicleModel {
   late String chassisNumber;
   late String identificationNumber;
   late String notes;
-  late bool activeVehicle;
 
   VehicleModel() {
     id = "";
@@ -30,7 +29,6 @@ class VehicleModel {
     chassisNumber = "";
     identificationNumber = "";
     notes = "";
-    activeVehicle = false;
   }
 
   VehicleModel.fromJson(Map<String, dynamic> json) {
@@ -48,7 +46,6 @@ class VehicleModel {
     chassisNumber = json["chassis_number"] ?? "";
     identificationNumber = json["identification_number"] ?? "";
     notes = json["notes"] ?? "";
-    activeVehicle = json["active_vehicle"] ?? false;
   }
 
   Map<String, dynamic> toJson(String id) {
@@ -67,7 +64,6 @@ class VehicleModel {
       "chassis_number": chassisNumber,
       "identification_number": identificationNumber,
       "notes": notes,
-      "active_vehicle": activeVehicle,
     };
   }
 }

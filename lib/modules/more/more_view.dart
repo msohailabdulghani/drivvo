@@ -1,3 +1,4 @@
+import 'package:drivvo/custom-widget/button/custom_outline_button.dart';
 import 'package:drivvo/custom-widget/common/card_header_text.dart';
 import 'package:drivvo/modules/more/more_controller.dart';
 import 'package:drivvo/routes/app_routes.dart';
@@ -42,7 +43,7 @@ class MoreView extends GetView<MoreController> {
                 imagePath: "assets/images/more/plan.png",
                 title: 'premium_plans'.tr,
                 subtitle: 'premium_plans_sub'.tr,
-                onTap: () {},
+                onTap: () => Get.toNamed(AppRoutes.PLAN_VIEW),
               ),
               _buildDivider(),
               _buildTile(
@@ -229,7 +230,7 @@ class MoreView extends GetView<MoreController> {
                   Get.toNamed(
                     AppRoutes.GENERAL_VIEW,
                     arguments: {
-                      "title": Constants.PAYMENT_METHOD,
+                      "title": Constants.REASONS,
                       "selected_title": "",
                     },
                   );
@@ -316,8 +317,12 @@ class MoreView extends GetView<MoreController> {
               ),
             ]),
             const SizedBox(height: 20),
-            OutlinedButton.icon(
-              onPressed: () => Get.defaultDialog(
+            CustomOutlineButton(
+              title: 'logout'.tr,
+              icon: Icons.logout,
+              isUrdu: controller.isUrdu,
+              btnColor: Colors.red,
+              onTap: () => Get.defaultDialog(
                 title: "",
                 contentPadding: const EdgeInsets.all(0),
                 content: Container(
@@ -379,25 +384,6 @@ class MoreView extends GetView<MoreController> {
                 ),
                 barrierDismissible: false,
                 backgroundColor: Colors.transparent,
-              ),
-              icon: Icon(Icons.logout, size: 22),
-              label: Text(
-                'logout'.tr,
-                style: Utils.getTextStyle(
-                  baseSize: 16,
-                  isBold: false,
-                  color: Colors.red,
-                  isUrdu: controller.isUrdu,
-                ),
-              ),
-              style: OutlinedButton.styleFrom(
-                backgroundColor: Colors.red.withValues(alpha: 0.1),
-                foregroundColor: Colors.red, // Text and Icon color
-                side: BorderSide(color: Colors.red), // Border color
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
               ),
             ),
             const SizedBox(height: 20),

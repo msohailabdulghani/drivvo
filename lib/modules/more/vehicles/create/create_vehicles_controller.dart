@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drivvo/model/general_model.dart';
 import 'package:drivvo/model/vehicle/vehicle_model.dart';
 import 'package:drivvo/modules/more/more_controller.dart';
+import 'package:drivvo/routes/app_routes.dart';
 import 'package:drivvo/services/app_service.dart';
 import 'package:drivvo/utils/constants.dart';
 import 'package:drivvo/utils/database_tables.dart';
@@ -21,7 +22,8 @@ class CreateVehiclesController extends GetxController {
 
   var selectedYear = 2020.obs;
   String manufacturerId = "";
-  var isActiveVehicle = false.obs;
+
+  var isFromImportdata = false.obs;
 
   var model = VehicleModel();
   var selectedChipName = "Kilometers".obs;
@@ -33,6 +35,7 @@ class CreateVehiclesController extends GetxController {
   void onInit() {
     appService = Get.find<AppService>();
     super.onInit();
+    isFromImportdata.value = Get.arguments as bool? ?? false;
     onSearchManufacturer("");
 
     searchInputController.addListener(() {
@@ -59,6 +62,10 @@ class CreateVehiclesController extends GetxController {
           .set(map)
           .then(
             (_) {
+              if (isFromImportdata.value) {
+                Get.offAllNamed(AppRoutes.ROOT_VIEW);
+                return;
+              }
               Get.back(closeOverlays: true);
               Utils.showSnackBar(
                 message: "Vechile is added successfully",
@@ -94,6 +101,10 @@ class CreateVehiclesController extends GetxController {
 
   void onSelectVehicleType(String type) {
     model.vehicleType = type;
+  }
+
+  void onSelectModelyear(int year) {
+    model.year = year;
   }
 
   void onSelectTank(String? tank) {

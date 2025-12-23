@@ -58,7 +58,7 @@ class ImportDataView extends GetView<ImportDataController> {
                 imagePath: "assets/images/fresh_start.png",
                 title: 'import_no'.tr,
                 subtitle: 'import_no_sub'.tr,
-                onTap: () => controller.navigateToRootView(),
+                onTap: () => controller.navigateVehicleView(),
               ),
               const Spacer(flex: 3),
               Text(
