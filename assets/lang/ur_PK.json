@@ -296,6 +296,7 @@
   "fuel_required": "فیول منتخب کرنا لازم ہے",
   "amount_required": "رقم درج کرنا ضروری ہے",
   "cost_required": "قیمت درج کرنا ضروری ہے",
+  "liters_required": "لیٹر درج کرنا ضروری ہے",
   "liters": "لیٹر",
   "select_gas_station": "گیس اسٹیشن منتخب کریں",
   "select_payment_method": "ادائیگی کا طریقہ منتخب کریں",

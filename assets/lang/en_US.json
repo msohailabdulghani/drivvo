@@ -294,6 +294,7 @@
   "fuel_required": "Fuel type is required",
   "amount_required": "Amount is required",
   "cost_required": "Cost is required",
+  "liters_required": "Liter is required",
   "liters": "Liters",
   "select_gas_station": "Select Gas Station",
   "select_payment_method": "Select Payment Method",

@@ -197,90 +197,165 @@ class CreateRefuelingView extends GetView<CreateRefuelingController> {
                 },
               ),
               const SizedBox(height: 16),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextInputFieldWithController(
-                      isUrdu: controller.isUrdu,
-                      isRequired: true,
-                      isNext: true,
-                      obscureText: false,
-                      readOnly: false,
-                      labelText: "price".tr,
-                      hintText: "amount".tr,
-                      controller: controller.priceController,
-                      inputAction: TextInputAction.next,
-                      type: TextInputType.number,
-                      onChange: (value) {
-                        //controller.model.value.price = double.parse(value!);
-                        controller.onPriceChanged(value);
-                      },
-                      onTap: () {},
-                      onSaved: (value) {},
-                      onValidate: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'amount_required'.tr;
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: TextInputFieldWithController(
-                      isUrdu: controller.isUrdu,
-                      isRequired: true,
-                      isNext: true,
-                      obscureText: false,
-                      readOnly: false,
-                      labelText: "total_cost".tr,
-                      hintText: "cost".tr,
-                      controller: controller.totalCostController,
-                      inputAction: TextInputAction.next,
-                      type: TextInputType.number,
-                      onChange: (value) {
-                        // controller.model.value.totalCost = double.parse(value!);
-                        controller.onTotalCostChanged(value);
-                      },
-                      onTap: () {},
-                      onSaved: (value) {},
-                      onValidate: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'cost_required'.tr;
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: TextInputFieldWithController(
-                      isUrdu: controller.isUrdu,
-                      isRequired: true,
-                      isNext: true,
-                      obscureText: false,
-                      readOnly: false,
-                      labelText: "liters".tr,
-                      hintText: "70".tr,
-                      controller: controller.litersController,
-                      inputAction: TextInputAction.next,
-                      type: TextInputType.number,
-                      onChange: (value) {
-                        //controller.model.value.liter = double.parse(value!);
-                        controller.onLitersChanged(value);
-                      },
-                      onTap: () {},
-                      onSaved: (value) {},
-                      onValidate: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'cost_required'.tr;
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                ],
+              TextInputFieldWithController(
+                isUrdu: controller.isUrdu,
+                isRequired: true,
+                isNext: true,
+                obscureText: false,
+                readOnly: false,
+                labelText: "liters".tr,
+                hintText: "70".tr,
+                controller: controller.litersController,
+                inputAction: TextInputAction.next,
+                type: TextInputType.number,
+                onChange: (value) {
+                  //controller.model.value.liter = double.parse(value!);
+                  controller.onLitersChanged(value);
+                },
+                onTap: () {},
+                onSaved: (value) {},
+                onValidate: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'liters_required'.tr;
+                  }
+                  return null;
+                },
               ),
+              const SizedBox(height: 16),
+              TextInputFieldWithController(
+                isUrdu: controller.isUrdu,
+                isRequired: true,
+                isNext: true,
+                obscureText: false,
+                readOnly: false,
+                labelText: "price_per_liter".tr,
+                hintText: "amount".tr,
+                controller: controller.priceController,
+                inputAction: TextInputAction.next,
+                type: TextInputType.number,
+                onChange: (value) {
+                  //controller.model.value.price = double.parse(value!);
+                  controller.onPriceChanged(value);
+                },
+                onTap: () {},
+                onSaved: (value) {},
+                onValidate: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'amount_required'.tr;
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
+              TextInputFieldWithController(
+                isUrdu: controller.isUrdu,
+                isRequired: true,
+                isNext: true,
+                obscureText: false,
+                readOnly: false,
+                labelText: "total_cost".tr,
+                hintText: "cost".tr,
+                controller: controller.totalCostController,
+                inputAction: TextInputAction.next,
+                type: TextInputType.number,
+                onChange: (value) {
+                  // controller.model.value.totalCost = double.parse(value!);
+                  controller.onTotalCostChanged(value);
+                },
+                onTap: () {},
+                onSaved: (value) {},
+                onValidate: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'cost_required'.tr;
+                  }
+                  return null;
+                },
+              ),
+              // const SizedBox(height: 16),
+              // Row(
+              //   children: [
+              //     Expanded(
+              //       child: TextInputFieldWithController(
+              //         isUrdu: controller.isUrdu,
+              //         isRequired: true,
+              //         isNext: true,
+              //         obscureText: false,
+              //         readOnly: false,
+              //         labelText: "price".tr,
+              //         hintText: "amount".tr,
+              //         controller: controller.priceController,
+              //         inputAction: TextInputAction.next,
+              //         type: TextInputType.number,
+              //         onChange: (value) {
+              //           //controller.model.value.price = double.parse(value!);
+              //           controller.onPriceChanged(value);
+              //         },
+              //         onTap: () {},
+              //         onSaved: (value) {},
+              //         onValidate: (value) {
+              //           if (value == null || value.isEmpty) {
+              //             return 'amount_required'.tr;
+              //           }
+              //           return null;
+              //         },
+              //       ),
+              //     ),
+              //     const SizedBox(width: 10),
+              //     Expanded(
+              //       child: TextInputFieldWithController(
+              //         isUrdu: controller.isUrdu,
+              //         isRequired: true,
+              //         isNext: true,
+              //         obscureText: false,
+              //         readOnly: false,
+              //         labelText: "total_cost".tr,
+              //         hintText: "cost".tr,
+              //         controller: controller.totalCostController,
+              //         inputAction: TextInputAction.next,
+              //         type: TextInputType.number,
+              //         onChange: (value) {
+              //           // controller.model.value.totalCost = double.parse(value!);
+              //           controller.onTotalCostChanged(value);
+              //         },
+              //         onTap: () {},
+              //         onSaved: (value) {},
+              //         onValidate: (value) {
+              //           if (value == null || value.isEmpty) {
+              //             return 'cost_required'.tr;
+              //           }
+              //           return null;
+              //         },
+              //       ),
+              //     ),
+              //     const SizedBox(width: 10),
+              //     Expanded(
+              //       child: TextInputFieldWithController(
+              //         isUrdu: controller.isUrdu,
+              //         isRequired: true,
+              //         isNext: true,
+              //         obscureText: false,
+              //         readOnly: false,
+              //         labelText: "liters".tr,
+              //         hintText: "70".tr,
+              //         controller: controller.litersController,
+              //         inputAction: TextInputAction.next,
+              //         type: TextInputType.number,
+              //         onChange: (value) {
+              //           //controller.model.value.liter = double.parse(value!);
+              //           controller.onLitersChanged(value);
+              //         },
+              //         onTap: () {},
+              //         onSaved: (value) {},
+              //         onValidate: (value) {
+              //           if (value == null || value.isEmpty) {
+              //             return 'cost_required'.tr;
+              //           }
+              //           return null;
+              //         },
+              //       ),
+              //     ),
+              //   ],
+              // ),
               const SizedBox(height: 16),
               _buildSwitchRow(
                 icon: Icons.local_gas_station_outlined,

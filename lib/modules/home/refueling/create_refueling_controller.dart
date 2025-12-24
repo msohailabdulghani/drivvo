@@ -13,7 +13,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 class CreateRefuelingController extends GetxController {
-  String? _lastEditedField;
+  String? _lastManualEdit;
+  String? _secondLastManualEdit;
   final formKey = GlobalKey<FormState>();
 
   late AppService appService;
@@ -74,64 +75,91 @@ class CreateRefuelingController extends GetxController {
         int.tryParse(appService.appUser.value.lastOdometer) ?? 0;
   }
 
+  void updateManualEdit(String field) {
+    if (_lastManualEdit != field) {
+      _secondLastManualEdit = _lastManualEdit;
+      _lastManualEdit = field;
+    }
+  }
+
   // Called when user changes price value
   void onPriceChanged(String? value) {
-    if (value == null || value.isEmpty) return;
-    final price = double.tryParse(value);
+    if (value == null || value.isEmpty) {
+      model.value.price = "0";
+      return;
+    }
+    final price = double.tryParse(value.replaceAll(',', ''));
     if (price == null) return;
 
-    model.value.price = price.toInt().toString();
-    _lastEditedField = 'price';
+    model.value.price = value;
+    updateManualEdit('price');
     calculateThirdValue();
   }
 
   // Called when user changes total cost value
   void onTotalCostChanged(String? value) {
-    if (value == null || value.isEmpty) return;
-    final totalCost = double.tryParse(value);
+    if (value == null || value.isEmpty) {
+      model.value.totalCost = "0";
+      return;
+    }
+    final totalCost = double.tryParse(value.replaceAll(',', ''));
     if (totalCost == null) return;
 
-    model.value.totalCost = totalCost.toInt().toString();
-    _lastEditedField = 'totalCost';
+    model.value.totalCost = value;
+    updateManualEdit('totalCost');
     calculateThirdValue();
   }
 
   // Called when user changes liters value
   void onLitersChanged(String? value) {
-    if (value == null || value.isEmpty) return;
-    final liter = double.tryParse(value);
+    if (value == null || value.isEmpty) {
+      model.value.liter = "0";
+      return;
+    }
+    final liter = double.tryParse(value.replaceAll(',', ''));
     if (liter == null) return;
 
-    model.value.liter = liter.toInt().toString();
-    _lastEditedField = 'liter';
+    model.value.liter = value;
+    updateManualEdit('liter');
     calculateThirdValue();
   }
 
   void calculateThirdValue() {
-    final price = double.tryParse(model.value.price) ?? 0.0;
-    final totalCost = double.tryParse(model.value.totalCost) ?? 0.0;
-    final liter = double.tryParse(model.value.liter) ?? 0.0;
-    //Formula: totalCost = price * liter
-    // If price and totalCost are entered, calculate liters
-    if (_lastEditedField != 'liter' && price > 0 && totalCost > 0) {
-      final calculatedLiter = totalCost / price;
-      model.value.liter = calculatedLiter.toString();
-      litersController.text = calculatedLiter.toStringAsFixed(2);
-    }
-    // If price and liters are entered, calculate totalCost
-    else if (_lastEditedField != 'totalCost' && price > 0 && liter > 0) {
-      final calculatedTotalCost = price * liter;
-      model.value.totalCost = calculatedTotalCost.toString();
-      totalCostController.text = calculatedTotalCost.toStringAsFixed(2);
+    final price =
+        double.tryParse(priceController.text.replaceAll(',', '')) ?? 0.0;
+    final totalCost =
+        double.tryParse(totalCostController.text.replaceAll(',', '')) ?? 0.0;
+    final liter =
+        double.tryParse(litersController.text.replaceAll(',', '')) ?? 0.0;
 
-      final currencyFormat = NumberFormat.currency(symbol: '');
-      totalCostController.text = currencyFormat.format(calculatedTotalCost);
-    }
-    // If totalCost and liters are entered, calculate price
-    else if (_lastEditedField != 'price' && totalCost > 0 && liter > 0) {
-      final calculatedPrice = totalCost / liter;
-      model.value.price = calculatedPrice.toString();
-      priceController.text = calculatedPrice.toStringAsFixed(2);
+    // Formula: totalCost = price * liter
+
+    if ((_lastManualEdit == 'liter' && _secondLastManualEdit == 'price') ||
+        (_lastManualEdit == 'price' && _secondLastManualEdit == 'liter')) {
+      // Calculate Total Cost
+      if (price > 0 && liter > 0) {
+        final calc = price * liter;
+        totalCostController.text = calc.toStringAsFixed(2);
+        model.value.totalCost = calc.toString();
+      }
+    } else if ((_lastManualEdit == 'price' &&
+            _secondLastManualEdit == 'totalCost') ||
+        (_lastManualEdit == 'totalCost' && _secondLastManualEdit == 'price')) {
+      // Calculate Liter
+      if (price > 0 && totalCost > 0) {
+        final calc = totalCost / price;
+        litersController.text = calc.toStringAsFixed(2);
+        model.value.liter = calc.toString();
+      }
+    } else if ((_lastManualEdit == 'liter' &&
+            _secondLastManualEdit == 'totalCost') ||
+        (_lastManualEdit == 'totalCost' && _secondLastManualEdit == 'liter')) {
+      // Calculate Price
+      if (liter > 0 && totalCost > 0) {
+        final calc = totalCost / liter;
+        priceController.text = calc.toStringAsFixed(2);
+        model.value.price = calc.toString();
+      }
     }
   }
 
