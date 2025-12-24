@@ -305,14 +305,14 @@ class HomeController extends GetxController {
     }
   }
 
-  void selectVehicleError({required String routeName}) {
+  void checkVehicleAndNavigate({required String routeName}) {
     if (appService.currentVehicleId.value.isEmpty) {
       Utils.showSnackBar(
         message: "vehicle_must_be_selected_first".tr,
         success: false,
       );
       return;
-    }else{
+    } else {
       Get.toNamed(routeName);
     }
   }

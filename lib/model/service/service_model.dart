@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:drivvo/model/expense/expense_type_model.dart';
 
 class ServiceModel {
   late String userId;
@@ -16,6 +17,7 @@ class ServiceModel {
   late String paymentMethod;
   late String notes;
   late String driverName;
+  late List<ExpenseTypeModel> serviceTypes;
 
   ServiceModel() {
     userId = "";
@@ -33,6 +35,7 @@ class ServiceModel {
     paymentMethod = "";
     notes = "";
     driverName = "";
+    serviceTypes = [];
   }
 
   ServiceModel.fromJson(Map<String, dynamic> json) {
@@ -51,5 +54,10 @@ class ServiceModel {
     paymentMethod = json["payment_method"] ?? "";
     notes = json["notes"] ?? "";
     driverName = json["driver_name"] ?? "";
+    serviceTypes =
+        (json["expense_types"] as List<dynamic>?)
+            ?.map((e) => ExpenseTypeModel.fromJson(e as Map<String, dynamic>))
+            .toList() ??
+        [];
   }
 }

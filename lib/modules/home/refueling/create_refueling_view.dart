@@ -114,51 +114,55 @@ class CreateRefuelingView extends GetView<CreateRefuelingController> {
                 ],
               ),
               const SizedBox(height: 16),
-              TextInputField(
-                isUrdu: controller.isUrdu,
-                isRequired: true,
-                isNext: true,
-                obscureText: false,
-                readOnly: false,
-                labelText: "odometer".tr,
-                hintText: "100".tr,
-                inputAction: TextInputAction.next,
-                type: TextInputType.number,
-                onTap: () {},
-                onSaved: (value) {
-                  controller.model.value.odometer = value ?? '';
-                },
-                onValidate: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'odometer_required'.tr;
-                  }
-                  final c = num.tryParse(value);
-                  if (c == null) {
-                    return 'invalid_odometer_value'.tr;
-                  }
-                  if (c <= controller.lastOdometer.value) {
-                    return "odometer_greater_than_last".tr;
-                  }
-                  return null;
-                },
-              ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 8),
-                  child: Obx(
-                    () => Text(
-                      '${'last_odometer'.tr}: ${controller.lastOdometer.value} km',
-                      style: Utils.getTextStyle(
-                        baseSize: 12,
-                        isBold: false,
-                        color: Colors.grey[600]!,
-                        isUrdu: controller.isUrdu,
-                      ),
-                    ),
-                  ),
+              Obx(
+                () => TextInputField(
+                  isUrdu: controller.isUrdu,
+                  isRequired: true,
+                  isNext: true,
+                  obscureText: false,
+                  readOnly: false,
+                  labelText: "odometer".tr,
+                  hintText:
+                      "${'last_odometer'.tr}: ${controller.lastOdometer.value} km"
+                          .tr,
+                  inputAction: TextInputAction.next,
+                  type: TextInputType.number,
+                  onTap: () {},
+                  onSaved: (value) {
+                    controller.model.value.odometer = value ?? '';
+                  },
+                  onValidate: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'odometer_required'.tr;
+                    }
+                    final c = num.tryParse(value);
+                    if (c == null) {
+                      return 'invalid_odometer_value'.tr;
+                    }
+                    if (c <= controller.lastOdometer.value) {
+                      return "odometer_greater_than_last".tr;
+                    }
+                    return null;
+                  },
                 ),
               ),
+              // Align(
+              //   alignment: Alignment.centerRight,
+              //   child: Padding(
+              //     padding: const EdgeInsets.only(top: 8),
+              //     child: Obx(
+              //       () => Text(
+              //         '${'last_odometer'.tr}: ${controller.lastOdometer.value} km',
+              //         style: Utils.getTextStyle(
+              //           baseSize: 12,
+              //           isBold: false,
+              //           color: Colors.grey[600]!,
+              //           isUrdu: controller.isUrdu,
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
               const SizedBox(height: 16),
               // Fuel Section
               // CardHeaderText(

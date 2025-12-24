@@ -188,56 +188,64 @@ class CreateRouteView extends GetView<CreateRouteController> {
                 ],
               ),
               const SizedBox(height: 16),
-              TextInputField(
-                isUrdu: controller.isUrdu,
-                isRequired: true,
-                isNext: true,
-                obscureText: false,
-                readOnly: false,
-                labelText: "initial_odometer".tr,
-                hintText: "km".tr,
-                inputAction: TextInputAction.next,
-                type: TextInputType.number,
-                onTap: () {},
-                onChange: (v) {
-                  if (v != null && v.isNotEmpty) {
-                    controller.initalOdometer.value = int.parse(v);
-                  }
-                },
-                onSaved: (value) {
-                  controller.model.value.initialOdometer = value!;
-                },
-                onValidate: (value) {
-                  if (value != null) {
-                    if (value.isNotEmpty) {
-                      final c = int.parse(value);
-                      if (c <= controller.lastOdometer.value) {
-                        return "odometer_greater_than_last".tr;
+              Obx(
+                () => TextInputField(
+                  isUrdu: controller.isUrdu,
+                  isRequired: true,
+                  isNext: true,
+                  obscureText: false,
+                  readOnly: false,
+                  labelText: "initial_odometer".tr,
+                  hintText:
+                      "${'last_odometer'.tr}: ${controller.lastOdometer.value} km"
+                          .tr,
+                  inputAction: TextInputAction.next,
+                  type: TextInputType.number,
+                  onTap: () {},
+                  onChange: (v) {
+                    if (v != null && v.isNotEmpty) {
+                      // controller.initalOdometer.value = int.parse(v);
+                      final parsed = int.tryParse(v);
+                      if (parsed != null) {
+                        controller.initalOdometer.value = parsed;
                       }
-                    } else if (value.isEmpty) {
-                      return 'initial_odometer_required'.tr;
                     }
-                  }
-                  return null;
-                },
-              ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 8),
-                  child: Obx(
-                    () => Text(
-                      '${'last_odometer'.tr}: ${controller.lastOdometer.value} km',
-                      style: Utils.getTextStyle(
-                        baseSize: 12,
-                        isBold: false,
-                        color: Colors.grey[600]!,
-                        isUrdu: controller.isUrdu,
-                      ),
-                    ),
-                  ),
+                  },
+                  onSaved: (value) {
+                    controller.model.value.initialOdometer = value!;
+                  },
+                  onValidate: (value) {
+                    if (value != null) {
+                      if (value.isNotEmpty) {
+                        final c = int.parse(value);
+                        if (c <= controller.lastOdometer.value) {
+                          return "odometer_greater_than_last".tr;
+                        }
+                      } else if (value.isEmpty) {
+                        return 'initial_odometer_required'.tr;
+                      }
+                    }
+                    return null;
+                  },
                 ),
               ),
+              // Align(
+              //   alignment: Alignment.centerRight,
+              //   child: Padding(
+              //     padding: const EdgeInsets.only(top: 8),
+              //     child: Obx(
+              //       () => Text(
+              //         '${'last_odometer'.tr}: ${controller.lastOdometer.value} km',
+              //         style: Utils.getTextStyle(
+              //           baseSize: 12,
+              //           isBold: false,
+              //           color: Colors.grey[600]!,
+              //           isUrdu: controller.isUrdu,
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
               const SizedBox(height: 16),
               CardTextInputField(
                 isUrdu: controller.isUrdu,
@@ -269,34 +277,38 @@ class CreateRouteView extends GetView<CreateRouteController> {
                 },
               ),
               const SizedBox(height: 16),
-              TextInputField(
-                isUrdu: controller.isUrdu,
-                isRequired: true,
-                isNext: true,
-                obscureText: false,
-                readOnly: false,
-                labelText: "final_odometer".tr,
-                hintText: "km".tr,
-                inputAction: TextInputAction.next,
-                type: TextInputType.number,
-                onTap: () {},
-                onSaved: (value) {
-                  controller.model.value.finalOdometer = value!;
-                },
-                onValidate: (value) {
-                  if (value != null) {
-                    if (value.isNotEmpty) {
-                      final c = int.parse(value);
-                      if (c <= controller.initalOdometer.value) {
-                        return "Final odometer should be greater than initial odometer"
-                            .tr;
+              Obx(
+                () => TextInputField(
+                  isUrdu: controller.isUrdu,
+                  isRequired: true,
+                  isNext: true,
+                  obscureText: false,
+                  readOnly: false,
+                  labelText: "final_odometer".tr,
+                  hintText:
+                      "${'last_odometer'.tr}: ${controller.lastOdometer.value} km"
+                          .tr,
+                  inputAction: TextInputAction.next,
+                  type: TextInputType.number,
+                  onTap: () {},
+                  onSaved: (value) {
+                    controller.model.value.finalOdometer = value!;
+                  },
+                  onValidate: (value) {
+                    if (value != null) {
+                      if (value.isNotEmpty) {
+                        final c = int.parse(value);
+                        if (c <= controller.initalOdometer.value) {
+                          return "Final odometer should be greater than initial odometer"
+                              .tr;
+                        }
+                      } else if (value.isEmpty) {
+                        return 'final_odometer_required'.tr;
                       }
-                    } else if (value.isEmpty) {
-                      return 'final_odometer_required'.tr;
                     }
-                  }
-                  return null;
-                },
+                    return null;
+                  },
+                ),
               ),
               // Align(
               //   alignment: Alignment.centerRight,

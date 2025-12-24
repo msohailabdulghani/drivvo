@@ -33,7 +33,7 @@ class HomeView extends GetView<HomeController> {
             boxShadow: [],
             onTap: () {
               controller.circularMenuKey.currentState?.reverseAnimation();
-              controller.selectVehicleError(
+              controller.checkVehicleAndNavigate(
                 routeName: AppRoutes.CREATE_REFUELING_VIEW,
               );
             },
@@ -45,7 +45,7 @@ class HomeView extends GetView<HomeController> {
             boxShadow: [],
             onTap: () {
               controller.circularMenuKey.currentState?.reverseAnimation();
-              controller.selectVehicleError(
+              controller.checkVehicleAndNavigate(
                 routeName: AppRoutes.CREATE_EXPENSE_VIEW,
               );
             },
@@ -57,7 +57,7 @@ class HomeView extends GetView<HomeController> {
             boxShadow: [],
             onTap: () {
               controller.circularMenuKey.currentState?.reverseAnimation();
-              controller.selectVehicleError(
+              controller.checkVehicleAndNavigate(
                 routeName: AppRoutes.CRAETE_SERVICE_VIEW,
               );
             },
@@ -69,7 +69,7 @@ class HomeView extends GetView<HomeController> {
             boxShadow: [],
             onTap: () {
               controller.circularMenuKey.currentState?.reverseAnimation();
-              controller.selectVehicleError(
+              controller.checkVehicleAndNavigate(
                 routeName: AppRoutes.CRAETE_INCOME_VIEW,
               );
             },
@@ -81,7 +81,7 @@ class HomeView extends GetView<HomeController> {
             boxShadow: [],
             onTap: () {
               controller.circularMenuKey.currentState?.reverseAnimation();
-              controller.selectVehicleError(
+              controller.checkVehicleAndNavigate(
                 routeName: AppRoutes.CRAETE_ROUTE_VIEW,
               );
             },

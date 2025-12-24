@@ -1,3 +1,11 @@
+import 'package:drivvo/custom-widget/report/charts/category_pie_chart.dart';
+import 'package:drivvo/custom-widget/report/charts/cost_pie_chart.dart';
+import 'package:drivvo/custom-widget/report/charts/distance_per_refueling_line_chart.dart';
+import 'package:drivvo/custom-widget/report/charts/expense_vs_income_bar_chart.dart';
+import 'package:drivvo/custom-widget/report/charts/fuel_efficiency_line_chart.dart';
+import 'package:drivvo/custom-widget/report/charts/fuel_price_line_chart.dart';
+import 'package:drivvo/custom-widget/report/charts/monthly_cost_bar_chart.dart';
+import 'package:drivvo/custom-widget/report/charts/odometer_history_line_chart.dart';
 import 'package:drivvo/custom-widget/report/custom_report_card.dart';
 import 'package:drivvo/custom-widget/report/distance_report_card.dart';
 import 'package:drivvo/custom-widget/report/report_date_range.dart';
@@ -145,10 +153,113 @@ class ReportsView extends GetView<ReportsController> {
           const SizedBox(height: 16),
           content,
           const SizedBox(height: 24),
-          _buildChartsSection(),
+          _buildCharts(),
+          const SizedBox(height: 24),
         ],
       ),
     );
+  }
+
+  Widget _buildCharts() {
+    return Obx(() {
+      final selected = controller.selectedName.value;
+      return Column(
+        children: [
+          if (selected == "General") ...[
+            CostPieChart(
+              refueling: controller.refuelingCost.value,
+              expense: controller.expenseCost.value,
+              service: controller.serviceCost.value,
+              income: controller.incomeCost.value,
+              isUrdu: controller.isUrdu,
+            ),
+            const SizedBox(height: 16),
+            MonthlyCostBarChart(
+              monthlyData: controller.generalMonthlyData,
+              isUrdu: controller.isUrdu,
+              title: "monthly_expenses_chart".tr,
+            ),
+            const SizedBox(height: 16),
+            ExpenseVsIncomeBarChart(
+              data: controller.expenseVsIncomeData,
+              isUrdu: controller.isUrdu,
+            ),
+            const SizedBox(height: 16),
+            OdometerHistoryLineChart(
+              spots: controller.odometerHistoryData,
+              isUrdu: controller.isUrdu,
+            ),
+          ],
+          if (selected == "Refueling") ...[
+            CategoryPieChart(
+              data: controller.fuelTypeDistribution,
+              title: "fuel_chart".tr,
+              isUrdu: controller.isUrdu,
+            ),
+            const SizedBox(height: 16),
+            FuelEfficiencyLineChart(
+              spots: controller.fuelEfficiencyData,
+              isUrdu: controller.isUrdu,
+            ),
+            const SizedBox(height: 16),
+            DistancePerRefuelingLineChart(
+              spots: controller.distancePerRefuelingData,
+              isUrdu: controller.isUrdu,
+            ),
+            const SizedBox(height: 16),
+            FuelPriceLineChart(
+              spots: controller.fuelPriceData,
+              isUrdu: controller.isUrdu,
+            ),
+            const SizedBox(height: 16),
+            MonthlyCostBarChart(
+              monthlyData: controller.refuelingMonthlyData,
+              isUrdu: controller.isUrdu,
+              title: "monthly_refueling_chart".tr,
+            ),
+          ],
+          if (selected == "Expense") ...[
+            CategoryPieChart(
+              data: controller.expenseTypeDistribution,
+              title: "expenses_chart".tr,
+              isUrdu: controller.isUrdu,
+            ),
+            const SizedBox(height: 16),
+            MonthlyCostBarChart(
+              monthlyData: controller.expenseMonthlyData,
+              isUrdu: controller.isUrdu,
+              title: "monthly_expenses".tr,
+            ),
+          ],
+          if (selected == "Income") ...[
+            CategoryPieChart(
+              data: controller.incomeTypeDistribution,
+              title: "income_chart".tr,
+              isUrdu: controller.isUrdu,
+            ),
+            const SizedBox(height: 16),
+            MonthlyCostBarChart(
+              monthlyData: controller.incomeMonthlyData,
+              isUrdu: controller.isUrdu,
+              title: "monthly_income".tr,
+            ),
+          ],
+          if (selected == "Service") ...[
+            CategoryPieChart(
+              data: controller.serviceTypeDistribution,
+              title: "services_chart".tr,
+              isUrdu: controller.isUrdu,
+            ),
+            const SizedBox(height: 16),
+            MonthlyCostBarChart(
+              monthlyData: controller.serviceMonthlyData,
+              isUrdu: controller.isUrdu,
+              title: "monthly_services_costs".tr,
+            ),
+          ],
+        ],
+      );
+    });
   }
 
   Widget _buildRefuelingCardsTab() => _buildReportTab(_buildRefuelingCards());
@@ -364,70 +475,6 @@ class ReportsView extends GetView<ReportsController> {
             dailyAverage: controller.formatDistance(
               controller.serviceDailyAverage.value,
             ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildChartsSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              "charts".tr,
-              style: Utils.getTextStyle(
-                baseSize: 16,
-                isBold: true,
-                color: Utils.appColor,
-                isUrdu: controller.isUrdu,
-              ),
-            ),
-            TextButton(
-              onPressed: () {},
-              child: Text(
-                "view_all".tr,
-                style: Utils.getTextStyle(
-                  baseSize: 14,
-                  isBold: false,
-                  color: Colors.grey[600]!,
-                  isUrdu: controller.isUrdu,
-                ),
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 8),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.04),
-                blurRadius: 8,
-                offset: const Offset(0, 2),
-              ),
-            ],
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                controller.selectedChartType.value,
-                style: Utils.getTextStyle(
-                  baseSize: 14,
-                  isBold: false,
-                  color: Colors.grey[600]!,
-                  isUrdu: controller.isUrdu,
-                ),
-              ),
-              const Icon(Icons.keyboard_arrow_down, color: Colors.grey),
-            ],
           ),
         ),
       ],

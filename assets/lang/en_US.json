@@ -318,6 +318,7 @@
   "no_entries_yet": "No entries yet",
   "total": "Total",
   "distance": "Distance",
+  "distance_per_refueling": "Distance Per Refueling",
   "by_day": "By day",
   "by_km": "By km",
   "daily_average": "Daily average",
@@ -410,6 +411,7 @@
   "km_miles": "km / Miles",
   "unit": "Unit",
   "fuel_efficiency": "Fuel efficiency",
+  "fuel_price_chart": "Fuel Price Chart",
   "show_average_last_records": "Show average in the last re...",
   "reminders": "Reminders",
   "distance_in_advance": "Distance in advance",
@@ -433,5 +435,10 @@
   "select_your_vehicle": "Select Your Vehicle",
   "vehicle_must_be_selected_first": "Vehicle must be selected first",
   "model_year": "Model Year",
-  "model_year_required": "Model year is required"
+  "model_year_required": "Model year is required",
+  "costs_by_category": "Costs by Category",
+  "monthly_costs": "Monthly Costs",
+  "cost_comparison_chart": "Cost Comparison",
+  "expense_vs_income": "Expense vs Income",
+  "odometer_history": "Odometer History"
 }

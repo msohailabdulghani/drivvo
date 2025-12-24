@@ -5,10 +5,10 @@ import 'package:drivvo/model/income/income_model.dart';
 import 'package:drivvo/model/refueling/refueling_model.dart';
 import 'package:drivvo/model/service/service_model.dart';
 import 'package:drivvo/modules/home/home_controller.dart';
-import 'package:drivvo/routes/app_routes.dart';
 import 'package:drivvo/services/app_service.dart';
 import 'package:drivvo/utils/constants.dart';
 import 'package:drivvo/utils/database_tables.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -72,6 +72,22 @@ class ReportsController extends GetxController
   // Charts dropdown
   var selectedChartType = "Select".obs;
 
+  // Chart Data
+  var generalMonthlyData = <String, double>{}.obs;
+  var expenseVsIncomeData = <String, Map<String, double>>{}.obs;
+  var refuelingMonthlyData = <String, double>{}.obs;
+  var expenseMonthlyData = <String, double>{}.obs;
+  var incomeMonthlyData = <String, double>{}.obs;
+  var serviceMonthlyData = <String, double>{}.obs;
+  var fuelEfficiencyData = <FlSpot>[].obs;
+  var odometerHistoryData = <FlSpot>[].obs;
+  var distancePerRefuelingData = <FlSpot>[].obs;
+  var fuelPriceData = <FlSpot>[].obs;
+  var expenseTypeDistribution = <String, double>{}.obs;
+  var serviceTypeDistribution = <String, double>{}.obs;
+  var incomeTypeDistribution = <String, double>{}.obs;
+  var fuelTypeDistribution = <String, double>{}.obs;
+
   @override
   void onInit() {
     appService = Get.find<AppService>();
@@ -111,21 +127,21 @@ class ReportsController extends GetxController
     return "${formatter.format(startDate.value)} - ${yearFormatter.format(endDate.value)}";
   }
 
-  Future<void> selectDateRange() async {
-    final result = await Get.toNamed(
-      AppRoutes.DATE_RANGE,
-      arguments: {"startDate": startDate.value, "endDate": endDate.value},
-    );
-    if (result != null) {
-      final sd = result["startDate"] as DateTime?;
-      final ed = result["endDate"] as DateTime?;
-      if (sd != null && ed != null) {
-        startDate.value = DateTime(sd.year, sd.month, sd.day);
-        endDate.value = DateTime(ed.year, ed.month, ed.day);
-        calculateAllReports();
-      }
-    }
-  }
+  // Future<void> selectDateRange() async {
+  //   final result = await Get.toNamed(
+  //     AppRoutes.DATE_RANGE,
+  //     arguments: {"startDate": startDate.value, "endDate": endDate.value},
+  //   );
+  //   if (result != null) {
+  //     final sd = result["startDate"] as DateTime?;
+  //     final ed = result["endDate"] as DateTime?;
+  //     if (sd != null && ed != null) {
+  //       startDate.value = DateTime(sd.year, sd.month, sd.day);
+  //       endDate.value = DateTime(ed.year, ed.month, ed.day);
+  //       calculateAllReports();
+  //     }
+  //   }
+  // }
 
   Future<void> calculateAllReports() async {
     var user = AppUser();
@@ -214,6 +230,268 @@ class ReportsController extends GetxController
         ? totalIncome.value / totalDistance.value
         : 0;
     dailyAverageDistance.value = days > 0 ? totalDistance.value / days : 0;
+
+    // Prepare Chart Data
+    _prepareCategorizedMonthlyData(
+      filteredRefueling,
+      filteredExpenses,
+      filteredServices,
+      filteredIncomes,
+    );
+    _prepareFuelEfficiencyData(user.refuelingList);
+    _prepareDistancePerRefuelingData(user.refuelingList);
+    _prepareFuelPriceData(filteredRefueling);
+    _prepareExpenseTypeDistribution(filteredExpenses);
+    _prepareServiceTypeDistribution(filteredServices);
+    _prepareIncomeDistribution(filteredIncomes);
+    _prepareFuelTypeDistribution(filteredRefueling);
+    _prepareOdometerHistoryData(user);
+  }
+
+  void _prepareFuelTypeDistribution(List<RefuelingModel> refuelings) {
+    final Map<String, double> distribution = {};
+    for (var refuel in refuelings) {
+      final double val = double.tryParse(refuel.totalCost) ?? 0;
+      if (val > 0) {
+        final type = refuel.fuelType.isEmpty ? "unknown" : refuel.fuelType;
+        distribution[type] = (distribution[type] ?? 0) + val;
+      }
+    }
+    fuelTypeDistribution.value = distribution;
+  }
+
+  void _prepareIncomeDistribution(List<IncomeModel> incomes) {
+    final Map<String, double> distribution = {};
+    for (var income in incomes) {
+      final double val = double.tryParse(income.value) ?? 0;
+      if (val > 0) {
+        distribution[income.incomeType] =
+            (distribution[income.incomeType] ?? 0) + val;
+      }
+    }
+    incomeTypeDistribution.value = distribution;
+  }
+
+  void _prepareServiceTypeDistribution(List<ServiceModel> services) {
+    final Map<String, double> distribution = {};
+    for (var service in services) {
+      for (var type in service.serviceTypes) {
+        final double val = double.tryParse(type.value.value) ?? 0;
+        if (val > 0) {
+          distribution[type.name] = (distribution[type.name] ?? 0) + val;
+        }
+      }
+    }
+    serviceTypeDistribution.value = distribution;
+  }
+
+  void _prepareExpenseTypeDistribution(List<ExpenseModel> expenses) {
+    final Map<String, double> distribution = {};
+    for (var expense in expenses) {
+      for (var type in expense.expenseTypes) {
+        final double val = double.tryParse(type.value.value) ?? 0;
+        if (val > 0) {
+          distribution[type.name] = (distribution[type.name] ?? 0) + val;
+        }
+      }
+    }
+    expenseTypeDistribution.value = distribution;
+  }
+
+  void _prepareCategorizedMonthlyData(
+    List<RefuelingModel> refuelings,
+    List<ExpenseModel> expenses,
+    List<ServiceModel> services,
+    List<IncomeModel> incomes,
+  ) {
+    final formatter = DateFormat('MMM yy');
+
+    Map<String, double> getMonthlyMap(
+      List<dynamic> items,
+      double Function(dynamic) getCost,
+    ) {
+      final Map<String, double> map = {};
+      for (var item in items) {
+        final month = formatter.format(item.date);
+        map[month] = (map[month] ?? 0) + getCost(item);
+      }
+      return map;
+    }
+
+    refuelingMonthlyData.value = getMonthlyMap(
+      refuelings,
+      (item) => double.tryParse((item as RefuelingModel).totalCost) ?? 0,
+    );
+    expenseMonthlyData.value = getMonthlyMap(
+      expenses,
+      (item) => double.tryParse((item as ExpenseModel).totalAmount) ?? 0,
+    );
+    serviceMonthlyData.value = getMonthlyMap(
+      services,
+      (item) => double.tryParse((item as ServiceModel).totalAmount) ?? 0,
+    );
+    incomeMonthlyData.value = getMonthlyMap(
+      incomes,
+      (item) => double.tryParse((item as IncomeModel).value) ?? 0,
+    );
+
+    // General monthly data (combined cost: refuel + expense + service)
+    final Map<String, double> generalMap = {};
+    void merge(Map<String, double> source) {
+      source.forEach((key, value) {
+        generalMap[key] = (generalMap[key] ?? 0) + value;
+      });
+    }
+
+    merge(refuelingMonthlyData);
+    merge(expenseMonthlyData);
+    merge(serviceMonthlyData);
+    generalMonthlyData.value = generalMap;
+
+    // Preparation of Expense vs Income comparison data
+    final Map<String, Map<String, double>> comparison = {};
+    final allMonths = {...generalMap.keys, ...incomeMonthlyData.keys};
+    for (var month in allMonths) {
+      comparison[month] = {
+        'expense': generalMap[month] ?? 0,
+        'income': incomeMonthlyData[month] ?? 0,
+      };
+    }
+    expenseVsIncomeData.value = comparison;
+  }
+
+  void _prepareFuelEfficiencyData(List<RefuelingModel> allRefuelings) {
+    if (allRefuelings.length < 2) {
+      fuelEfficiencyData.value = [];
+      return;
+    }
+
+    // Sort by date/odometer
+    final sorted = List<RefuelingModel>.from(allRefuelings);
+    sorted.sort(
+      (a, b) => (double.tryParse(a.odometer) ?? 0).compareTo(
+        double.tryParse(b.odometer) ?? 0,
+      ),
+    );
+
+    final List<FlSpot> spots = [];
+    int validEntryIndex = 0;
+    for (int i = 1; i < sorted.length; i++) {
+      final current = sorted[i];
+      final previous = sorted[i - 1];
+
+      // Check if current is in range
+      if (current.date.isAfter(
+            startDate.value.subtract(const Duration(days: 1)),
+          ) &&
+          current.date.isBefore(endDate.value.add(const Duration(days: 1)))) {
+        final dist =
+            (double.tryParse(current.odometer) ?? 0) -
+            (double.tryParse(previous.odometer) ?? 0);
+        final liters = double.tryParse(current.liter) ?? 0;
+
+        if (liters > 0 && dist > 0) {
+          final efficiency = dist / liters;
+          spots.add(FlSpot(validEntryIndex.toDouble(), efficiency));
+          validEntryIndex++;
+        }
+      }
+    }
+    fuelEfficiencyData.value = spots;
+  }
+
+  void _prepareDistancePerRefuelingData(List<RefuelingModel> allRefuelings) {
+    if (allRefuelings.length < 2) {
+      distancePerRefuelingData.value = [];
+      return;
+    }
+
+    // Sort by date
+    final sorted = List<RefuelingModel>.from(allRefuelings);
+    sorted.sort((a, b) => a.date.compareTo(b.date));
+
+    final List<FlSpot> spots = [];
+    for (int i = 1; i < sorted.length; i++) {
+      final current = sorted[i];
+      final previous = sorted[i - 1];
+
+      if (current.date.isAfter(
+            startDate.value.subtract(const Duration(days: 1)),
+          ) &&
+          current.date.isBefore(endDate.value.add(const Duration(days: 1)))) {
+        final currentOdo = double.tryParse(current.odometer) ?? 0;
+        final previousOdo = double.tryParse(previous.odometer) ?? 0;
+
+        if (currentOdo > previousOdo) {
+          final dist = currentOdo - previousOdo;
+          spots.add(
+            FlSpot(current.date.millisecondsSinceEpoch.toDouble(), dist),
+          );
+        }
+      }
+    }
+    distancePerRefuelingData.value = spots;
+  }
+
+  void _prepareFuelPriceData(List<RefuelingModel> refuelings) {
+    if (refuelings.isEmpty) {
+      fuelPriceData.value = [];
+      return;
+    }
+
+    // Sort by date
+    final sorted = List<RefuelingModel>.from(refuelings);
+    sorted.sort((a, b) => a.date.compareTo(b.date));
+
+    final List<FlSpot> spots = [];
+    for (var refuel in sorted) {
+      final p = double.tryParse(refuel.price) ?? 0;
+      if (p > 0) {
+        spots.add(FlSpot(refuel.date.millisecondsSinceEpoch.toDouble(), p));
+      }
+    }
+    fuelPriceData.value = spots;
+  }
+
+  void _prepareOdometerHistoryData(AppUser user) {
+    final List<Map<String, dynamic>> allEntries = [];
+
+    for (var item in user.refuelingList) {
+      allEntries.add({'date': item.date, 'odometer': item.odometer});
+    }
+    for (var item in user.expenseList) {
+      allEntries.add({'date': item.date, 'odometer': item.odometer});
+    }
+    for (var item in user.serviceList) {
+      allEntries.add({'date': item.date, 'odometer': item.odometer});
+    }
+    for (var item in user.incomeList) {
+      allEntries.add({'date': item.date, 'odometer': item.odometer});
+    }
+
+    if (allEntries.isEmpty) {
+      odometerHistoryData.value = [];
+      return;
+    }
+
+    // Sort by date
+    allEntries.sort(
+      (a, b) => (a['date'] as DateTime).compareTo(b['date'] as DateTime),
+    );
+
+    final List<FlSpot> spots = [];
+    for (var entry in allEntries) {
+      final odo = double.tryParse(entry['odometer']) ?? 0;
+      if (odo > 0) {
+        spots.add(
+          FlSpot(
+            (entry['date'] as DateTime).millisecondsSinceEpoch.toDouble(),
+            odo,
+          ),
+        );
+      }
+    }
+    odometerHistoryData.value = spots;
   }
 
   //Filter methods
@@ -346,5 +624,31 @@ class ReportsController extends GetxController
 
   String formatDistance(double value) {
     return "${value.toStringAsFixed(0)} km";
+  }
+
+  Future<void> selectDateRange() async {
+    final context = Get.context;
+    if (context == null) {
+      debugPrint('Cannot show date picker: context is null');
+      return;
+    }
+
+    final DateTime now = DateTime.now();
+    final DateTimeRange? picked = await showDateRangePicker(
+      initialDateRange: DateTimeRange(
+        start: startDate.value,
+        end: endDate.value,
+      ),
+      context: context,
+      firstDate: DateTime(now.year - 5),
+      lastDate: DateTime(now.year + 5),
+    );
+
+    if (picked != null) {
+      startDate.value = picked.start;
+      endDate.value = picked.end;
+
+      calculateAllReports();
+    }
   }
 }

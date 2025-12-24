@@ -321,6 +321,7 @@
   "no_entries_yet": "ابھی تک کوئی اندراج نہیں",
   "total": "کل",
   "distance": "فاصلہ",
+  "distance_per_refueling": "ہر ری فیولنگ کا فاصلہ",
   "by_day": "یومیہ",
   "by_km": "فی کلومیٹر",
   "daily_average": "یومیہ اوسط",
@@ -407,6 +408,7 @@
   "km_miles": "کلومیٹر / میل",
   "unit": "اکائی",
   "fuel_efficiency": "ایندھن کی کارکردگی",
+  "fuel_price_chart": "ایندھن کی قیمت کا چارٹ",
   "show_average_last_records": "آخری ریکارڈز میں اوسط دکھائیں...",
   "reminders": "یاد دہانیاں",
   "distance_in_advance": "پہلے سے فاصلہ",
@@ -430,5 +432,10 @@
   "select_your_vehicle": "اپنی گاڑی منتخب کریں",
   "vehicle_must_be_selected_first": "پہلے گاڑی منتخب کرنا ضروری ہے",
   "model_year": "ماڈل سال",
-  "model_year_required": "ماڈل سال درج کرنا ضروری ہے"
+  "model_year_required": "ماڈل سال درج کرنا ضروری ہے",
+  "costs_by_category": "اقسام کے لحاظ سے اخراجات",
+  "monthly_costs": "ماہانہ اخراجات",
+  "cost_comparison_chart": "اخراجات کا موازنہ",
+  "expense_vs_income": "اخراجات بمقابلہ آمدنی",
+  "odometer_history": "اوڈومیٹر کی تاریخ"
 }
