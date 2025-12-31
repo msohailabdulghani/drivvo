@@ -382,8 +382,9 @@ class UpdateServiceView extends GetView<UpdateServiceController> {
                               controller.paymentMethodController.text,
                         },
                       )?.then((e) {
-                        if (e != null)
+                        if (e != null) {
                           controller.paymentMethodController.text = e;
+                        }
                       });
                     },
                     onSaved: (value) {},

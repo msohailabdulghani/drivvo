@@ -40,25 +40,22 @@ class ReminderView extends GetView<ReminderController> {
               ? Center(child: RefreshIndicatorView())
               : controller.reminderList.isEmpty
               ? Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      "assets/images/reminders.png",
-                      width: 180,
-                      height: 180,
-                      fit: BoxFit.cover,
-                    ),
-                    SizedBox(height: 20),
-                    Text(
-                      "add_your_first".tr,
-                      style: TextStyle(fontSize: 16),
-                    ),
-                    Text("reminder".tr, style: TextStyle(fontSize: 16)),
-                  ],
-                ),
-              )
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        "assets/images/reminders.png",
+                        width: 180,
+                        height: 180,
+                        fit: BoxFit.cover,
+                      ),
+                      SizedBox(height: 20),
+                      Text("add_your_first".tr, style: TextStyle(fontSize: 16)),
+                      Text("reminder".tr, style: TextStyle(fontSize: 16)),
+                    ],
+                  ),
+                )
               : ListView.builder(
                   padding: EdgeInsets.only(bottom: 66, top: 20),
                   itemCount: controller.reminderList.length,
@@ -67,7 +64,12 @@ class ReminderView extends GetView<ReminderController> {
                     final distance = controller.getDistance(model);
                     final days = controller.getDays(model.startDate);
                     return GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        Get.toNamed(
+                          AppRoutes.UPDATE_REMINDER_VIEW,
+                          arguments: model,
+                        );
+                      },
                       child: Container(
                         width: double.maxFinite,
                         margin: const EdgeInsets.only(

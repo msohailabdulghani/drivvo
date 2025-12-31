@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drivvo/model/reminder/reminder_model.dart';
 import 'package:drivvo/services/app_service.dart';
@@ -14,6 +16,9 @@ class ReminderController extends GetxController {
   var lastOdometer = 0.obs;
   bool get isUrdu => Get.locale?.languageCode == Constants.URDU_LANGUAGE_CODE;
 
+  StreamSubscription? _subscription;
+  bool isFirstTime = true;
+
   @override
   void onInit() {
     appService = Get.find<AppService>();
@@ -23,26 +28,39 @@ class ReminderController extends GetxController {
     lastOdometer.value = appService.appUser.value.lastOdometer;
   }
 
+  @override
+  void onClose() {
+    _subscription?.cancel();
+    super.onClose();
+  }
+
   Future<void> getReminders() async {
+    _subscription?.cancel();
+
     isLoading.value = true;
-    reminderList.clear();
 
     try {
-      final snapshot = await FirebaseFirestore.instance
+      _subscription = FirebaseFirestore.instance
           .collection(DatabaseTables.USER_PROFILE)
           .doc(appService.appUser.value.id)
           .collection(DatabaseTables.REMINDER)
-          .get();
+          .snapshots()
+          .listen((docSnapshot) {
+            if (docSnapshot.docs.isNotEmpty) {
+              reminderList.value = docSnapshot.docs.map((doc) {
+                return ReminderModel.fromJson(doc.data());
+              }).toList();
 
-      if (snapshot.docs.isNotEmpty) {
-        reminderList.value = snapshot.docs.map((doc) {
-          return ReminderModel.fromJson(doc.data());
-        }).toList();
-
-        await NotificationService().scheduleReminders(reminders: reminderList);
-      }
-
-      isLoading.value = false;
+              if (isFirstTime && reminderList.isNotEmpty) {
+                NotificationService().scheduleReminders(
+                  reminders: reminderList,
+                );
+                isFirstTime = false;
+              }
+              isLoading.value = false;
+            }
+            isLoading.value = false;
+          });
     } catch (e) {
       isLoading.value = false;
       Utils.showSnackBar(message: "something_went_wrong".tr, success: false);
