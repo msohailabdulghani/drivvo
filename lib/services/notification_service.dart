@@ -1,7 +1,9 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:drivvo/model/reminder/reminder_model.dart';
+import 'package:drivvo/services/app_service.dart';
 import 'package:drivvo/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:get/instance_manager.dart';
 import 'package:intl/intl.dart';
 
 class NotificationService {
@@ -67,6 +69,16 @@ class NotificationService {
     required String body,
     required DateTime time,
   }) async {
+    final appService = Get.find<AppService>();
+
+    final tim = appService.appUser.value.notificationTime;
+
+    final parts = tim.split(' ');
+    final timeParts = parts[0].split(':');
+
+    int hour = int.parse(timeParts[0]);
+    int minute = int.parse(timeParts[1]);
+
     await AwesomeNotifications().createNotification(
       content: NotificationContent(
         id: id,
@@ -78,8 +90,8 @@ class NotificationService {
         year: time.year,
         month: time.month,
         day: time.day,
-        hour: time.hour,
-        minute: time.minute,
+        hour: hour,
+        minute: minute,
         second: 0,
         millisecond: 0,
         repeats: false,
@@ -109,8 +121,8 @@ class NotificationService {
         if (time.isAfter(DateTime.now())) {
           await scheduleNotification(
             id: id++,
-            title: "Drivvo Reminder",
-            body: reminder.subType,
+            title: "Reminder",
+            body: "${reminder.subType} Reminder",
             time: time,
           );
         }
@@ -127,13 +139,26 @@ class NotificationService {
 
         if (period == "day") {
           //! for (var date in dateList) {}
+          final appService = Get.find<AppService>();
+
+          final tim = appService.appUser.value.notificationTime;
+
+          final parts = tim.split(' ');
+          final timeParts = parts[0].split(':');
+
+          if (timeParts.length < 2) {
+            throw FormatException('Invalid time format');
+          }
+
+          int hour = int.parse(timeParts[0]);
+          int minute = int.parse(timeParts[1]);
 
           await scheduleDailyReminder(
             id: id++,
-            title: "Daily Reminder",
-            body: "$subType reminder",
-            hour: 12,
-            minute: 0,
+            title: "Reminder",
+            body: "$subType Reminder",
+            hour: hour,
+            minute: minute,
           );
           continue;
         } else {
@@ -146,8 +171,8 @@ class NotificationService {
 
             await scheduleNotification(
               id: id++,
-              title: "Monthly Reminder",
-              body: "$subType reminder",
+              title: "Reminder",
+              body: "$subType Reminder",
               time: time,
             );
           }

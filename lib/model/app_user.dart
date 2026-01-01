@@ -19,6 +19,7 @@ class AppUser {
   late String signInMethod;
   late String password;
   late String confirmPassword;
+  late String notificationTime;
 
   late bool isSubscribed;
   late String productId;
@@ -48,6 +49,7 @@ class AppUser {
     signInMethod = "";
     password = "";
     confirmPassword = "";
+    notificationTime = "12:00 PM";
 
     isSubscribed = false;
     productId = "";
@@ -84,6 +86,7 @@ class AppUser {
     purchaseToken = json["purchaseToken"] ?? "";
 
     lastOdometer = json["last_odometer"] ?? 0;
+    notificationTime = json["notification_time"] ?? "12:00 PM";
 
     refuelingList =
         (json["refueling_list"] as List<dynamic>?)

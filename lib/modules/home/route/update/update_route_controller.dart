@@ -233,7 +233,7 @@ class UpdateRouteController extends GetxController {
         if (model.value.finalOdometer >= lastOdometer.value) {
           batch.update(docRef, {"last_odometer": model.value.finalOdometer});
         }
-        
+
         await batch.commit();
 
         if (Get.isDialogOpen == true) Get.back();

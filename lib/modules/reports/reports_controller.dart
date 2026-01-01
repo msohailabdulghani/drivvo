@@ -546,14 +546,15 @@ class ReportsController extends GetxController
 
   int _calculateRefuelingDistance(List<RefuelingModel> list) {
     if (list.isEmpty) return 0;
-    int minOdometer = 0;
-    int maxOdometer = 0;
-    for (var item in list) {
+
+    int minOdometer = list.first.odometer;
+    int maxOdometer = list.first.odometer;
+    for (var item in list.skip(1)) {
       final odometer = item.odometer;
       if (odometer < minOdometer) minOdometer = odometer;
       if (odometer > maxOdometer) maxOdometer = odometer;
     }
-    return minOdometer == 0 ? 0 : maxOdometer - minOdometer;
+    return maxOdometer - minOdometer;
   }
 
   int _calculateExpenseTotal(List<ExpenseModel> list) {
@@ -566,28 +567,16 @@ class ReportsController extends GetxController
 
   int _calculateExpenseDistance(List<ExpenseModel> list) {
     if (list.isEmpty) return 0;
-    int minOdometer = 0;
-    int maxOdometer = 0;
-    for (var item in list) {
+
+    int minOdometer = list.first.odometer;
+    int maxOdometer = list.first.odometer;
+    for (var item in list.skip(1)) {
       final odometer = item.odometer;
       if (odometer < minOdometer) minOdometer = odometer;
       if (odometer > maxOdometer) maxOdometer = odometer;
     }
-    return minOdometer == 0 ? 0 : maxOdometer - minOdometer;
+    return maxOdometer - minOdometer;
   }
-
-  // int _calculateRefuelingDistance(List<RefuelingModel> list) {
-  //   if (list.isEmpty) return 0;
-
-  //   int minOdometer = list.first.odometer;
-  //   int maxOdometer = list.first.odometer;
-  //   for (var item in list.skip(1)) {
-  //     final odometer = item.odometer;
-  //     if (odometer < minOdometer) minOdometer = odometer;
-  //     if (odometer > maxOdometer) maxOdometer = odometer;
-  //   }
-  //   return maxOdometer - minOdometer;
-  // }
 
   int _calculateIncomeTotal(List<IncomeModel> list) {
     int total = 0;
@@ -599,14 +588,15 @@ class ReportsController extends GetxController
 
   int _calculateIncomeDistance(List<IncomeModel> list) {
     if (list.isEmpty) return 0;
-    int minOdometer = 0;
-    int maxOdometer = 0;
-    for (var item in list) {
+
+    int minOdometer = list.first.odometer;
+    int maxOdometer = list.first.odometer;
+    for (var item in list.skip(1)) {
       final odometer = item.odometer;
       if (odometer < minOdometer) minOdometer = odometer;
       if (odometer > maxOdometer) maxOdometer = odometer;
     }
-    return minOdometer == 0 ? 0 : maxOdometer - minOdometer;
+    return maxOdometer - minOdometer;
   }
 
   int _calculateServiceTotal(List<ServiceModel> list) {
@@ -619,14 +609,15 @@ class ReportsController extends GetxController
 
   int _calculateServiceDistance(List<ServiceModel> list) {
     if (list.isEmpty) return 0;
-    int minOdometer = 0;
-    int maxOdometer = 0;
-    for (var item in list) {
+
+    int minOdometer = list.first.odometer;
+    int maxOdometer = list.first.odometer;
+    for (var item in list.skip(1)) {
       final odometer = item.odometer;
       if (odometer < minOdometer) minOdometer = odometer;
       if (odometer > maxOdometer) maxOdometer = odometer;
     }
-    return minOdometer == 0 ? 0 : maxOdometer - minOdometer;
+    return maxOdometer - minOdometer;
   }
 
   String formatCurrency(int value) {

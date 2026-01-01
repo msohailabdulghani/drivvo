@@ -25,7 +25,7 @@ class Constants {
   // ignore: constant_identifier_names
   static const String FUEL_UNIT = "FuelUnit";
   // ignore: constant_identifier_names
-  static const String GAS_UNIT = "FuelUnit";
+  static const String GAS_UNIT = "GasUnit";
   // ignore: constant_identifier_names
   static const String ONBOARDING = "Onboarding";
   // ignore: constant_identifier_names
@@ -56,6 +56,8 @@ class Constants {
   static const String SERVICE_FILTER = "ServiceFilter";
   // ignore: constant_identifier_names
   static const String ROUTE_FILTER = "RouteFilter";
+  // ignore: constant_identifier_names
+  static const String NOTIFICATION_TIME = "NotificationTime";
 
   // Currency Format Settings
   // ignore: constant_identifier_names

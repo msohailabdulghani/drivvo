@@ -382,7 +382,7 @@ class CreateServiceView extends GetView<CreateServiceController> {
                     obscureText: false,
                     readOnly: false,
                     labelText: "driver".tr,
-                    hintText: "Amir".tr,
+                    hintText: "enter_driver_name".tr,
                     inputAction: TextInputAction.next,
                     type: TextInputType.name,
                     onTap: () {},

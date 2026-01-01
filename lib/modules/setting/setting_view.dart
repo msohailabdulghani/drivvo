@@ -230,30 +230,30 @@ class SettingView extends GetView<SettingController> {
                 isUrdu: controller.isUrdu,
                 color: Utils.appColor,
               ),
-              _buildCard(
-                _buildSettingTile(
-                  icon: Icons.social_distance_outlined,
-                  title: 'distance_in_advance'.tr,
-                  subtitle: controller.distanceInAdvance.value,
-                  onTap: () => _showDistanceInAdvanceDialog(),
-                ),
-              ),
-              SizedBox(height: 10),
-              _buildCard(
-                _buildSettingTile(
-                  icon: Icons.date_range_outlined,
-                  title: 'days_in_advance'.tr,
-                  subtitle: controller.daysInAdvance.value,
-                  onTap: () => _showDaysInAdvanceDialog(),
-                ),
-              ),
-              SizedBox(height: 10),
+              // _buildCard(
+              //   _buildSettingTile(
+              //     icon: Icons.social_distance_outlined,
+              //     title: 'distance_in_advance'.tr,
+              //     subtitle: controller.distanceInAdvance.value,
+              //     onTap: () => _showDistanceInAdvanceDialog(),
+              //   ),
+              // ),
+              // SizedBox(height: 10),
+              // _buildCard(
+              //   _buildSettingTile(
+              //     icon: Icons.date_range_outlined,
+              //     title: 'days_in_advance'.tr,
+              //     subtitle: controller.daysInAdvance.value,
+              //     onTap: () => _showDaysInAdvanceDialog(),
+              //   ),
+              // ),
+              // SizedBox(height: 10),
               _buildCard(
                 _buildSettingTile(
                   icon: Icons.access_time_outlined,
                   title: 'best_time_notifications'.tr,
                   subtitle: controller.bestTimeForNotifications.value,
-                  onTap: () => _showTimePickerDialog(),
+                  onTap: () => controller.showTimePickerDialog(),
                 ),
               ),
               SizedBox(height: 10),
@@ -659,59 +659,36 @@ class SettingView extends GetView<SettingController> {
   }
 
   // Distance in Advance Dialog
-  void _showDistanceInAdvanceDialog() {
-    final distances = [
-      'Show reminder 100 km in advance.',
-      'Show reminder 200 km in advance.',
-      'Show reminder 300 km in advance.',
-      'Show reminder 500 km in advance.',
-    ];
-    _showSelectionDialog(
-      title: 'distance_in_advance'.tr,
-      options: distances,
-      selectedValue: controller.distanceInAdvance.value,
-      onSelected: (value) => controller.distanceInAdvance.value = value,
-    );
-  }
+  // void _showDistanceInAdvanceDialog() {
+  //   final distances = [
+  //     'Show reminder 100 km in advance.',
+  //     'Show reminder 200 km in advance.',
+  //     'Show reminder 300 km in advance.',
+  //     'Show reminder 500 km in advance.',
+  //   ];
+  //   _showSelectionDialog(
+  //     title: 'distance_in_advance'.tr,
+  //     options: distances,
+  //     selectedValue: controller.distanceInAdvance.value,
+  //     onSelected: (value) => controller.distanceInAdvance.value = value,
+  //   );
+  // }
 
   // Days in Advance Dialog
-  void _showDaysInAdvanceDialog() {
-    final days = [
-      'Show reminder 7 days in advance.',
-      'Show reminder 15 days in advance.',
-      'Show reminder 30 days in advance.',
-      'Show reminder 60 days in advance.',
-    ];
-    _showSelectionDialog(
-      title: 'days_in_advance'.tr,
-      options: days,
-      selectedValue: controller.daysInAdvance.value,
-      onSelected: (value) => controller.daysInAdvance.value = value,
-    );
-  }
-
-  // Time Picker Dialog
-  void _showTimePickerDialog() async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: Get.context!,
-      initialTime: TimeOfDay.now(),
-      builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: ColorScheme.light(
-              primary: Utils.appColor,
-              onPrimary: Colors.white,
-              onSurface: Colors.black,
-            ),
-          ),
-          child: child!,
-        );
-      },
-    );
-    if (picked != null) {
-      controller.bestTimeForNotifications.value = picked.format(Get.context!);
-    }
-  }
+  // void _showDaysInAdvanceDialog() {
+  //   final days = [
+  //     'Show reminder 7 days in advance.',
+  //     'Show reminder 15 days in advance.',
+  //     'Show reminder 30 days in advance.',
+  //     'Show reminder 60 days in advance.',
+  //   ];
+  //   _showSelectionDialog(
+  //     title: 'days_in_advance'.tr,
+  //     options: days,
+  //     selectedValue: controller.daysInAdvance.value,
+  //     onSelected: (value) => controller.daysInAdvance.value = value,
+  //   );
+  // }
 
   // Generic Selection Dialog
   void _showSelectionDialog({

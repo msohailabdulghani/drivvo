@@ -1,7 +1,7 @@
-import 'dart:ui';
-
 import 'package:drivvo/services/app_service.dart';
 import 'package:drivvo/utils/constants.dart';
+import 'package:drivvo/utils/utils.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class SettingController extends GetxController {
@@ -26,7 +26,7 @@ class SettingController extends GetxController {
   // Reminders Section
   var distanceInAdvance = 'Show reminder 300 km in advance.'.obs;
   var daysInAdvance = 'Show reminder 30 days in advance.'.obs;
-  var bestTimeForNotifications = '10:30'.obs;
+  var bestTimeForNotifications = '12:00 PM'.obs;
   var refuelingNotifications = true.obs;
   var tirePressureNotifications = true.obs;
   var gasStationNotifications = true.obs;
@@ -35,12 +35,12 @@ class SettingController extends GetxController {
   @override
   void onInit() {
     appService = Get.find<AppService>();
-    _initializeLanguage();
     super.onInit();
 
     selectedDateFormat.value = appService.selectedDateFormat.value;
     selectedFuelUnit.value = appService.fuelUnit.value;
     selectedGasUnit.value = appService.gasUnit.value;
+    bestTimeForNotifications.value = appService.appUser.value.notificationTime;
 
     // Initialize currency format display value from AppService
     _initializeCurrencyFormat();
@@ -53,19 +53,29 @@ class SettingController extends GetxController {
     selectedCurrencyFormat.value = '$name ($code) - $format';
   }
 
-  void _initializeLanguage() {
-    if (isUrdu) {
-      selectedLanguage.value = 'اردو (پاکستان)';
-    } else {
-      selectedLanguage.value = 'English (United States)';
-    }
-  }
-
-  void changeLanguage(String language) {
-    if (language == 'اردو (پاکستان)') {
-      Get.updateLocale(const Locale('ur', 'PK'));
-    } else {
-      Get.updateLocale(const Locale('en', 'US'));
+  void showTimePickerDialog() async {
+    final context = Get.context;
+    if (context == null) return;
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.light(
+              primary: Utils.appColor,
+              onPrimary: Colors.white,
+              onSurface: Colors.black,
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+    if (picked != null) {
+      final time = picked.format(Get.context!);
+      bestTimeForNotifications.value = picked.format(Get.context!);
+      appService.appUser.value.notificationTime = time;
     }
   }
 

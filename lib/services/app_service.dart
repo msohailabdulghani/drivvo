@@ -37,10 +37,9 @@ class AppService extends GetxService {
   String _countryCode = "";
   var savedLanguage = "";
 
-  var selectedDateFormat = "dd MMM yyyy".obs;
-
-  var fuelUnit = "Liter (L)".obs;
   var gasUnit = "m³".obs;
+  var fuelUnit = "Liter (L)".obs;
+  var selectedDateFormat = "dd MMM yyyy".obs;
 
   // Currency format observables
   var selectedCurrencySymbol = "Rs".obs;

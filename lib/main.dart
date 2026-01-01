@@ -25,7 +25,6 @@ Future<void> main() async {
   runApp(MyApp(translations));
 }
 
-
 class MyApp extends StatelessWidget {
   final TranslationService translations;
 
