@@ -10,7 +10,7 @@ abstract class AppRoutes {
   // ignore: constant_identifier_names
   static const FORGOT_PASSWORD_VIEW = '/forgot_password';
   // ignore: constant_identifier_names
-  static const ROOT_VIEW = '/root';
+  static const ADMIN_ROOT_VIEW = '/root';
   // ignore: constant_identifier_names
   static const UPDATE_PROFILE_VIEW = '/update_profile';
   // ignore: constant_identifier_names
@@ -79,4 +79,6 @@ abstract class AppRoutes {
   // ignore: constant_identifier_names
   static const UPDATE_USER_VEHICLE_VIEW =
       '/more/user-vehicle/update_user_vehicle_view';
+  // ignore: constant_identifier_names
+  static const DRIVER_ROOT_VIEW = '/driver_root_view';
 }

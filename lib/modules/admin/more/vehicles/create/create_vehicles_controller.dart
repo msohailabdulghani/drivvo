@@ -69,7 +69,7 @@ class CreateVehiclesController extends GetxController {
           .then(
             (_) {
               if (isFromImportdata.value) {
-                Get.offAllNamed(AppRoutes.ROOT_VIEW);
+                Get.offAllNamed(AppRoutes.ADMIN_ROOT_VIEW);
                 appService.setCurrentVehicle(model.name);
                 appService.setCurrentVehicleId(id);
                 return;

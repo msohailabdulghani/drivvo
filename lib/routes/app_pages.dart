@@ -1,19 +1,3 @@
-import 'package:drivvo/modules/authentication/forgot_password/forgot_password_bindings.dart';
-import 'package:drivvo/modules/authentication/forgot_password/forgot_password_view.dart';
-import 'package:drivvo/modules/authentication/import-data/import_data_bindings.dart';
-import 'package:drivvo/modules/authentication/import-data/import_data_view.dart';
-import 'package:drivvo/modules/authentication/login/login_bindings.dart';
-import 'package:drivvo/modules/authentication/login/login_view.dart';
-import 'package:drivvo/modules/authentication/signup/signup_bindings.dart';
-import 'package:drivvo/modules/authentication/signup/signup_view.dart';
-import 'package:drivvo/modules/common/date-range/date_range_bindings.dart';
-import 'package:drivvo/modules/common/date-range/date_range_view.dart';
-import 'package:drivvo/modules/common/map/map_bindings.dart';
-import 'package:drivvo/modules/common/map/map_view.dart';
-import 'package:drivvo/modules/common/onboarding/onboarding_bindings.dart';
-import 'package:drivvo/modules/common/onboarding/onboarding_view.dart';
-import 'package:drivvo/modules/common/update-profile/update_profile_bindings.dart';
-import 'package:drivvo/modules/common/update-profile/update_profile_view.dart';
 import 'package:drivvo/modules/admin/home/expense/create/create_expense_binding.dart';
 import 'package:drivvo/modules/admin/home/expense/create/create_expense_view.dart';
 import 'package:drivvo/modules/admin/home/expense/type/expense_type_binding.dart';
@@ -70,10 +54,28 @@ import 'package:drivvo/modules/admin/reminder/create/create_reminder_binding.dar
 import 'package:drivvo/modules/admin/reminder/create/create_reminder_view.dart';
 import 'package:drivvo/modules/admin/reminder/update/update_reminder_binding.dart';
 import 'package:drivvo/modules/admin/reminder/update/update_reminder_view.dart';
-import 'package:drivvo/modules/admin/root/root_bindings.dart';
-import 'package:drivvo/modules/admin/root/root_view.dart';
+import 'package:drivvo/modules/admin/root/admin_root_bindings.dart';
+import 'package:drivvo/modules/admin/root/admin_root_view.dart';
 import 'package:drivvo/modules/admin/setting/setting_bindings.dart';
 import 'package:drivvo/modules/admin/setting/setting_view.dart';
+import 'package:drivvo/modules/authentication/forgot_password/forgot_password_bindings.dart';
+import 'package:drivvo/modules/authentication/forgot_password/forgot_password_view.dart';
+import 'package:drivvo/modules/authentication/import-data/import_data_bindings.dart';
+import 'package:drivvo/modules/authentication/import-data/import_data_view.dart';
+import 'package:drivvo/modules/authentication/login/login_bindings.dart';
+import 'package:drivvo/modules/authentication/login/login_view.dart';
+import 'package:drivvo/modules/authentication/signup/signup_bindings.dart';
+import 'package:drivvo/modules/authentication/signup/signup_view.dart';
+import 'package:drivvo/modules/common/date-range/date_range_bindings.dart';
+import 'package:drivvo/modules/common/date-range/date_range_view.dart';
+import 'package:drivvo/modules/common/map/map_bindings.dart';
+import 'package:drivvo/modules/common/map/map_view.dart';
+import 'package:drivvo/modules/common/onboarding/onboarding_bindings.dart';
+import 'package:drivvo/modules/common/onboarding/onboarding_view.dart';
+import 'package:drivvo/modules/common/update-profile/update_profile_bindings.dart';
+import 'package:drivvo/modules/common/update-profile/update_profile_view.dart';
+import 'package:drivvo/modules/driver/root/driver_root_bindings.dart';
+import 'package:drivvo/modules/driver/root/driver_root_view.dart';
 import 'package:drivvo/modules/splash_screen.dart';
 import 'package:drivvo/routes/app_routes.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
@@ -110,9 +112,9 @@ class AppPages {
     ),
 
     GetPage(
-      name: AppRoutes.ROOT_VIEW,
-      page: () => const RootView(),
-      binding: RootBindings(),
+      name: AppRoutes.ADMIN_ROOT_VIEW,
+      page: () => const AdminRootView(),
+      binding: AdminRootBindings(),
       opaque: true,
       transition: Transition.noTransition,
       transitionDuration: const Duration(milliseconds: 0),
@@ -309,6 +311,12 @@ class AppPages {
       name: AppRoutes.UPDATE_USER_VEHICLE_VIEW,
       page: () => const UpdateUserVehicleView(),
       binding: UpdateUserVehicleBindings(),
+    ),
+
+    GetPage(
+      name: AppRoutes.DRIVER_ROOT_VIEW,
+      page: () => const DriverRootView(),
+      binding: DriverRootBindings(),
     ),
   ];
 }

@@ -6,7 +6,7 @@ import 'package:drivvo/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class RootController extends GetxController {
+class AdminRootController extends GetxController {
   final currentIndex = 0.obs;
   bool get isUrdu => Get.locale?.languageCode == Constants.URDU_LANGUAGE_CODE;
 

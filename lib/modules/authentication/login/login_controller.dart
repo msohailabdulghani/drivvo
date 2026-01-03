@@ -147,10 +147,10 @@ class LoginController extends GetxController {
 
         if (appService.importData) {
           if (userData.userType.toLowerCase() == Constants.ADMIN) {
-            Get.offAllNamed(AppRoutes.ROOT_VIEW);
+            Get.offAllNamed(AppRoutes.ADMIN_ROOT_VIEW);
           }
           if (userData.userType.toLowerCase() == Constants.DRIVER) {
-            Get.offAllNamed(AppRoutes.ROOT_VIEW);
+            Get.offAllNamed(AppRoutes.DRIVER_ROOT_VIEW);
           }
         } else {
           Get.offAllNamed(AppRoutes.IMPORT_DATA_VIEW);

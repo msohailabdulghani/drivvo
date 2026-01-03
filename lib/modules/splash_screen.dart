@@ -1,5 +1,6 @@
 import 'package:drivvo/routes/app_routes.dart';
 import 'package:drivvo/services/app_service.dart';
+import 'package:drivvo/utils/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -24,7 +25,12 @@ class _SplashScreenState extends State<SplashScreen> {
         if (user != null) {
           if (appService.currentVehicleId.isNotEmpty) {
             if (appService.importData) {
-              Get.offAllNamed(AppRoutes.ROOT_VIEW);
+              if (appService.appUser.value.userType.toLowerCase() ==
+                  Constants.ADMIN) {
+                Get.offAllNamed(AppRoutes.ADMIN_ROOT_VIEW);
+              } else {
+                Get.offAllNamed(AppRoutes.DRIVER_ROOT_VIEW);
+              }
             }
           } else {
             Get.offAllNamed(AppRoutes.IMPORT_DATA_VIEW);
