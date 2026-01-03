@@ -1,18 +1,19 @@
-Date : 2025-12-29 17:48:53
+Date : 2026-01-03 14:11:10
 Directory : e:\Development\Multan\Xtra App Studio\3.35.4\drivvo
-Total : 214 files,  26522 codes, 1333 comments, 1966 blanks, all 29821 lines
+Total : 241 files,  38401 codes, 1464 comments, 2337 blanks, all 42202 lines
 
 Languages
 +------------+------------+------------+------------+------------+------------+
 | language   | files      | code       | comment    | blank      | total      |
 +------------+------------+------------+------------+------------+------------+
-| Dart       |        160 |     23,640 |      1,052 |      1,605 |     26,297 |
-| JSON       |          7 |      1,205 |          0 |          4 |      1,209 |
-| C++        |         16 |        567 |        135 |        191 |        893 |
-| XML        |         10 |        480 |         55 |         18 |        553 |
-| CMake      |          8 |        467 |          0 |         92 |        559 |
-| Swift      |          6 |         69 |          7 |         21 |         97 |
-| YAML       |          2 |         52 |         69 |         20 |        141 |
+| Dart       |        184 |     27,924 |      1,144 |      1,945 |     31,013 |
+| JSON       |          9 |      8,563 |          0 |          6 |      8,569 |
+| C++        |         16 |        574 |        135 |        191 |        900 |
+| XML        |         10 |        500 |         55 |         21 |        576 |
+| CMake      |          8 |        469 |          0 |         92 |        561 |
+| JavaScript |          1 |        202 |         39 |         24 |        265 |
+| Swift      |          6 |         73 |          7 |         21 |        101 |
+| YAML       |          2 |         54 |         69 |         22 |        145 |
 | HTML       |          1 |         19 |         15 |          5 |         39 |
 | Markdown   |          2 |         13 |          0 |          9 |         22 |
 | Properties |          2 |         10 |          0 |          1 |         11 |
@@ -22,15 +23,15 @@ Directories
 +--------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
 | path                                                                                                                           | files      | code       | comment    | blank      | total      |
 +--------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
-| .                                                                                                                              |        214 |     26,522 |      1,333 |      1,966 |     29,821 |
-| . (Files)                                                                                                                      |          4 |         82 |         69 |         27 |        178 |
-| android                                                                                                                        |          9 |         86 |         53 |         16 |        155 |
+| .                                                                                                                              |        241 |     38,401 |      1,464 |      2,337 |     42,202 |
+| . (Files)                                                                                                                      |          4 |         84 |         69 |         29 |        182 |
+| android                                                                                                                        |          9 |        106 |         53 |         19 |        178 |
 | android (Files)                                                                                                                |          1 |          5 |          0 |          0 |          5 |
-| android\app                                                                                                                    |          7 |         76 |         53 |         15 |        144 |
-| android\app\src                                                                                                                |          7 |         76 |         53 |         15 |        144 |
+| android\app                                                                                                                    |          7 |         96 |         53 |         18 |        167 |
+| android\app\src                                                                                                                |          7 |         96 |         53 |         18 |        167 |
 | android\app\src\debug                                                                                                          |          1 |          3 |          4 |          1 |          8 |
-| android\app\src\main                                                                                                           |          5 |         70 |         45 |         13 |        128 |
-| android\app\src\main (Files)                                                                                                   |          1 |         44 |         13 |          7 |         64 |
+| android\app\src\main                                                                                                           |          5 |         90 |         45 |         16 |        151 |
+| android\app\src\main (Files)                                                                                                   |          1 |         64 |         13 |         10 |         87 |
 | android\app\src\main\res                                                                                                       |          4 |         26 |         32 |          6 |         64 |
 | android\app\src\main\res\drawable                                                                                              |          1 |          4 |          7 |          2 |         13 |
 | android\app\src\main\res\drawable-v21                                                                                          |          1 |          4 |          7 |          2 |         13 |
@@ -39,8 +40,9 @@ Directories
 | android\app\src\profile                                                                                                        |          1 |          3 |          4 |          1 |          8 |
 | android\gradle                                                                                                                 |          1 |          5 |          0 |          1 |          6 |
 | android\gradle\wrapper                                                                                                         |          1 |          5 |          0 |          1 |          6 |
-| assets                                                                                                                         |          2 |        937 |          0 |          0 |        937 |
-| assets\lang                                                                                                                    |          2 |        937 |          0 |          0 |        937 |
+| assets                                                                                                                         |          2 |      1,061 |          0 |          0 |      1,061 |
+| assets\lang                                                                                                                    |          2 |      1,061 |          0 |          0 |      1,061 |
+| functions                                                                                                                      |          3 |      7,436 |         39 |         26 |      7,501 |
 | ios                                                                                                                            |          8 |        229 |          4 |         13 |        246 |
 | ios\Runner                                                                                                                     |          7 |        222 |          2 |          9 |        233 |
 | ios\Runner (Files)                                                                                                             |          2 |         13 |          0 |          3 |         16 |
@@ -49,94 +51,103 @@ Directories
 | ios\Runner\Assets.xcassets\AppIcon.appiconset                                                                                  |          1 |        122 |          0 |          1 |        123 |
 | ios\Runner\Assets.xcassets\LaunchImage.imageset                                                                                |          2 |         26 |          0 |          3 |         29 |
 | ios\Runner\Base.lproj                                                                                                          |          2 |         61 |          2 |          2 |         65 |
-| lib                                                                                                                            |        159 |     23,626 |      1,042 |      1,598 |     26,266 |
-| lib (Files)                                                                                                                    |          1 |         38 |          0 |          9 |         47 |
-| lib\custom-widget                                                                                                              |         33 |      2,722 |          8 |        180 |      2,910 |
+| lib                                                                                                                            |        183 |     27,908 |      1,134 |      1,939 |     30,981 |
+| lib (Files)                                                                                                                    |          1 |         40 |          0 |          9 |         49 |
+| lib\custom-widget                                                                                                              |         34 |      2,771 |         20 |        184 |      2,975 |
 | lib\custom-widget\button                                                                                                       |          5 |        237 |          1 |         20 |        258 |
-| lib\custom-widget\common                                                                                                       |          9 |        264 |          0 |         37 |        301 |
+| lib\custom-widget\common                                                                                                       |         10 |        313 |         12 |         41 |        366 |
 | lib\custom-widget\reminder                                                                                                     |          1 |         42 |          0 |          5 |         47 |
 | lib\custom-widget\report                                                                                                       |         12 |      1,770 |          7 |         94 |      1,871 |
 | lib\custom-widget\report (Files)                                                                                               |          4 |        355 |          0 |         15 |        370 |
 | lib\custom-widget\report\charts                                                                                                |          8 |      1,415 |          7 |         79 |      1,501 |
 | lib\custom-widget\text-input-field                                                                                             |          6 |        409 |          0 |         24 |        433 |
-| lib\model                                                                                                                      |         13 |        731 |          9 |         77 |        817 |
-| lib\model (Files)                                                                                                              |          5 |        222 |          6 |         37 |        265 |
+| lib\model                                                                                                                      |         14 |        762 |          9 |         88 |        859 |
+| lib\model (Files)                                                                                                              |          6 |        255 |          6 |         46 |        307 |
 | lib\model\expense                                                                                                              |          2 |        103 |          3 |         11 |        117 |
 | lib\model\income                                                                                                               |          1 |         53 |          0 |          5 |         58 |
 | lib\model\refueling                                                                                                            |          1 |         73 |          0 |          5 |         78 |
-| lib\model\reminders                                                                                                            |          1 |         39 |          0 |          5 |         44 |
+| lib\model\reminder                                                                                                             |          1 |         34 |          0 |          4 |         38 |
 | lib\model\route                                                                                                                |          1 |         77 |          0 |          5 |         82 |
 | lib\model\service                                                                                                              |          1 |         94 |          0 |          5 |         99 |
-| lib\model\vehicle                                                                                                              |          1 |         70 |          0 |          4 |         74 |
-| lib\modules                                                                                                                    |        103 |     18,836 |        874 |      1,198 |     20,908 |
+| lib\model\vehicle                                                                                                              |          1 |         73 |          0 |          7 |         80 |
+| lib\modules                                                                                                                    |        124 |     22,116 |        917 |      1,448 |     24,481 |
 | lib\modules (Files)                                                                                                            |          1 |         80 |          0 |          6 |         86 |
-| lib\modules\authentication                                                                                                     |         12 |      1,143 |         18 |         87 |      1,248 |
+| lib\modules\authentication                                                                                                     |         12 |      1,155 |         21 |         95 |      1,271 |
 | lib\modules\authentication\forgot_password                                                                                     |          3 |        176 |         13 |         17 |        206 |
 | lib\modules\authentication\import-data                                                                                         |          3 |        164 |          1 |         12 |        177 |
-| lib\modules\authentication\login                                                                                               |          3 |        426 |          4 |         31 |        461 |
-| lib\modules\authentication\signup                                                                                              |          3 |        377 |          0 |         27 |        404 |
-| lib\modules\common                                                                                                             |         15 |      1,570 |        129 |        133 |      1,832 |
+| lib\modules\authentication\login                                                                                               |          3 |        420 |          4 |         32 |        456 |
+| lib\modules\authentication\signup                                                                                              |          3 |        395 |          3 |         34 |        432 |
+| lib\modules\common                                                                                                             |         15 |      1,620 |        129 |        135 |      1,884 |
 | lib\modules\common\date-range                                                                                                  |          3 |        154 |          6 |          8 |        168 |
 | lib\modules\common\map                                                                                                         |          3 |        582 |         61 |         66 |        709 |
 | lib\modules\common\onboarding                                                                                                  |          3 |        254 |          3 |         21 |        278 |
-| lib\modules\common\update-profile                                                                                              |          3 |        525 |         48 |         29 |        602 |
+| lib\modules\common\update-profile                                                                                              |          3 |        575 |         48 |         31 |        654 |
 | lib\modules\common\view-photo                                                                                                  |          3 |         55 |         11 |          9 |         75 |
-| lib\modules\home                                                                                                               |         42 |     10,287 |        515 |        614 |     11,416 |
-| lib\modules\home (Files)                                                                                                       |          3 |      2,299 |        174 |        108 |      2,581 |
-| lib\modules\home\expense                                                                                                       |          9 |      1,701 |         61 |        108 |      1,870 |
-| lib\modules\home\expense\create                                                                                                |          3 |        695 |         22 |         38 |        755 |
+| lib\modules\home                                                                                                               |         42 |     10,933 |        381 |        678 |     11,992 |
+| lib\modules\home (Files)                                                                                                       |          3 |      2,305 |        174 |        108 |      2,587 |
+| lib\modules\home\expense                                                                                                       |          9 |      1,832 |         75 |        123 |      2,030 |
+| lib\modules\home\expense\create                                                                                                |          3 |        760 |         18 |         43 |        821 |
 | lib\modules\home\expense\type                                                                                                  |          3 |        270 |         35 |         29 |        334 |
-| lib\modules\home\expense\update                                                                                                |          3 |        736 |          4 |         41 |        781 |
+| lib\modules\home\expense\update                                                                                                |          3 |        802 |         22 |         51 |        875 |
 | lib\modules\home\filter                                                                                                        |          3 |        438 |         21 |         26 |        485 |
-| lib\modules\home\income                                                                                                        |          6 |      1,015 |         25 |         76 |      1,116 |
-| lib\modules\home\income\create                                                                                                 |          3 |        496 |         19 |         39 |        554 |
-| lib\modules\home\income\update                                                                                                 |          3 |        519 |          6 |         37 |        562 |
-| lib\modules\home\refueling                                                                                                     |          6 |      1,686 |        125 |        105 |      1,916 |
-| lib\modules\home\refueling\create                                                                                              |          3 |        854 |        124 |         54 |      1,032 |
-| lib\modules\home\refueling\update                                                                                              |          3 |        832 |          1 |         51 |        884 |
-| lib\modules\home\route                                                                                                         |          6 |      1,442 |         42 |         83 |      1,567 |
-| lib\modules\home\route\create                                                                                                  |          3 |        714 |         41 |         42 |        797 |
-| lib\modules\home\route\update                                                                                                  |          3 |        728 |          1 |         41 |        770 |
-| lib\modules\home\service                                                                                                       |          9 |      1,706 |         67 |        108 |      1,881 |
-| lib\modules\home\service\create                                                                                                |          3 |        700 |         29 |         42 |        771 |
+| lib\modules\home\income                                                                                                        |          6 |      1,119 |         23 |         90 |      1,232 |
+| lib\modules\home\income\create                                                                                                 |          3 |        547 |         19 |         45 |        611 |
+| lib\modules\home\income\update                                                                                                 |          3 |        572 |          4 |         45 |        621 |
+| lib\modules\home\refueling                                                                                                     |          6 |      1,842 |         12 |        114 |      1,968 |
+| lib\modules\home\refueling\create                                                                                              |          3 |        919 |         10 |         58 |        987 |
+| lib\modules\home\refueling\update                                                                                              |          3 |        923 |          2 |         56 |        981 |
+| lib\modules\home\route                                                                                                         |          6 |      1,568 |          8 |         95 |      1,671 |
+| lib\modules\home\route\create                                                                                                  |          3 |        779 |          6 |         46 |        831 |
+| lib\modules\home\route\update                                                                                                  |          3 |        789 |          2 |         49 |        840 |
+| lib\modules\home\service                                                                                                       |          9 |      1,829 |         68 |        122 |      2,019 |
+| lib\modules\home\service\create                                                                                                |          3 |        768 |         29 |         48 |        845 |
 | lib\modules\home\service\type                                                                                                  |          3 |        270 |         35 |         27 |        332 |
-| lib\modules\home\service\update                                                                                                |          3 |        736 |          3 |         39 |        778 |
-| lib\modules\more                                                                                                               |         20 |      3,614 |         19 |        193 |      3,826 |
-| lib\modules\more (Files)                                                                                                       |          2 |        648 |          4 |         20 |        672 |
-| lib\modules\more\general                                                                                                       |          6 |        761 |          3 |         59 |        823 |
-| lib\modules\more\general (Files)                                                                                               |          3 |        320 |          1 |         27 |        348 |
-| lib\modules\more\general\create                                                                                                |          3 |        441 |          2 |         32 |        475 |
-| lib\modules\more\plan                                                                                                          |          3 |        379 |          0 |         14 |        393 |
-| lib\modules\more\vehicles                                                                                                      |          9 |      1,826 |         12 |        100 |      1,938 |
-| lib\modules\more\vehicles (Files)                                                                                              |          3 |        253 |          0 |         18 |        271 |
-| lib\modules\more\vehicles\create                                                                                               |          3 |        788 |          6 |         40 |        834 |
-| lib\modules\more\vehicles\update                                                                                               |          3 |        785 |          6 |         42 |        833 |
-| lib\modules\reminder                                                                                                           |          5 |        434 |          0 |         30 |        464 |
-| lib\modules\reminder (Files)                                                                                                   |          2 |         62 |          0 |          6 |         68 |
-| lib\modules\reminder\create                                                                                                    |          3 |        372 |          0 |         24 |        396 |
-| lib\modules\reports                                                                                                            |          2 |        992 |         81 |         90 |      1,163 |
+| lib\modules\home\service\update                                                                                                |          3 |        791 |          4 |         47 |        842 |
+| lib\modules\more                                                                                                               |         38 |      5,245 |         83 |        321 |      5,649 |
+| lib\modules\more (Files)                                                                                                       |          2 |        618 |         42 |         20 |        680 |
+| lib\modules\more\about_us                                                                                                      |          3 |        332 |         10 |         28 |        370 |
+| lib\modules\more\general                                                                                                       |          6 |        789 |          3 |         62 |        854 |
+| lib\modules\more\general (Files)                                                                                               |          3 |        353 |          1 |         29 |        383 |
+| lib\modules\more\general\create                                                                                                |          3 |        436 |          2 |         33 |        471 |
+| lib\modules\more\plan                                                                                                          |          3 |        336 |          0 |         14 |        350 |
+| lib\modules\more\user                                                                                                          |          9 |        870 |          7 |         60 |        937 |
+| lib\modules\more\user (Files)                                                                                                  |          3 |        242 |          1 |         18 |        261 |
+| lib\modules\more\user-vehicle                                                                                                  |          6 |        474 |          9 |         36 |        519 |
+| lib\modules\more\user-vehicle (Files)                                                                                          |          3 |        264 |          9 |         18 |        291 |
+| lib\modules\more\user-vehicle\create                                                                                           |          3 |        210 |          0 |         18 |        228 |
+| lib\modules\more\user\create                                                                                                   |          3 |        355 |          4 |         25 |        384 |
+| lib\modules\more\user\update                                                                                                   |          3 |        273 |          2 |         17 |        292 |
+| lib\modules\more\vehicles                                                                                                      |          9 |      1,826 |         12 |        101 |      1,939 |
+| lib\modules\more\vehicles (Files)                                                                                              |          3 |        279 |          0 |         19 |        298 |
+| lib\modules\more\vehicles\create                                                                                               |          3 |        782 |          6 |         40 |        828 |
+| lib\modules\more\vehicles\update                                                                                               |          3 |        765 |          6 |         42 |        813 |
+| lib\modules\reminder                                                                                                           |          8 |      1,247 |          1 |         73 |      1,321 |
+| lib\modules\reminder (Files)                                                                                                   |          2 |        263 |          1 |         18 |        282 |
+| lib\modules\reminder\create                                                                                                    |          3 |        483 |          0 |         27 |        510 |
+| lib\modules\reminder\update                                                                                                    |          3 |        501 |          0 |         28 |        529 |
+| lib\modules\reports                                                                                                            |          2 |        978 |         95 |         93 |      1,166 |
 | lib\modules\root                                                                                                               |          3 |        155 |         71 |         14 |        240 |
-| lib\modules\setting                                                                                                            |          3 |        561 |         41 |         31 |        633 |
-| lib\routes                                                                                                                     |          2 |        256 |         31 |         29 |        316 |
-| lib\services                                                                                                                   |          3 |        335 |         15 |         66 |        416 |
-| lib\utils                                                                                                                      |          4 |        708 |        105 |         39 |        852 |
-| linux                                                                                                                          |          9 |        338 |         41 |         94 |        473 |
+| lib\modules\setting                                                                                                            |          3 |        703 |        136 |         33 |        872 |
+| lib\routes                                                                                                                     |          2 |        313 |         38 |         36 |        387 |
+| lib\services                                                                                                                   |          4 |        578 |         31 |        113 |        722 |
+| lib\utils                                                                                                                      |          4 |      1,328 |        119 |         61 |      1,508 |
+| linux                                                                                                                          |          9 |        343 |         41 |         94 |        478 |
 | linux (Files)                                                                                                                  |          1 |        104 |          0 |         25 |        129 |
-| linux\flutter                                                                                                                  |          4 |        110 |          9 |         27 |        146 |
+| linux\flutter                                                                                                                  |          4 |        115 |          9 |         27 |        151 |
 | linux\runner                                                                                                                   |          4 |        124 |         32 |         42 |        198 |
-| macos                                                                                                                          |          6 |        461 |          5 |         17 |        483 |
-| macos\Flutter                                                                                                                  |          1 |         20 |          3 |          4 |         27 |
+| macos                                                                                                                          |          6 |        465 |          5 |         17 |        487 |
+| macos\Flutter                                                                                                                  |          1 |         24 |          3 |          4 |         31 |
 | macos\Runner                                                                                                                   |          4 |        434 |          0 |          9 |        443 |
 | macos\Runner (Files)                                                                                                           |          2 |         23 |          0 |          7 |         30 |
 | macos\RunnerTests                                                                                                              |          1 |          7 |          2 |          4 |         13 |
 | macos\Runner\Assets.xcassets                                                                                                   |          1 |         68 |          0 |          1 |         69 |
 | macos\Runner\Assets.xcassets\AppIcon.appiconset                                                                                |          1 |         68 |          0 |          1 |         69 |
 | macos\Runner\Base.lproj                                                                                                        |          1 |        343 |          0 |          1 |        344 |
-| test                                                                                                                           |          1 |         14 |         10 |          7 |         31 |
+| test                                                                                                                           |          1 |         16 |         10 |          6 |         32 |
 | web                                                                                                                            |          2 |         54 |         15 |          6 |         75 |
-| windows                                                                                                                        |         14 |        695 |         94 |        188 |        977 |
+| windows                                                                                                                        |         14 |        699 |         94 |        188 |        981 |
 | windows (Files)                                                                                                                |          1 |         89 |          0 |         20 |        109 |
-| windows\flutter                                                                                                                |          4 |        144 |          9 |         29 |        182 |
+| windows\flutter                                                                                                                |          4 |        148 |          9 |         29 |        186 |
 | windows\runner                                                                                                                 |          9 |        462 |         85 |        139 |        686 |
 +--------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
 
@@ -147,7 +158,7 @@ Files
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\README.md                                                                  | Markdown   |         10 |          0 |          7 |         17 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\analysis_options.yaml                                                      | YAML       |          3 |         22 |          4 |         29 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\android\app\src\debug\AndroidManifest.xml                                  | XML        |          3 |          4 |          1 |          8 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\android\app\src\main\AndroidManifest.xml                                   | XML        |         44 |         13 |          7 |         64 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\android\app\src\main\AndroidManifest.xml                                   | XML        |         64 |         13 |         10 |         87 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\android\app\src\main\res\drawable-v21\launch_background.xml                | XML        |          4 |          7 |          2 |         13 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\android\app\src\main\res\drawable\launch_background.xml                    | XML        |          4 |          7 |          2 |         13 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\android\app\src\main\res\values-night\styles.xml                           | XML        |          9 |          9 |          1 |         19 |
@@ -155,9 +166,12 @@ Files
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\android\app\src\profile\AndroidManifest.xml                                | XML        |          3 |          4 |          1 |          8 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\android\gradle.properties                                                  | Properties |          5 |          0 |          0 |          5 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\android\gradle\wrapper\gradle-wrapper.properties                           | Properties |          5 |          0 |          1 |          6 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\assets\lang\en_US.json                                                     | JSON       |        470 |          0 |          0 |        470 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\assets\lang\ur_PK.json                                                     | JSON       |        467 |          0 |          0 |        467 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\assets\lang\en_US.json                                                     | JSON       |        532 |          0 |          0 |        532 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\assets\lang\ur_PK.json                                                     | JSON       |        529 |          0 |          0 |        529 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\firestore.indexes.json                                                     | JSON       |         20 |          0 |          0 |         20 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\functions\index.js                                                         | JavaScript |        202 |         39 |         24 |        265 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\functions\package-lock.json                                                | JSON       |      7,210 |          0 |          1 |      7,211 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\functions\package.json                                                     | JSON       |         24 |          0 |          1 |         25 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\ios\RunnerTests\RunnerTests.swift                                          | Swift      |          7 |          2 |          4 |         13 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\ios\Runner\AppDelegate.swift                                               | Swift      |         12 |          0 |          2 |         14 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\ios\Runner\Assets.xcassets\AppIcon.appiconset\Contents.json                | JSON       |        122 |          0 |          1 |        123 |
@@ -173,11 +187,12 @@ Files
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\custom-widget\button\premimum_button.dart                              | Dart       |         94 |          1 |          5 |        100 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\custom-widget\common\build_custom_card.dart                            | Dart       |         18 |          0 |          4 |         22 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\custom-widget\common\card_header_text.dart                             | Dart       |         28 |          0 |          4 |         32 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\custom-widget\common\confilcting_crad.dart                             | Dart       |         53 |          0 |          4 |         57 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\custom-widget\common\custom_app_bar.dart                               | Dart       |         48 |          0 |          5 |         53 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\custom-widget\common\error_refresh_view.dart                           | Dart       |         17 |          0 |          4 |         21 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\custom-widget\common\icon_with_text.dart                               | Dart       |         35 |          0 |          4 |         39 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\custom-widget\common\label_text.dart                                   | Dart       |         19 |          0 |          4 |         23 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\custom-widget\common\profile_image.dart                                | Dart       |         49 |          0 |          5 |         54 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\custom-widget\common\profile_image.dart                                | Dart       |         45 |         12 |          5 |         62 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\custom-widget\common\profile_network_image.dart                        | Dart       |         36 |          0 |          4 |         40 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\custom-widget\common\refresh_indicator_view.dart                       | Dart       |         14 |          0 |          3 |         17 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\custom-widget\reminder\custom_toggle_btn.dart                          | Dart       |         42 |          0 |          5 |         47 |
@@ -199,20 +214,21 @@ Files
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\custom-widget\text-input-field\search_text_input_field.dart            | Dart       |         59 |          0 |          4 |         63 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\custom-widget\text-input-field\text_input_field.dart                   | Dart       |         84 |          0 |          4 |         88 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\custom-widget\text-input-field\text_input_field_with_controller.dart   | Dart       |         93 |          0 |          4 |         97 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\main.dart                                                              | Dart       |         38 |          0 |          9 |         47 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\model\app_user.dart                                                    | Dart       |        111 |          0 |         18 |        129 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\main.dart                                                              | Dart       |         40 |          0 |          9 |         49 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\model\app_user.dart                                                    | Dart       |        128 |          0 |         23 |        151 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\model\date_range_model.dart                                            | Dart       |         14 |          0 |          2 |         16 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\model\expense\expense_model.dart                                       | Dart       |         70 |          0 |          5 |         75 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\model\expense\expense_type_model.dart                                  | Dart       |         33 |          3 |          6 |         42 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\model\general_model.dart                                               | Dart       |         28 |          0 |          4 |         32 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\model\income\income_model.dart                                         | Dart       |         53 |          0 |          5 |         58 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\model\last_record_model.dart                                           | Dart       |         16 |          0 |          4 |         20 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\model\onboarding_model.dart                                            | Dart       |         10 |          0 |          2 |         12 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\model\refueling\refueling_model.dart                                   | Dart       |         73 |          0 |          5 |         78 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\model\reminders\reminder_model.dart                                    | Dart       |         39 |          0 |          5 |         44 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\model\reminder\reminder_model.dart                                     | Dart       |         34 |          0 |          4 |         38 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\model\route\route_model.dart                                           | Dart       |         77 |          0 |          5 |         82 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\model\service\service_model.dart                                       | Dart       |         94 |          0 |          5 |         99 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\model\timeline_entry.dart                                              | Dart       |         59 |          6 |         11 |         76 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\model\vehicle\vehicle_model.dart                                       | Dart       |         70 |          0 |          4 |         74 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\model\vehicle\vehicle_model.dart                                       | Dart       |         73 |          0 |          7 |         80 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\authentication\forgot_password\forgot_password_bindings.dart   | Dart       |          8 |          0 |          2 |         10 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\authentication\forgot_password\forgot_password_controller.dart | Dart       |         50 |         13 |          9 |         72 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\authentication\forgot_password\forgot_password_view.dart       | Dart       |        118 |          0 |          6 |        124 |
@@ -220,10 +236,10 @@ Files
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\authentication\import-data\import_data_controller.dart         | Dart       |         17 |          0 |          5 |         22 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\authentication\import-data\import_data_view.dart               | Dart       |        139 |          1 |          4 |        144 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\authentication\login\login_bindings.dart                       | Dart       |          8 |          0 |          3 |         11 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\authentication\login\login_controller.dart                     | Dart       |        196 |          4 |         23 |        223 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\authentication\login\login_controller.dart                     | Dart       |        190 |          4 |         24 |        218 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\authentication\login\login_view.dart                           | Dart       |        222 |          0 |          5 |        227 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\authentication\signup\signup_bindings.dart                     | Dart       |          8 |          0 |          2 |         10 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\authentication\signup\signup_controller.dart                   | Dart       |        100 |          0 |         18 |        118 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\authentication\signup\signup_controller.dart                   | Dart       |        118 |          3 |         25 |        146 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\authentication\signup\signup_view.dart                         | Dart       |        269 |          0 |          7 |        276 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\common\date-range\date_range_bindings.dart                     | Dart       |          8 |          0 |          2 |         10 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\common\date-range\date_range_controller.dart                   | Dart       |         18 |          2 |          3 |         23 |
@@ -236,119 +252,141 @@ Files
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\common\onboarding\onboarding_view.dart                         | Dart       |        190 |          2 |          9 |        201 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\common\update-profile\update_profile_bindings.dart             | Dart       |          8 |          0 |          2 |         10 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\common\update-profile\update_profile_controller.dart           | Dart       |        133 |         47 |         21 |        201 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\common\update-profile\update_profile_view.dart                 | Dart       |        384 |          1 |          6 |        391 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\common\update-profile\update_profile_view.dart                 | Dart       |        434 |          1 |          8 |        443 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\common\view-photo\view_photo_binding.dart                      | Dart       |          8 |          0 |          2 |         10 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\common\view-photo\view_photo_controller.dart                   | Dart       |         14 |          0 |          4 |         18 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\common\view-photo\view_photo_view.dart                         | Dart       |         33 |         11 |          3 |         47 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\expense\create\create_expense_binding.dart                | Dart       |          8 |          0 |          2 |         10 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\expense\create\create_expense_controller.dart             | Dart       |        148 |          1 |         28 |        177 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\expense\create\create_expense_view.dart                   | Dart       |        539 |         21 |          8 |        568 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\expense\create\create_expense_controller.dart             | Dart       |        173 |          1 |         34 |        208 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\expense\create\create_expense_view.dart                   | Dart       |        579 |         17 |          7 |        603 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\expense\type\expense_type_binding.dart                    | Dart       |          8 |          0 |          2 |         10 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\expense\type\expense_type_controller.dart                 | Dart       |         92 |          0 |         23 |        115 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\expense\type\expense_type_view.dart                       | Dart       |        170 |         35 |          4 |        209 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\expense\update\update_expense_binding.dart                | Dart       |          8 |          0 |          2 |         10 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\expense\update\update_expense_controller.dart             | Dart       |        171 |          3 |         31 |        205 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\expense\update\update_expense_view.dart                   | Dart       |        557 |          1 |          8 |        566 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\expense\update\update_expense_controller.dart             | Dart       |        194 |         21 |         41 |        256 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\expense\update\update_expense_view.dart                   | Dart       |        600 |          1 |          8 |        609 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\filter\home_filter_binding.dart                           | Dart       |          8 |          0 |          2 |         10 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\filter\home_filter_controller.dart                        | Dart       |         86 |          3 |         10 |         99 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\filter\home_filter_view.dart                              | Dart       |        344 |         18 |         14 |        376 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\home_controller.dart                                      | Dart       |        392 |         43 |         49 |        484 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\home_view.dart                                            | Dart       |        966 |         65 |         29 |      1,060 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\home_view.dart                                            | Dart       |        972 |         65 |         29 |      1,066 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\home_view_copy.dart                                       | Dart       |        941 |         66 |         30 |      1,037 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\income\create\create_income_binding.dart                  | Dart       |          8 |          0 |          2 |         10 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\income\create\create_income_controller.dart               | Dart       |        127 |          2 |         28 |        157 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\income\create\create_income_view.dart                     | Dart       |        361 |         17 |          9 |        387 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\income\create\create_income_controller.dart               | Dart       |        152 |          2 |         34 |        188 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\income\create\create_income_view.dart                     | Dart       |        387 |         17 |          9 |        413 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\income\update\update_income_binding.dart                  | Dart       |          8 |          0 |          2 |         10 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\income\update\update_income_controller.dart               | Dart       |        140 |          6 |         27 |        173 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\income\update\update_income_view.dart                     | Dart       |        371 |          0 |          8 |        379 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\income\update\update_income_controller.dart               | Dart       |        163 |          4 |         35 |        202 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\income\update\update_income_view.dart                     | Dart       |        401 |          0 |          8 |        409 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\refueling\create\create_refueling_binding.dart            | Dart       |          8 |          0 |          2 |         10 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\refueling\create\create_refueling_controller.dart         | Dart       |        261 |          9 |         43 |        313 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\refueling\create\create_refueling_view.dart               | Dart       |        585 |        115 |          9 |        709 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\refueling\create\create_refueling_controller.dart         | Dart       |        254 |          9 |         47 |        310 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\refueling\create\create_refueling_view.dart               | Dart       |        657 |          1 |          9 |        667 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\refueling\update\update_refueling_binding.dart            | Dart       |          8 |          0 |          2 |         10 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\refueling\update\update_refueling_controller.dart         | Dart       |        263 |          1 |         41 |        305 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\refueling\update\update_refueling_view.dart               | Dart       |        561 |          0 |          8 |        569 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\refueling\update\update_refueling_controller.dart         | Dart       |        273 |          2 |         46 |        321 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\refueling\update\update_refueling_view.dart               | Dart       |        642 |          0 |          8 |        650 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\route\create\create_route_binding.dart                    | Dart       |          8 |          0 |          2 |         10 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\route\create\create_route_controller.dart                 | Dart       |        178 |          2 |         32 |        212 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\route\create\create_route_view.dart                       | Dart       |        528 |         39 |          8 |        575 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\route\create\create_route_controller.dart                 | Dart       |        201 |          1 |         36 |        238 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\route\create\create_route_view.dart                       | Dart       |        570 |          5 |          8 |        583 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\route\update\update_route_binding.dart                    | Dart       |          8 |          0 |          2 |         10 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\route\update\update_route_controller.dart                 | Dart       |        193 |          1 |         31 |        225 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\route\update\update_route_view.dart                       | Dart       |        527 |          0 |          8 |        535 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\route\update\update_route_controller.dart                 | Dart       |        215 |          2 |         39 |        256 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\route\update\update_route_view.dart                       | Dart       |        566 |          0 |          8 |        574 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\service\create\create_service_binding.dart                | Dart       |          8 |          0 |          2 |         10 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\service\create\create_service_controller.dart             | Dart       |        153 |          2 |         31 |        186 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\service\create\create_service_view.dart                   | Dart       |        539 |         27 |          9 |        575 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\service\create\create_service_controller.dart             | Dart       |        178 |          2 |         37 |        217 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\service\create\create_service_view.dart                   | Dart       |        582 |         27 |          9 |        618 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\service\type\service_type_binding.dart                    | Dart       |          8 |          0 |          2 |         10 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\service\type\service_type_controller.dart                 | Dart       |         88 |          0 |         21 |        109 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\service\type\service_type_view.dart                       | Dart       |        174 |         35 |          4 |        213 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\service\update\update_service_binding.dart                | Dart       |          8 |          0 |          2 |         10 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\service\update\update_service_controller.dart             | Dart       |        171 |          3 |         29 |        203 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\service\update\update_service_view.dart                   | Dart       |        557 |          0 |          8 |        565 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\service\update\update_service_controller.dart             | Dart       |        194 |          4 |         37 |        235 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\home\service\update\update_service_view.dart                   | Dart       |        589 |          0 |          8 |        597 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\more\about_us\about_us_bindings.dart                           | Dart       |          8 |          0 |          2 |         10 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\more\about_us\about_us_controller.dart                         | Dart       |         30 |          2 |         14 |         46 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\more\about_us\about_us_view.dart                               | Dart       |        294 |          8 |         12 |        314 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\more\general\create\create_general_bindings.dart               | Dart       |          8 |          0 |          2 |         10 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\more\general\create\create_general_controller.dart             | Dart       |         96 |          2 |         20 |        118 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\more\general\create\create_general_view.dart                   | Dart       |        337 |          0 |         10 |        347 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\more\general\create\create_general_view.dart                   | Dart       |        332 |          0 |         11 |        343 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\more\general\general_bindings.dart                             | Dart       |          8 |          0 |          2 |         10 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\more\general\general_controller.dart                           | Dart       |        134 |          0 |         21 |        155 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\more\general\general_view.dart                                 | Dart       |        178 |          1 |          4 |        183 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\more\general\general_controller.dart                           | Dart       |        138 |          0 |         23 |        161 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\more\general\general_view.dart                                 | Dart       |        207 |          1 |          4 |        212 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\more\more_controller.dart                                      | Dart       |        162 |          3 |         13 |        178 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\more\more_view.dart                                            | Dart       |        486 |          1 |          7 |        494 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\more\more_view.dart                                            | Dart       |        456 |         39 |          7 |        502 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\more\plan\plan_bindings.dart                                   | Dart       |          8 |          0 |          2 |         10 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\more\plan\plan_controller.dart                                 | Dart       |         16 |          0 |          6 |         22 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\more\plan\plan_view.dart                                       | Dart       |        355 |          0 |          6 |        361 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\more\plan\plan_view.dart                                       | Dart       |        312 |          0 |          6 |        318 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\more\user-vehicle\create\create_user_vehicle_bindings.dart     | Dart       |         10 |          0 |          2 |         12 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\more\user-vehicle\create\create_user_vehicle_controller.dart   | Dart       |         69 |          0 |         13 |         82 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\more\user-vehicle\create\create_user_vehicle_view.dart         | Dart       |        131 |          0 |          3 |        134 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\more\user-vehicle\user_vehicle_bindings.dart                   | Dart       |          8 |          0 |          2 |         10 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\more\user-vehicle\user_vehicle_controller.dart                 | Dart       |         61 |          6 |         12 |         79 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\more\user-vehicle\user_vehicle_view.dart                       | Dart       |        195 |          3 |          4 |        202 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\more\user\create\create_user_bindings.dart                     | Dart       |          8 |          0 |          2 |         10 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\more\user\create\create_user_controller.dart                   | Dart       |        107 |          3 |         16 |        126 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\more\user\create\create_user_view.dart                         | Dart       |        240 |          1 |          7 |        248 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\more\user\update\update_user_bindings.dart                     | Dart       |          8 |          0 |          2 |         10 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\more\user\update\update_user_controller.dart                   | Dart       |         60 |          1 |         11 |         72 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\more\user\update\update_user_view.dart                         | Dart       |        205 |          1 |          4 |        210 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\more\user\user_bindings.dart                                   | Dart       |          8 |          0 |          2 |         10 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\more\user\user_controller.dart                                 | Dart       |         63 |          0 |         13 |         76 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\more\user\user_view.dart                                       | Dart       |        171 |          1 |          3 |        175 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\more\vehicles\create\create_vehicles_bindings.dart             | Dart       |          8 |          0 |          2 |         10 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\more\vehicles\create\create_vehicles_controller.dart           | Dart       |        130 |          0 |         27 |        157 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\more\vehicles\create\create_vehicles_view.dart                 | Dart       |        650 |          6 |         11 |        667 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\more\vehicles\create\create_vehicles_view.dart                 | Dart       |        644 |          6 |         11 |        661 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\more\vehicles\update\update_vehicles_bindings.dart             | Dart       |          8 |          0 |          2 |         10 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\more\vehicles\update\update_vehicles_controller.dart           | Dart       |        130 |          0 |         29 |        159 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\more\vehicles\update\update_vehicles_view.dart                 | Dart       |        647 |          6 |         11 |        664 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\more\vehicles\update\update_vehicles_view.dart                 | Dart       |        627 |          6 |         11 |        644 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\more\vehicles\vehicles_bindings.dart                           | Dart       |          8 |          0 |          2 |         10 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\more\vehicles\vehicles_controller.dart                         | Dart       |         69 |          0 |         13 |         82 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\more\vehicles\vehicles_view.dart                               | Dart       |        176 |          0 |          3 |        179 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\more\vehicles\vehicles_controller.dart                         | Dart       |         76 |          0 |         14 |         90 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\more\vehicles\vehicles_view.dart                               | Dart       |        195 |          0 |          3 |        198 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\reminder\create\create_reminder_binding.dart                   | Dart       |          8 |          0 |          2 |         10 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\reminder\create\create_reminder_controller.dart                | Dart       |         95 |          0 |         19 |        114 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\reminder\create\create_reminder_view.dart                      | Dart       |        269 |          0 |          3 |        272 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\reminder\reminder_controller.dart                              | Dart       |         12 |          0 |          3 |         15 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\reminder\reminder_view.dart                                    | Dart       |         50 |          0 |          3 |         53 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\reports\reports_controller.dart                                | Dart       |        510 |         76 |         79 |        665 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\reports\reports_view.dart                                      | Dart       |        482 |          5 |         11 |        498 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\reminder\create\create_reminder_controller.dart                | Dart       |        106 |          0 |         21 |        127 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\reminder\create\create_reminder_view.dart                      | Dart       |        369 |          0 |          4 |        373 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\reminder\reminder_controller.dart                              | Dart       |         77 |          1 |         15 |         93 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\reminder\reminder_view.dart                                    | Dart       |        186 |          0 |          3 |        189 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\reminder\update\update_reminder_binding.dart                   | Dart       |          8 |          0 |          2 |         10 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\reminder\update\update_reminder_controller.dart                | Dart       |        119 |          0 |         22 |        141 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\reminder\update\update_reminder_view.dart                      | Dart       |        374 |          0 |          4 |        378 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\reports\reports_controller.dart                                | Dart       |        507 |         68 |         82 |        657 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\reports\reports_view.dart                                      | Dart       |        471 |         27 |         11 |        509 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\root\root_bindings.dart                                        | Dart       |         16 |          0 |          2 |         18 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\root\root_controller.dart                                      | Dart       |         21 |          0 |          5 |         26 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\root\root_view.dart                                            | Dart       |        118 |         71 |          7 |        196 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\setting\setting_bindings.dart                                  | Dart       |          8 |          0 |          2 |         10 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\setting\setting_controller.dart                                | Dart       |         46 |          3 |          9 |         58 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\setting\setting_view.dart                                      | Dart       |        507 |         38 |         20 |        565 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\setting\setting_controller.dart                                | Dart       |         76 |          5 |         11 |         92 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\setting\setting_view.dart                                      | Dart       |        619 |        131 |         20 |        770 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\modules\splash_screen.dart                                             | Dart       |         80 |          0 |          6 |         86 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\routes\app_pages.dart                                                  | Dart       |        223 |          0 |         28 |        251 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\routes\app_routes.dart                                                 | Dart       |         33 |         31 |          1 |         65 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\services\app_service.dart                                              | Dart       |        184 |          2 |         37 |        223 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\routes\app_pages.dart                                                  | Dart       |        272 |          0 |         35 |        307 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\routes\app_routes.dart                                                 | Dart       |         41 |         38 |          1 |         80 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\services\app_service.dart                                              | Dart       |        230 |          4 |         44 |        278 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\services\notification_service.dart                                     | Dart       |        197 |         14 |         40 |        251 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\services\places_service.dart                                           | Dart       |        132 |         13 |         22 |        167 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\services\translation_service.dart                                      | Dart       |         19 |          0 |          7 |         26 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\utils\app_theme.dart                                                   | Dart       |        172 |         37 |          5 |        214 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\utils\constants.dart                                                   | Dart       |         30 |         29 |          3 |         62 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\utils\database_tables.dart                                             | Dart       |         18 |         16 |          1 |         35 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\utils\utils.dart                                                       | Dart       |        488 |         23 |         30 |        541 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\utils\constants.dart                                                   | Dart       |         38 |         38 |          4 |         80 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\utils\database_tables.dart                                             | Dart       |         19 |         17 |          1 |         37 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\lib\utils\utils.dart                                                       | Dart       |      1,099 |         27 |         51 |      1,177 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\linux\CMakeLists.txt                                                       | CMake      |        104 |          0 |         25 |        129 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\linux\flutter\CMakeLists.txt                                               | CMake      |         79 |          0 |         10 |         89 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\linux\flutter\generated_plugin_registrant.cc                               | C++        |          7 |          4 |          5 |         16 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\linux\flutter\generated_plugin_registrant.cc                               | C++        |         11 |          4 |          5 |         20 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\linux\flutter\generated_plugin_registrant.h                                | C++        |          5 |          5 |          6 |         16 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\linux\flutter\generated_plugins.cmake                                      | CMake      |         19 |          0 |          6 |         25 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\linux\flutter\generated_plugins.cmake                                      | CMake      |         20 |          0 |          6 |         26 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\linux\runner\CMakeLists.txt                                                | CMake      |         21 |          0 |          6 |         27 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\linux\runner\main.cc                                                       | C++        |          5 |          0 |          2 |          7 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\linux\runner\my_application.cc                                             | C++        |         91 |         25 |         29 |        145 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\linux\runner\my_application.h                                              | C++        |          7 |          7 |          5 |         19 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\macos\Flutter\GeneratedPluginRegistrant.swift                              | Swift      |         20 |          3 |          4 |         27 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\macos\Flutter\GeneratedPluginRegistrant.swift                              | Swift      |         24 |          3 |          4 |         31 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\macos\RunnerTests\RunnerTests.swift                                        | Swift      |          7 |          2 |          4 |         13 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\macos\Runner\AppDelegate.swift                                             | Swift      |         11 |          0 |          3 |         14 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\macos\Runner\Assets.xcassets\AppIcon.appiconset\Contents.json              | JSON       |         68 |          0 |          1 |         69 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\macos\Runner\Base.lproj\MainMenu.xib                                       | XML        |        343 |          0 |          1 |        344 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\macos\Runner\MainFlutterWindow.swift                                       | Swift      |         12 |          0 |          4 |         16 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\pubspec.yaml                                                               | YAML       |         49 |         47 |         16 |        112 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\test\widget_test.dart                                                      | Dart       |         14 |         10 |          7 |         31 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\pubspec.yaml                                                               | YAML       |         51 |         47 |         18 |        116 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\test\widget_test.dart                                                      | Dart       |         16 |         10 |          6 |         32 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\web\index.html                                                             | HTML       |         19 |         15 |          5 |         39 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\web\manifest.json                                                          | JSON       |         35 |          0 |          1 |         36 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\windows\CMakeLists.txt                                                     | CMake      |         89 |          0 |         20 |        109 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\windows\flutter\CMakeLists.txt                                             | CMake      |         98 |          0 |         12 |        110 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\windows\flutter\generated_plugin_registrant.cc                             | C++        |         18 |          4 |          5 |         27 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\windows\flutter\generated_plugin_registrant.cc                             | C++        |         21 |          4 |          5 |         30 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\windows\flutter\generated_plugin_registrant.h                              | C++        |          5 |          5 |          6 |         16 |
-| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\windows\flutter\generated_plugins.cmake                                    | CMake      |         23 |          0 |          6 |         29 |
+| e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\windows\flutter\generated_plugins.cmake                                    | CMake      |         24 |          0 |          6 |         30 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\windows\runner\CMakeLists.txt                                              | CMake      |         34 |          0 |          7 |         41 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\windows\runner\flutter_window.cpp                                          | C++        |         49 |          7 |         16 |         72 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\windows\runner\flutter_window.h                                            | C++        |         20 |          5 |          9 |         34 |
@@ -358,5 +396,5 @@ Files
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\windows\runner\utils.h                                                     | C++        |          8 |          6 |          6 |         20 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\windows\runner\win32_window.cpp                                            | C++        |        210 |         24 |         55 |        289 |
 | e:\Development\Multan\Xtra App Studio\3.35.4\drivvo\windows\runner\win32_window.h                                              | C++        |         48 |         31 |         24 |        103 |
-| Total                                                                                                                          |            |     26,522 |      1,333 |      1,966 |     29,821 |
+| Total                                                                                                                          |            |     38,401 |      1,464 |      2,337 |     42,202 |
 +--------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+

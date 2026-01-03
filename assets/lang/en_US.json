@@ -528,5 +528,7 @@
   "vehicle": "Vehicle",
   "vehicle_assigned_to_user": "Vehicle assigned to the user",
   "please_select_user": "Please select a user",
-  "please_select_vehicle": "Please select a vehicle"
+  "please_select_vehicle": "Please select a vehicle",
+  "user_vehicles": "User vehicles",
+"start_date:": "Start date:"
 }

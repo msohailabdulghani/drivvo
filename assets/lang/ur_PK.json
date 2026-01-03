@@ -525,5 +525,8 @@
   "vehicle": "گاڑی",
   "vehicle_assigned_to_user": "گاڑی صارف کو تفویض کر دی گئی ہے",
   "please_select_user": "براہِ کرم صارف منتخب کریں",
-  "please_select_vehicle": "براہِ کرم گاڑی منتخب کریں"
+  "please_select_vehicle": "براہِ کرم گاڑی منتخب کریں",
+  "user_vehicles": "صارف کی گاڑیاں",
+"start_date:": "آغاز کی تاریخ:"
+
 }

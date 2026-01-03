@@ -56,6 +56,7 @@ class SignupController extends GetxController {
           map["last_name"] = lastNameController.text.trim();
           map["sign_in_method"] = "email";
           map["last_odometer"] = 0;
+          map["user_type"] = Constants.ADMIN;
 
           // Try to write the user profile to Firestore with a limited retry.
           const int maxRetries = 2;
@@ -119,13 +120,7 @@ class SignupController extends GetxController {
           });
         }
       } on FirebaseAuthException catch (e) {
-        if (e.code == 'email-already-in-use') {
-          Get.back();
-          Utils.showSnackBar(message: "email_already_in_use", success: false);
-        } else if (e.code == 'weak-password') {
-          Get.back();
-          Utils.showSnackBar(message: "weak_password", success: false);
-        }
+        Utils.getFirebaseException(e);
       } catch (e) {
         Get.back();
         Utils.showSnackBar(message: 'save_data_failed', success: false);

@@ -84,6 +84,14 @@ class Utils {
       Utils.showSnackBar(message: "permission_denied".tr, success: false);
     } else if (e.code == 'unavailable') {
       Utils.showSnackBar(message: "network_error".tr, success: false);
+    } else if (e.code == "user-not-found") {
+      Utils.showSnackBar(message: "no_user_found", success: false);
+    } else if (e.code == "wrong-password") {
+      Utils.showSnackBar(message: "wrong_password", success: false);
+    } else if (e.code == "invalid-credential") {
+      Utils.showSnackBar(message: "invalid_email_or_password", success: false);
+    } else if (e.code == "too-many-requests") {
+      Utils.showSnackBar(message: "too_many_requests", success: false);
     } else {
       Utils.showSnackBar(message: "something_wrong".tr, success: false);
     }

@@ -68,6 +68,10 @@ class Constants {
   static const String CURRENCY_FORMAT = "CurrencyFormat";
   // ignore: constant_identifier_names
   static const String CURRENCY_NAME = "CurrencyName";
+  // ignore: constant_identifier_names
+  static const String DRIVER = "driver";
+  // ignore: constant_identifier_names
+  static const String ADMIN = "admin";
 
   /// Google Maps API Key - Used for Places API requests
   // ignore: constant_identifier_names

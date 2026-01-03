@@ -63,7 +63,7 @@ class UserVehicleView extends GetView<UserVehicleController> {
               ),
               child: SearchTextInputField(
                 controller: controller.searchInputController,
-                hintKey: "search_by_name_email",
+                hintKey: "search_by_name",
                 isUrdu: controller.isUrdu,
                 fillColors: Colors.white,
               ),
@@ -81,95 +81,113 @@ class UserVehicleView extends GetView<UserVehicleController> {
                         padding: const EdgeInsets.only(bottom: 20),
                         itemCount: controller.filterVehiclesList.length,
                         itemBuilder: (context, index) {
-                          final vehicle = controller.filterVehiclesList[index];
-                          return Container(
-                            width: double.maxFinite,
-                            margin: const EdgeInsets.only(
-                              left: 10,
-                              right: 10,
-                              bottom: 10,
+                          final model = controller.filterVehiclesList[index];
+                          return GestureDetector(
+                            onTap: () => Get.toNamed(
+                              AppRoutes.UPDATE_USER_VEHICLE_VIEW,
+                              arguments: model,
                             ),
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 12,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(
-                                color: Colors.grey.shade300,
-                                width: 1,
+                            child: Container(
+                              width: double.maxFinite,
+                              margin: const EdgeInsets.only(
+                                left: 10,
+                                right: 10,
+                                bottom: 10,
                               ),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Row(
-                              children: [
-                                // Vehicle icon
-                                Container(
-                                  padding: const EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                    color: Utils.appColor.withValues(
-                                      alpha: 0.1,
-                                    ),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Icon(
-                                    _getVehicleIcon(vehicle.vehicleType),
-                                    color: Utils.appColor,
-                                    size: 28,
-                                  ),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 12,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(
+                                  color: Colors.grey.shade300,
+                                  width: 1,
                                 ),
-                                const SizedBox(width: 16),
-                                // Vehicle details
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        vehicle.name,
-                                        style: Utils.getTextStyle(
-                                          baseSize: 16,
-                                          isBold: true,
-                                          color: Colors.black,
-                                          isUrdu: controller.isUrdu,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "${"start_date:".tr} ${Utils.formatDate(date: model.startDate)}",
+                                          style: Utils.getTextStyle(
+                                            baseSize: 14,
+                                            isBold: false,
+                                            color: Colors.black,
+                                            isUrdu: controller.isUrdu,
+                                          ),
                                         ),
-                                      ),
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        "${vehicle.manufacturer} • ${vehicle.modelYear}",
-                                        style: Utils.getTextStyle(
-                                          baseSize: 14,
-                                          isBold: false,
-                                          color: Colors.black54,
-                                          isUrdu: controller.isUrdu,
+                                        SizedBox(height: 10),
+                                        Row(
+                                          children: [
+                                            Icon(
+                                              Icons.person,
+                                              color: Utils.appColor,
+                                            ),
+                                            const SizedBox(width: 8),
+                                            Text(
+                                              "${model.user.firstName} ${model.user.lastName}",
+                                              style: Utils.getTextStyle(
+                                                baseSize: 16,
+                                                isBold: false,
+                                                color: Colors.black,
+                                                isUrdu: controller.isUrdu,
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                // Vehicle type badge
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 8,
-                                    vertical: 4,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: Utils.appColor.withValues(
-                                      alpha: 0.1,
+                                        Row(
+                                          children: [
+                                            Icon(
+                                              _getVehicleIcon(
+                                                model.vehicle.vehicleType,
+                                              ),
+                                              color: Utils.appColor,
+                                            ),
+                                            const SizedBox(width: 8),
+                                            Text(
+                                              model.vehicle.name,
+                                              style: Utils.getTextStyle(
+                                                baseSize: 16,
+                                                isBold: true,
+                                                color: Colors.black,
+                                                isUrdu: controller.isUrdu,
+                                              ),
+                                            ),
+                                            const SizedBox(width: 4),
+                                            Text(
+                                              "${model.vehicle.manufacturer} • ${model.vehicle.modelYear}",
+                                              style: Utils.getTextStyle(
+                                                baseSize: 14,
+                                                isBold: false,
+                                                color: Colors.black54,
+                                                isUrdu: controller.isUrdu,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
                                     ),
-                                    borderRadius: BorderRadius.circular(4),
                                   ),
-                                  child: Text(
-                                    vehicle.vehicleType.toUpperCase(),
-                                    style: Utils.getTextStyle(
-                                      baseSize: 10,
-                                      isBold: true,
-                                      color: Utils.appColor,
+
+                                  GestureDetector(
+                                    onTap: () => Utils.showAlertDialog(
+                                      confirmMsg: "are_you_sure_delete".tr,
+                                      onTapYes: () {},
                                       isUrdu: controller.isUrdu,
                                     ),
+                                    child: Icon(
+                                      Icons.delete,
+                                      color: Colors.red,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           );
                         },

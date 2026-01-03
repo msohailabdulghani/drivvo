@@ -64,9 +64,8 @@ class VehiclesController extends GetxController {
               .toList(),
         );
         onSearchVehicle("");
-      } else {
-        isLoading.value = false;
       }
+      isLoading.value = false;
     } catch (e) {
       isLoading.value = false;
     }

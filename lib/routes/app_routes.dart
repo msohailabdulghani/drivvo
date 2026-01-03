@@ -76,4 +76,7 @@ abstract class AppRoutes {
   // ignore: constant_identifier_names
   static const CREATE_USER_VEHICLE_VIEW =
       '/more/user-vehicle/create_user_vehicle_view';
+  // ignore: constant_identifier_names
+  static const UPDATE_USER_VEHICLE_VIEW =
+      '/more/user-vehicle/update_user_vehicle_view';
 }

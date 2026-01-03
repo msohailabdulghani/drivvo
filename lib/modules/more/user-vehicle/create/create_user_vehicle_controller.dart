@@ -54,19 +54,33 @@ class CreateUserVehicleController extends GetxController {
           return;
         }
 
-        final map = {
-          "start_date": DateTime.now(),
-          "name": "${user.value.firstName} ${user.value.lastName}",
-          "vehicle_name": vehicle.value.name,
-        };
-
-        await FirebaseFirestore.instance
+        final ref = FirebaseFirestore.instance
             .collection(DatabaseTables.USER_PROFILE)
             .doc(appService.appUser.value.id)
-            .collection(DatabaseTables.USER_VEHICLE)
-            .doc()
-            .set(map);
+            .collection(DatabaseTables.USER_VEHICLE);
 
+        final id = ref.doc().id;
+
+        final map = {
+          "id": id,
+          "start_date": DateTime.now(),
+          "user": user.value.toJson(),
+          "vehicle": vehicle.value.toJson(vehicle.value.id),
+        };
+
+        final batch = FirebaseFirestore.instance.batch();
+
+        batch.set(ref.doc(id), map);
+        batch.update(
+          FirebaseFirestore.instance
+              .collection(DatabaseTables.USER_PROFILE)
+              .doc(appService.appUser.value.id)
+              .collection(DatabaseTables.VEHICLES)
+              .doc(vehicle.value.id),
+          {"assign_user_id": appService.appUser.value.id},
+        );
+
+        await batch.commit();
         Get.back(closeOverlays: true);
         Utils.showSnackBar(
           message: 'vehicle_assigned_to_user'.tr,

@@ -50,6 +50,8 @@ import 'package:drivvo/modules/more/plan/plan_bindings.dart';
 import 'package:drivvo/modules/more/plan/plan_view.dart';
 import 'package:drivvo/modules/more/user-vehicle/create/create_user_vehicle_bindings.dart';
 import 'package:drivvo/modules/more/user-vehicle/create/create_user_vehicle_view.dart';
+import 'package:drivvo/modules/more/user-vehicle/update/update_user_vehicle_bindings.dart';
+import 'package:drivvo/modules/more/user-vehicle/update/update_user_vehicle_view.dart';
 import 'package:drivvo/modules/more/user-vehicle/user_vehicle_bindings.dart';
 import 'package:drivvo/modules/more/user-vehicle/user_vehicle_view.dart';
 import 'package:drivvo/modules/more/user/create/create_user_bindings.dart';
@@ -301,6 +303,12 @@ class AppPages {
       name: AppRoutes.CREATE_USER_VEHICLE_VIEW,
       page: () => const CreateUserVehicleView(),
       binding: CreateUserVehicleBindings(),
+    ),
+
+    GetPage(
+      name: AppRoutes.UPDATE_USER_VEHICLE_VIEW,
+      page: () => const UpdateUserVehicleView(),
+      binding: UpdateUserVehicleBindings(),
     ),
   ];
 }

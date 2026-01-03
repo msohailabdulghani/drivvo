@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drivvo/model/app_user.dart';
 import 'package:drivvo/model/general_model.dart';
@@ -36,57 +38,26 @@ class LoginController extends GetxController {
       formStateKey.currentState?.save();
       Utils.showProgressDialog();
       try {
-        await FirebaseAuth.instance
-            .signInWithEmailAndPassword(email: email, password: password)
-            .then((e) async {
-              final user = auth.currentUser;
-              if (user != null) {
-                var docSnapshot = await db
-                    .collection(DatabaseTables.USER_PROFILE)
-                    .doc(user.uid)
-                    .get();
-                if (docSnapshot.exists) {
-                  Map<String, dynamic>? data = docSnapshot.data();
-                  if (data != null) {
-                    final appUser = AppUser.fromJson(data);
-                    appService.appUser.value = appUser;
-                    appService.setProfile(appUser);
-                  }
-                }
-                // await IAPService.to.checkSubscriptionStatus();
-                // appService.setIsUserLogin(true);
-                Get.back();
-                if (appService.importData) {
-                  Get.offAllNamed(AppRoutes.ROOT_VIEW);
-                } else {
-                  Get.offAllNamed(AppRoutes.IMPORT_DATA_VIEW);
-                }
-                appService.getUserProfile();
-              } else {
-                Get.back();
-                Utils.showSnackBar(
-                  message: "authentication_failed",
-                  success: false,
-                );
-              }
-            });
-      } on FirebaseAuthException catch (e) {
-        if (e.code == "user-not-found") {
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+
+        final user = auth.currentUser;
+        if (user != null) {
+          // await IAPService.to.checkSubscriptionStatus();
+          // appService.setIsUserLogin(true);
+          await naviagteToMain(user, false);
+          await appService.getUserProfile();
+        } else {
           Get.back();
-          Utils.showSnackBar(message: "no_user_found", success: false);
-        } else if (e.code == "wrong-password") {
-          Get.back();
-          Utils.showSnackBar(message: "wrong_password", success: false);
-        } else if (e.code == "invalid-credential") {
-          Get.back();
-          Utils.showSnackBar(
-            message: "invalid_email_or_password",
-            success: false,
-          );
-        } else if (e.code == "too-many-requests") {
-          Get.back();
-          Utils.showSnackBar(message: "too_many_requests", success: false);
+          Utils.showSnackBar(message: "authentication_failed", success: false);
         }
+      } on FirebaseAuthException catch (e) {
+        Utils.getFirebaseException(e);
+      } catch (e) {
+        Get.back();
+        Utils.showSnackBar(message: "something_wrong".tr, success: false);
       }
     }
   }
@@ -119,33 +90,31 @@ class LoginController extends GetxController {
         map["name"] = user.displayName;
         map["photoUrl"] = user.photoURL;
         map["sign_in_method"] = Constants.GOOGLE;
-        map["last_odometer"] = 0;
+
+        final snapshot = await FirebaseFirestore.instance
+            .collection(DatabaseTables.USER_PROFILE)
+            .doc(id)
+            .get();
+
+        if (!snapshot.exists) {
+          map["last_odometer"] = 0;
+        }
 
         await db
             .collection(DatabaseTables.USER_PROFILE)
             .doc(id)
             .set(map, SetOptions(merge: true));
 
-        final appUser = AppUser();
-        appUser.id = id;
-        appUser.email = user.email ?? "";
-        appUser.firstName = user.displayName ?? "";
-        appService.setProfile(appUser);
-        Get.back();
-        Get.back();
-        if (appService.importData) {
-          Get.offAllNamed(AppRoutes.ROOT_VIEW);
-        } else {
-          Get.offAllNamed(AppRoutes.IMPORT_DATA_VIEW);
-        }
-        appService.getUserProfile();
-
+        await naviagteToMain(user, true);
+        await appService.getUserProfile();
         // await IAPService.to.checkSubscriptionStatus();
         // appService.setIsUserLogin(true);
 
         if (userCredential.additionalUserInfo?.isNewUser == true) {
           await saveData();
         }
+      } else {
+        Get.back();
       }
     } catch (e) {
       Get.back();
@@ -153,6 +122,47 @@ class LoginController extends GetxController {
       return null;
     }
     return null;
+  }
+
+  Future<void> naviagteToMain(User user, bool google) async {
+    if (google) {
+      final appUser = AppUser();
+      appUser.id = user.uid;
+      appUser.email = user.email ?? "";
+      appUser.firstName = user.displayName ?? "";
+      appService.setProfile(appUser);
+    }
+
+    final snapshot = await FirebaseFirestore.instance
+        .collection(DatabaseTables.USER_PROFILE)
+        .doc(user.uid)
+        .get();
+
+    if (snapshot.exists) {
+      Map<String, dynamic>? data = snapshot.data();
+      if (data != null) {
+        Get.back(closeOverlays: true);
+        final userData = AppUser.fromJson(data);
+        appService.setProfile(userData);
+
+        if (appService.importData) {
+          if (userData.userType.toLowerCase() == Constants.ADMIN) {
+            Get.offAllNamed(AppRoutes.ROOT_VIEW);
+          }
+          if (userData.userType.toLowerCase() == Constants.DRIVER) {
+            Get.offAllNamed(AppRoutes.ROOT_VIEW);
+          }
+        } else {
+          Get.offAllNamed(AppRoutes.IMPORT_DATA_VIEW);
+        }
+      } else {
+        Get.back();
+      }
+    } else {
+      Get.back(closeOverlays: true);
+      Utils.showSnackBar(message: "something_wrong".tr, success: false);
+      return;
+    }
   }
 
   Future<void> saveData() async {
