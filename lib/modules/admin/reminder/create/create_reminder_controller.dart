@@ -35,7 +35,7 @@ class CreateReminderController extends GetxController {
     final now = DateTime.now();
     startDateController.text = Utils.formatDate(date: now);
 
-    lastOdometer.value = appService.appUser.value.lastOdometer;
+    lastOdometer.value = appService.vehicleModel.value.lastOdometer;
   }
 
   @override

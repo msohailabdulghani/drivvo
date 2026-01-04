@@ -43,7 +43,7 @@ class CreateIncomeController extends GetxController {
 
     incomeTypeController.text = "select_income_type".tr;
 
-    lastOdometer.value = appService.appUser.value.lastOdometer;
+    lastOdometer.value = appService.vehicleModel.value.lastOdometer;
   }
 
   @override
@@ -135,10 +135,9 @@ class CreateIncomeController extends GetxController {
         "driver_name": model.value.driverName,
         "file_path": filePath.value,
         "notes": model.value.notes,
-        "created_at": DateTime.now(),
       };
 
-      final newMap = {
+      final lastRecordMap = {
         "type": "income",
         "date": model.value.date,
         "odometer": model.value.odometer,
@@ -146,19 +145,23 @@ class CreateIncomeController extends GetxController {
 
       try {
         final batch = FirebaseFirestore.instance.batch();
-        final docRef = FirebaseFirestore.instance
+
+        final vehicleRef = FirebaseFirestore.instance
+            .collection(DatabaseTables.USER_PROFILE)
+            .doc(appService.appUser.value.id)
+            .collection(DatabaseTables.VEHICLES)
+            .doc(appService.currentVehicleId.value);
+
+        final userRef = FirebaseFirestore.instance
             .collection(DatabaseTables.USER_PROFILE)
             .doc(appService.appUser.value.id);
 
-        // Single atomic operation
-        batch.set(docRef, {
+        batch.set(vehicleRef, {
           'income_list': FieldValue.arrayUnion([map]),
+          "last_odometer": model.value.odometer,
         }, SetOptions(merge: true));
 
-        batch.update(docRef, {
-          "last_odometer": model.value.odometer,
-          "last_record": newMap,
-        });
+        batch.update(userRef, {"last_record": lastRecordMap});
 
         await batch.commit();
 
@@ -167,10 +170,8 @@ class CreateIncomeController extends GetxController {
 
         Utils.showSnackBar(message: "income_added".tr, success: true);
 
-        // await appService.getUserProfile();
-
         if (Get.isRegistered<HomeController>()) {
-          Get.find<HomeController>().loadTimelineData(forceFetch: true);
+          Get.find<HomeController>().loadTimelineData();
         }
 
         if (Get.isRegistered<ReportsController>()) {

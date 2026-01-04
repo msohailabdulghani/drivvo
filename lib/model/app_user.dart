@@ -1,9 +1,4 @@
-import 'package:drivvo/model/expense/expense_model.dart';
-import 'package:drivvo/model/income/income_model.dart';
 import 'package:drivvo/model/last_record_model.dart';
-import 'package:drivvo/model/refueling/refueling_model.dart';
-import 'package:drivvo/model/route/route_model.dart';
-import 'package:drivvo/model/service/service_model.dart';
 
 class AppUser {
   late String id;
@@ -27,14 +22,6 @@ class AppUser {
   late bool isSubscribed;
   late String productId;
   late String purchaseToken;
-
-  late int lastOdometer;
-
-  late List<RefuelingModel> refuelingList;
-  late List<ExpenseModel> expenseList;
-  late List<ServiceModel> serviceList;
-  late List<IncomeModel> incomeList;
-  late List<RouteModel> routeList;
 
   late LastRecordModel lastRecordModel;
 
@@ -61,14 +48,6 @@ class AppUser {
     productId = "";
     purchaseToken = "";
 
-    lastOdometer = 0;
-
-    refuelingList = [];
-    expenseList = [];
-    serviceList = [];
-    incomeList = [];
-    routeList = [];
-
     lastRecordModel = LastRecordModel();
   }
 
@@ -91,41 +70,11 @@ class AppUser {
     productId = json["productId"] ?? "";
     purchaseToken = json["purchaseToken"] ?? "";
 
-    lastOdometer = json["last_odometer"] ?? 0;
     notificationTime = json["notification_time"] ?? "12:00 PM";
 
     userType = json["user_type"] ?? "";
     adminId = json["admin_id"] ?? "";
 
-    refuelingList =
-        (json["refueling_list"] as List<dynamic>?)
-            ?.map((e) => RefuelingModel.fromJson(e as Map<String, dynamic>))
-            .toList() ??
-        [];
-
-    expenseList =
-        (json["expense_list"] as List<dynamic>?)
-            ?.map((e) => ExpenseModel.fromJson(e as Map<String, dynamic>))
-            .toList() ??
-        [];
-
-    serviceList =
-        (json["service_list"] as List<dynamic>?)
-            ?.map((e) => ServiceModel.fromJson(e as Map<String, dynamic>))
-            .toList() ??
-        [];
-
-    incomeList =
-        (json["income_list"] as List<dynamic>?)
-            ?.map((e) => IncomeModel.fromJson(e as Map<String, dynamic>))
-            .toList() ??
-        [];
-
-    routeList =
-        (json["route_list"] as List<dynamic>?)
-            ?.map((e) => RouteModel.fromJson(e as Map<String, dynamic>))
-            .toList() ??
-        [];
     lastRecordModel = json["last_record"] != null
         ? LastRecordModel.fromJson(json["last_record"] as Map<String, dynamic>)
         : LastRecordModel();

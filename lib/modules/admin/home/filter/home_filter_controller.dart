@@ -51,7 +51,7 @@ class FilterController extends GetxController {
 
   void getBackToMain() {
     if (Get.isRegistered<HomeController>()) {
-      Get.find<HomeController>().loadTimelineData(forceFetch: true);
+      Get.find<HomeController>().loadTimelineData();
     }
     Get.back();
   }
@@ -79,7 +79,7 @@ class FilterController extends GetxController {
               "${Utils.formatDate(date: fromDate)} ${"to".tr} ${Utils.formatDate(date: toDate)}";
           appService.selectedDateRange.value = model;
           if (Get.isRegistered<HomeController>()) {
-            Get.find<HomeController>().loadTimelineData(forceFetch: true);
+            Get.find<HomeController>().loadTimelineData();
           }
         }
       });
@@ -90,7 +90,7 @@ class FilterController extends GetxController {
       appService.selectedDateRange.value = model;
       Future.delayed(Duration.zero, () {
         if (Get.isRegistered<HomeController>()) {
-          Get.find<HomeController>().loadTimelineData(forceFetch: true);
+          Get.find<HomeController>().loadTimelineData();
         }
       });
     }

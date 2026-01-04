@@ -70,7 +70,7 @@ class UpdateRefuelingController extends GetxController {
       fuelValue.value = refueling.fuelType;
     }
 
-    lastOdometer.value = appService.appUser.value.lastOdometer;
+    lastOdometer.value = appService.vehicleModel.value.lastOdometer;
   }
 
   @override
@@ -264,41 +264,33 @@ class UpdateRefuelingController extends GetxController {
         "payment_method": paymentMethodController.text.trim(),
         "notes": model.value.notes,
         "driver_name": model.value.driverName,
-        "created_at": oldRefuelingMap["created_at"] ?? DateTime.now(),
-        "updated_at": DateTime.now(),
-      };
-
-      final newMap = {
-        "type": "refueling",
-        "date": model.value.date,
-        "odometer": model.value.odometer,
       };
 
       try {
         final batch = FirebaseFirestore.instance.batch();
-        final docRef = FirebaseFirestore.instance
-            .collection(DatabaseTables.USER_PROFILE)
-            .doc(appService.appUser.value.id);
 
-        // Single atomic operation
-        batch.set(docRef, {
+        final vehicleRef = FirebaseFirestore.instance
+            .collection(DatabaseTables.USER_PROFILE)
+            .doc(appService.appUser.value.id)
+            .collection(DatabaseTables.VEHICLES)
+            .doc(appService.currentVehicleId.value);
+
+        batch.set(vehicleRef, {
           'refueling_list': FieldValue.arrayRemove([oldRefuelingMap]),
         }, SetOptions(merge: true));
 
-        batch.set(docRef, {
+        batch.set(vehicleRef, {
           'refueling_list': FieldValue.arrayUnion([newRefuelingMap]),
         }, SetOptions(merge: true));
 
-        batch.update(docRef, {"last_record": newMap});
-
         if (model.value.odometer >= lastOdometer.value) {
-          batch.update(docRef, {"last_odometer": model.value.odometer});
+          batch.update(vehicleRef, {"last_odometer": model.value.odometer});
         }
 
         await batch.commit();
 
         if (Get.isRegistered<HomeController>()) {
-          Get.find<HomeController>().loadTimelineData(forceFetch: true);
+          Get.find<HomeController>().loadTimelineData();
         }
 
         if (Get.isRegistered<ReportsController>()) {

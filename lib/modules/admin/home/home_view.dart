@@ -341,7 +341,7 @@ class HomeView extends GetView<HomeController> {
               ),
               Obx(
                 () => Text(
-                  "${controller.appService.appUser.value.lastOdometer} km",
+                  "${controller.appService.vehicleModel.value.lastOdometer} km",
                   style: Utils.getTextStyle(
                     baseSize: 12,
                     isBold: true,
@@ -836,7 +836,11 @@ class HomeView extends GetView<HomeController> {
               Material(
                 borderRadius: BorderRadius.all(Radius.circular(20)),
                 child: InkWell(
-                  onTap: () => controller.deleteEntry(entry),
+                  onTap: () => Utils.showAlertDialog(
+                    confirmMsg: "are_you_sure_delete".tr,
+                    onTapYes: () => controller.deleteEntry(entry),
+                    isUrdu: controller.isUrdu,
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.only(left: 8.0, right: 8, top: 8),
                     child: Icon(Icons.delete, color: Colors.red, size: 18),

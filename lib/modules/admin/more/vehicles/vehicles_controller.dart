@@ -37,11 +37,13 @@ class VehiclesController extends GetxController {
     getVehicleList();
   }
 
-  void getBackToHome({required VehicleModel vehicle}) {
+  Future<void> getBackToHome({required VehicleModel vehicle}) async {
     appService.setCurrentVehicle(vehicle.name);
     appService.setCurrentVehicleId(vehicle.id);
+
+    await appService.getCurrentVehicle();
     if (Get.isRegistered<HomeController>()) {
-      Get.find<HomeController>().loadTimelineData(forceFetch: true);
+      Get.find<HomeController>().loadTimelineData();
     }
     Get.back();
   }

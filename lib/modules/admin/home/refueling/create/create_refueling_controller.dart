@@ -59,7 +59,7 @@ class CreateRefuelingController extends GetxController {
     paymentMethodController.text = "select_payment_method".tr;
     reasonController.text = "select_reason".tr;
 
-    lastOdometer.value = appService.appUser.value.lastOdometer;
+    lastOdometer.value = appService.vehicleModel.value.lastOdometer;
   }
 
   @override
@@ -257,10 +257,9 @@ class CreateRefuelingController extends GetxController {
         "payment_method": paymentMethodController.text.trim(),
         "notes": model.value.notes,
         "driver_name": model.value.driverName,
-        "created_at": DateTime.now(),
       };
 
-      final newMap = {
+      final lastRecordMap = {
         "type": "refueling",
         "date": model.value.date,
         "odometer": model.value.odometer,
@@ -268,19 +267,23 @@ class CreateRefuelingController extends GetxController {
 
       try {
         final batch = FirebaseFirestore.instance.batch();
-        final docRef = FirebaseFirestore.instance
+
+        final vehicleRef = FirebaseFirestore.instance
+            .collection(DatabaseTables.USER_PROFILE)
+            .doc(appService.appUser.value.id)
+            .collection(DatabaseTables.VEHICLES)
+            .doc(appService.currentVehicleId.value);
+
+        final userRef = FirebaseFirestore.instance
             .collection(DatabaseTables.USER_PROFILE)
             .doc(appService.appUser.value.id);
 
-        // Single atomic operation
-        batch.set(docRef, {
+        batch.set(vehicleRef, {
           'refueling_list': FieldValue.arrayUnion([map]),
+          "last_odometer": model.value.odometer,
         }, SetOptions(merge: true));
 
-        batch.update(docRef, {
-          "last_odometer": model.value.odometer,
-          "last_record": newMap,
-        });
+        batch.update(userRef, {"last_record": lastRecordMap});
 
         await batch.commit();
 
@@ -289,10 +292,8 @@ class CreateRefuelingController extends GetxController {
 
         Utils.showSnackBar(message: "refueling_added".tr, success: true);
 
-        // await appService.getUserProfile();
-
         if (Get.isRegistered<HomeController>()) {
-          Get.find<HomeController>().loadTimelineData(forceFetch: true);
+          Get.find<HomeController>().loadTimelineData();
         }
 
         if (Get.isRegistered<ReportsController>()) {

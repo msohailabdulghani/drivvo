@@ -52,7 +52,7 @@ class UpdateIncomeController extends GetxController {
       filePath.value = income.filePath;
     }
 
-    lastOdometer.value = appService.appUser.value.lastOdometer;
+    lastOdometer.value = appService.vehicleModel.value.lastOdometer;
   }
 
   @override
@@ -144,41 +144,34 @@ class UpdateIncomeController extends GetxController {
         "driver_name": model.value.driverName,
         "file_path": filePath.value,
         "notes": model.value.notes,
-        "created_at": oldIncomeMap["created_at"] ?? DateTime.now(),
-        "updated_at": DateTime.now(),
-      };
-
-      final newMap = {
-        "type": "income",
-        "date": model.value.date,
-        "odometer": model.value.odometer,
       };
 
       try {
         final batch = FirebaseFirestore.instance.batch();
-        final docRef = FirebaseFirestore.instance
+
+        final vehicleRef = FirebaseFirestore.instance
             .collection(DatabaseTables.USER_PROFILE)
-            .doc(appService.appUser.value.id);
+            .doc(appService.appUser.value.id)
+            .collection(DatabaseTables.VEHICLES)
+            .doc(appService.currentVehicleId.value);
 
         // Single atomic operation
-        batch.set(docRef, {
+        batch.set(vehicleRef, {
           'income_list': FieldValue.arrayRemove([oldIncomeMap]),
         }, SetOptions(merge: true));
 
-        batch.set(docRef, {
+        batch.set(vehicleRef, {
           'income_list': FieldValue.arrayUnion([newIncomeMap]),
         }, SetOptions(merge: true));
 
-        batch.update(docRef, {"last_record": newMap});
-
         if (model.value.odometer >= lastOdometer.value) {
-          batch.update(docRef, {"last_odometer": model.value.odometer});
+          batch.update(vehicleRef, {"last_odometer": model.value.odometer});
         }
 
         await batch.commit();
 
         if (Get.isRegistered<HomeController>()) {
-          Get.find<HomeController>().loadTimelineData(forceFetch: true);
+          Get.find<HomeController>().loadTimelineData();
         }
 
         if (Get.isRegistered<ReportsController>()) {

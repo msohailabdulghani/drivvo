@@ -1,6 +1,5 @@
 import 'package:circular_menu/circular_menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:drivvo/model/app_user.dart';
 import 'package:drivvo/model/timeline_entry.dart';
 import 'package:drivvo/model/vehicle/vehicle_model.dart';
 import 'package:drivvo/modules/admin/reports/reports_controller.dart';
@@ -21,7 +20,6 @@ class HomeController extends GetxController {
       GlobalKey<CircularMenuState>();
 
   final now = DateTime.now();
-  var appUser = AppUser();
 
   // Loading state
   var isLoading = true.obs;
@@ -40,8 +38,7 @@ class HomeController extends GetxController {
   void onInit() {
     appService = Get.find<AppService>();
     super.onInit();
-    loadTimelineData(forceFetch: true);
-    loadCurrentVehicle();
+    loadTimelineData();
   }
 
   bool get isUrdu => Get.locale?.languageCode == Constants.URDU_LANGUAGE_CODE;
@@ -80,7 +77,7 @@ class HomeController extends GetxController {
 
   // Refresh timeline data
   Future<void> refreshData() async {
-    await loadTimelineData(forceFetch: true);
+    await loadTimelineData();
   }
 
   // Helper function to parse date string to DateTime
@@ -99,60 +96,15 @@ class HomeController extends GetxController {
     }
   }
 
-  // Load current vehicle
-  Future<void> loadCurrentVehicle() async {
-    try {
-      final user = FirebaseAuth.instance.currentUser;
-      if (user == null) return;
-
-      final snapshot = await db
-          .collection(DatabaseTables.USER_PROFILE)
-          .doc(user.uid)
-          .collection(DatabaseTables.VEHICLES)
-          .where('active_vehicle', isEqualTo: true)
-          .limit(1)
-          .get();
-
-      if (snapshot.docs.isNotEmpty) {
-        currentVehicle.value = VehicleModel.fromJson(
-          snapshot.docs.first.data(),
-        );
-      }
-    } catch (e) {
-      debugPrint("Error loading current vehicle: $e");
-    }
-  }
-
-  Future<void> loadTimelineData({bool forceFetch = false}) async {
+  Future<void> loadTimelineData() async {
     try {
       isLoading.value = true;
-      // final user = FirebaseAuth.instance.currentUser;
-      // if (user == null) {
-      //   isLoading.value = false;
-      //   return;
-      // }
 
-      // if (forceFetch || appService.appUser.value.id.isEmpty) {
-      //   var docSnapshot = await db
-      //       .collection(DatabaseTables.USER_PROFILE)
-      //       .doc(user.uid)
-      //       .get();
-      //   if (docSnapshot.exists) {
-      //     Map<String, dynamic>? data = docSnapshot.data();
-      //     if (data != null) {
-      //       appUser = AppUser.fromJson(data);
-      //       appService.setProfile(appUser);
-      //     }
-      //   }
-      // } else {
-      //   appUser = appService.appUser.value;
-      // }
-
-      appUser = appService.appUser.value;
+      final vehicle = appService.vehicleModel.value;
       final List<TimelineEntry> entries = [];
 
       if (appService.refuelingFilter.value) {
-        for (var data in appUser.refuelingList) {
+        for (var data in vehicle.refuelingList) {
           if (data.vehicleId == appService.currentVehicleId.value) {
             entries.add(
               TimelineEntry(
@@ -172,7 +124,7 @@ class HomeController extends GetxController {
       }
 
       if (appService.expenseFilter.value) {
-        for (var data in appUser.expenseList) {
+        for (var data in vehicle.expenseList) {
           if (data.vehicleId == appService.currentVehicleId.value) {
             entries.add(
               TimelineEntry(
@@ -192,7 +144,7 @@ class HomeController extends GetxController {
       }
 
       if (appService.serviceFilter.value) {
-        for (var data in appUser.serviceList) {
+        for (var data in vehicle.serviceList) {
           if (data.vehicleId == appService.currentVehicleId.value) {
             entries.add(
               TimelineEntry(
@@ -212,7 +164,7 @@ class HomeController extends GetxController {
       }
 
       if (appService.incomeFilter.value) {
-        for (var data in appUser.incomeList) {
+        for (var data in vehicle.incomeList) {
           if (data.vehicleId == appService.currentVehicleId.value) {
             entries.add(
               TimelineEntry(
@@ -234,7 +186,7 @@ class HomeController extends GetxController {
       }
 
       if (appService.routeFilter.value) {
-        for (var data in appUser.routeList) {
+        for (var data in vehicle.routeList) {
           if (data.vehicleId == appService.currentVehicleId.value) {
             entries.add(
               TimelineEntry(
@@ -368,30 +320,7 @@ class HomeController extends GetxController {
   Future<void> deleteEntry(TimelineEntry entry) async {
     try {
       if (entry.originalData == null) return;
-
-      // Show confirmation dialog
-      final confirmed = await Get.dialog<bool>(
-        AlertDialog(
-          title: Text('delete_entry'.tr),
-          content: Text('are_you_sure_delete_entry'.tr),
-          actions: [
-            TextButton(
-              onPressed: () => Get.back(result: false),
-              child: Text('cancel'.tr),
-            ),
-            TextButton(
-              onPressed: () => Get.back(result: true),
-              child: Text(
-                'delete'.tr,
-                style: const TextStyle(color: Colors.red),
-              ),
-            ),
-          ],
-        ),
-      );
-
-      if (confirmed != true) return;
-
+      Get.back();
       Utils.showProgressDialog();
 
       String fieldName = "";
@@ -418,17 +347,18 @@ class HomeController extends GetxController {
       await db
           .collection(DatabaseTables.USER_PROFILE)
           .doc(appService.appUser.value.id)
+          .collection(DatabaseTables.VEHICLES)
+          .doc(appService.currentVehicleId.value)
           .update({
             fieldName: FieldValue.arrayRemove([entry.originalData.rawMap]),
           });
 
-      await loadTimelineData(forceFetch: true);
+      await loadTimelineData();
 
       if (Get.isRegistered<ReportsController>()) {
         await Get.find<ReportsController>().calculateAllReports();
       }
-
-      if (Get.isDialogOpen == true) Get.back();
+      Get.back(closeOverlays: true);
       Utils.showSnackBar(message: "entry_deleted".tr, success: true);
     } catch (e) {
       if (Get.isDialogOpen == true) Get.back();

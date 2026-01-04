@@ -1,8 +1,8 @@
-import 'package:drivvo/model/app_user.dart';
 import 'package:drivvo/model/expense/expense_model.dart';
 import 'package:drivvo/model/income/income_model.dart';
 import 'package:drivvo/model/refueling/refueling_model.dart';
 import 'package:drivvo/model/service/service_model.dart';
+import 'package:drivvo/model/vehicle/vehicle_model.dart';
 import 'package:drivvo/services/app_service.dart';
 import 'package:drivvo/utils/constants.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -126,48 +126,18 @@ class ReportsController extends GetxController
     return "${formatter.format(startDate.value)} - ${yearFormatter.format(endDate.value)}";
   }
 
-  // Future<void> selectDateRange() async {
-  //   final result = await Get.toNamed(
-  //     AppRoutes.DATE_RANGE,
-  //     arguments: {"startDate": startDate.value, "endDate": endDate.value},
-  //   );
-  //   if (result != null) {
-  //     final sd = result["startDate"] as DateTime?;
-  //     final ed = result["endDate"] as DateTime?;
-  //     if (sd != null && ed != null) {
-  //       startDate.value = DateTime(sd.year, sd.month, sd.day);
-  //       endDate.value = DateTime(ed.year, ed.month, ed.day);
-  //       calculateAllReports();
-  //     }
-  //   }
-  // }
-
   Future<void> calculateAllReports() async {
-    var user = appService.appUser.value;
-    // var docSnapshot = await FirebaseFirestore.instance
-    //     .collection(DatabaseTables.USER_PROFILE)
-    //     .doc(appService.appUser.value.id)
-    //     .get();
-    // if (docSnapshot.exists) {
-    //   Map<String, dynamic>? data = docSnapshot.data();
-    //   if (data != null) {
-    //     user = AppUser.fromJson(data);
-    //   }
-    // }
+    var vehicle = appService.vehicleModel.value;
 
     // Filter data by date range
-    final filteredRefueling = _filterRefuelingByDate(user.refuelingList);
-    final filteredExpenses = _filterExpensesByDate(user.expenseList);
-    final filteredIncomes = _filterIncomesByDate(user.incomeList);
-    final filteredServices = _filterServicesByDate(user.serviceList);
+    final filteredRefueling = _filterRefuelingByDate(vehicle.refuelingList);
+    final filteredExpenses = _filterExpensesByDate(vehicle.expenseList);
+    final filteredIncomes = _filterIncomesByDate(vehicle.incomeList);
+    final filteredServices = _filterServicesByDate(vehicle.serviceList);
 
     // Calculate days in range
     final days = endDate.value.difference(startDate.value).inDays + 1;
 
-    // final home = Get.find<HomeController>();
-    // final iniOdo = home.getFirstOdometer();
-    // final endOdo = home.getlastOdometer();
-    // final value = endOdo - iniOdo;
     // Calculate Refueling
     refuelingCost.value = _calculateRefuelingTotal(filteredRefueling);
     refuelingDistance.value = _calculateRefuelingDistance(filteredRefueling);
@@ -237,14 +207,14 @@ class ReportsController extends GetxController
       filteredServices,
       filteredIncomes,
     );
-    _prepareFuelEfficiencyData(user.refuelingList);
-    _prepareDistancePerRefuelingData(user.refuelingList);
+    _prepareFuelEfficiencyData(vehicle.refuelingList);
+    _prepareDistancePerRefuelingData(vehicle.refuelingList);
     _prepareFuelPriceData(filteredRefueling);
     _prepareExpenseTypeDistribution(filteredExpenses);
     _prepareServiceTypeDistribution(filteredServices);
     _prepareIncomeDistribution(filteredIncomes);
     _prepareFuelTypeDistribution(filteredRefueling);
-    _prepareOdometerHistoryData(user);
+    _prepareOdometerHistoryData(vehicle);
   }
 
   void _prepareFuelTypeDistribution(List<RefuelingModel> refuelings) {
@@ -451,19 +421,19 @@ class ReportsController extends GetxController
     fuelPriceData.value = spots;
   }
 
-  void _prepareOdometerHistoryData(AppUser user) {
+  void _prepareOdometerHistoryData(VehicleModel vehicle) {
     final List<Map<String, dynamic>> allEntries = [];
 
-    for (var item in user.refuelingList) {
+    for (var item in vehicle.refuelingList) {
       allEntries.add({'date': item.date, 'odometer': item.odometer});
     }
-    for (var item in user.expenseList) {
+    for (var item in vehicle.expenseList) {
       allEntries.add({'date': item.date, 'odometer': item.odometer});
     }
-    for (var item in user.serviceList) {
+    for (var item in vehicle.serviceList) {
       allEntries.add({'date': item.date, 'odometer': item.odometer});
     }
-    for (var item in user.incomeList) {
+    for (var item in vehicle.incomeList) {
       allEntries.add({'date': item.date, 'odometer': item.odometer});
     }
 

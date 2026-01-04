@@ -33,6 +33,8 @@ class Constants {
   // ignore: constant_identifier_names
   static const String USER_PROFILE = "UserProfile";
   // ignore: constant_identifier_names
+  static const String Vehicle = "Vehicle";
+  // ignore: constant_identifier_names
   static const String URDU_LANGUAGE_CODE = "ur";
   // ignore: constant_identifier_names
   static const String DEFAULT_LANGUAGE_CODE = "en";

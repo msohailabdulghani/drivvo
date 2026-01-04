@@ -51,7 +51,7 @@ class UpdateReminderController extends GetxController {
       endDateController.text = Utils.formatDate(date: model.value.endDate);
     }
 
-    lastOdometer.value = appService.appUser.value.lastOdometer;
+    lastOdometer.value = appService.vehicleModel.value.lastOdometer;
   }
 
   @override

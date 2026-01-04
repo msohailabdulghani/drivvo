@@ -25,7 +25,7 @@ class ReminderController extends GetxController {
     super.onInit();
     getReminders();
 
-    lastOdometer.value = appService.appUser.value.lastOdometer;
+    lastOdometer.value = appService.vehicleModel.value.lastOdometer;
   }
 
   @override

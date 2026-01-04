@@ -84,6 +84,10 @@ class LoginController extends GetxController {
         var id = user.uid;
 
         final map = <String, dynamic>{};
+        final snapshot = await FirebaseFirestore.instance
+            .collection(DatabaseTables.USER_PROFILE)
+            .doc(id)
+            .get();
 
         map["id"] = id;
         map["email"] = user.email;
@@ -91,13 +95,9 @@ class LoginController extends GetxController {
         map["photoUrl"] = user.photoURL;
         map["sign_in_method"] = Constants.GOOGLE;
 
-        final snapshot = await FirebaseFirestore.instance
-            .collection(DatabaseTables.USER_PROFILE)
-            .doc(id)
-            .get();
-
         if (!snapshot.exists) {
           map["last_odometer"] = 0;
+          map["user_type"] = Constants.ADMIN;
         }
 
         await db

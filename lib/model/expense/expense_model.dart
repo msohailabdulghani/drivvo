@@ -38,7 +38,14 @@ class ExpenseModel {
     userId = json["user_id"] ?? "";
     vehicleId = json["vehicle_id"] ?? "";
     time = json["time"] ?? "";
-    date = (json["date"] as Timestamp?)?.toDate() ?? DateTime.now();
+    final dateValue = json["date"];
+    if (dateValue is Timestamp) {
+      date = dateValue.toDate();
+    } else if (dateValue is String) {
+      date = DateTime.tryParse(dateValue) ?? DateTime.now();
+    } else {
+      date = DateTime.now();
+    }
     odometer = json["odometer"] ?? 0;
     totalAmount = json["total_amount"] ?? 0;
     place = json["place"] ?? "";
@@ -59,7 +66,7 @@ class ExpenseModel {
       "user_id": userId,
       "vehicle_id": vehicleId,
       "time": time,
-      "date": date,
+      "date": date.toIso8601String(),
       "odometer": odometer,
       "total_amount": totalAmount,
       "place": place,

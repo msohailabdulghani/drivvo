@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drivvo/model/app_user.dart';
 import 'package:drivvo/model/date_range_model.dart';
+import 'package:drivvo/model/vehicle/vehicle_model.dart';
 import 'package:drivvo/routes/app_routes.dart';
 import 'package:drivvo/utils/constants.dart';
 import 'package:drivvo/utils/database_tables.dart';
@@ -16,6 +17,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 class AppService extends GetxService {
   late GetStorage _box;
   final appUser = AppUser().obs;
+  final vehicleModel = VehicleModel().obs;
 
   static AppService get to => Get.find();
 
@@ -32,6 +34,7 @@ class AppService extends GetxService {
   var selectedDateRange = Rxn<DateRangeModel>();
   final FirebaseFirestore db = FirebaseFirestore.instance;
   StreamSubscription? _userSubscription;
+  StreamSubscription? _vehicleSubscription;
 
   String _languageCode = "";
   String _countryCode = "";
@@ -107,6 +110,7 @@ class AppService extends GetxService {
     }
     appUser.value = AppUser.fromJson(user);
     await getUserProfile();
+    await getCurrentVehicle();
   }
 
   Future<void> getUserProfile() async {
@@ -154,9 +158,49 @@ class AppService extends GetxService {
     }
   }
 
+  Future<void> getCurrentVehicle() async {
+    try {
+      if (currentVehicleId.value.isEmpty || appUser.value.id.isEmpty) {
+        return;
+      }
+
+      _vehicleSubscription?.cancel();
+
+      _vehicleSubscription = db
+          .collection(DatabaseTables.USER_PROFILE)
+          .doc(appUser.value.id)
+          .collection(DatabaseTables.VEHICLES)
+          .doc(currentVehicleId.value)
+          .snapshots()
+          .listen(
+            (docSnapshot) {
+              if (docSnapshot.exists) {
+                Map<String, dynamic>? data = docSnapshot.data();
+                if (data != null) {
+                  final vehicle = VehicleModel.fromJson(data);
+                  setVehicle(vehicle);
+                }
+              }
+            },
+            onError: (e) {
+              debugPrint("getUserProfile error: $e");
+            },
+          );
+
+      return;
+    } catch (e) {
+      debugPrint("getUserProfile error: $e");
+    }
+  }
+
   Future<void> setProfile(AppUser user) async {
     appUser.value = user;
     await _box.write(Constants.USER_PROFILE, user.toJson());
+  }
+
+  Future<void> setVehicle(VehicleModel vehicle) async {
+    vehicleModel.value = vehicle;
+    await _box.write(Constants.Vehicle, vehicle.toJson(vehicle.id));
   }
 
   Future<void> setDateFormat(String value) async {

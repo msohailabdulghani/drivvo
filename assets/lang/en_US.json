@@ -530,5 +530,6 @@
   "please_select_user": "Please select a user",
   "please_select_vehicle": "Please select a vehicle",
   "user_vehicles": "User vehicles",
-"start_date:": "Start date:"
+  "start_date:": "Start date:",
+  "add_your_first": "Add your first"
 }

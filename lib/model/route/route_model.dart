@@ -43,9 +43,23 @@ class RouteModel {
     userId = json["user_id"] ?? "";
     vehicleId = json["vehicle_id"] ?? "";
     origin = json["origin"] ?? "";
-    startDate = (json["start_date"] as Timestamp?)?.toDate() ?? DateTime.now();
+    final startDateValue = json["start_date"];
+    if (startDateValue is Timestamp) {
+      startDate = startDateValue.toDate();
+    } else if (startDateValue is String) {
+      startDate = DateTime.tryParse(startDateValue) ?? DateTime.now();
+    } else {
+      startDate = DateTime.now();
+    }
     startTime = json["start_time"] ?? "";
-    endDate = (json["end_date"] as Timestamp?)?.toDate() ?? DateTime.now();
+    final endDateValue = json["end_date"];
+    if (endDateValue is Timestamp) {
+      endDate = endDateValue.toDate();
+    } else if (endDateValue is String) {
+      endDate = DateTime.tryParse(endDateValue) ?? DateTime.now();
+    } else {
+      endDate = DateTime.now();
+    }
     endTime = json["end_time"] ?? "";
     initialOdometer = json["initial_odometer"] ?? 0;
     destination = json["destination"] ?? "";
@@ -63,9 +77,9 @@ class RouteModel {
       "user_id": userId,
       "vehicle_id": vehicleId,
       "origin": origin,
-      "start_date": startDate,
+      "start_date": startDate.toIso8601String(),
       "start_time": startTime,
-      "end_date": endDate,
+      "end_date": endDate.toIso8601String(),
       "end_time": endTime,
       "initial_odometer": initialOdometer,
       "destination": destination,

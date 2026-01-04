@@ -31,7 +31,14 @@ class IncomeModel {
     userId = json["user_id"] ?? "";
     vehicleId = json["vehicle_id"] ?? "";
     time = json["time"] ?? "";
-    date = (json["date"] as Timestamp?)?.toDate() ?? DateTime.now();
+    final dateValue = json["date"];
+    if (dateValue is Timestamp) {
+      date = dateValue.toDate();
+    } else if (dateValue is String) {
+      date = DateTime.tryParse(dateValue) ?? DateTime.now();
+    } else {
+      date = DateTime.now();
+    }
     odometer = json["odometer"] ?? 0;
     incomeType = json["income_type"] ?? "";
     value = json["value"] ?? 0;
@@ -45,7 +52,7 @@ class IncomeModel {
       "user_id": userId,
       "vehicle_id": vehicleId,
       "time": time,
-      "date": date,
+      "date": date.toIso8601String(),
       "odometer": odometer,
       "income_type": incomeType,
       "value": value,

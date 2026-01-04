@@ -72,7 +72,7 @@ class UpdateRouteController extends GetxController {
       filePath.value = route.filePath;
     }
 
-    lastOdometer.value = appService.appUser.value.lastOdometer;
+    lastOdometer.value = appService.vehicleModel.value.lastOdometer;
   }
 
   @override
@@ -203,35 +203,30 @@ class UpdateRouteController extends GetxController {
         "reason": reasonController.text.trim(),
         "file_path": filePath.value,
         "notes": notesController.text.trim(),
-        "created_at": oldRouteMap["created_at"] ?? DateTime.now(),
-        "updated_at": DateTime.now(),
-      };
-
-      final newMap = {
-        "type": "route",
-        "date": model.value.startDate,
-        "odometer": model.value.initialOdometer,
       };
 
       try {
         final batch = FirebaseFirestore.instance.batch();
-        final docRef = FirebaseFirestore.instance
+
+        final vehicleRef = FirebaseFirestore.instance
             .collection(DatabaseTables.USER_PROFILE)
-            .doc(appService.appUser.value.id);
+            .doc(appService.appUser.value.id)
+            .collection(DatabaseTables.VEHICLES)
+            .doc(appService.currentVehicleId.value);
 
         // Single atomic operation
-        batch.set(docRef, {
+        batch.set(vehicleRef, {
           'route_list': FieldValue.arrayRemove([oldRouteMap]),
         }, SetOptions(merge: true));
 
-        batch.set(docRef, {
+        batch.set(vehicleRef, {
           'route_list': FieldValue.arrayUnion([newRouteMap]),
         }, SetOptions(merge: true));
 
-        batch.update(docRef, {"last_record": newMap});
-
         if (model.value.finalOdometer >= lastOdometer.value) {
-          batch.update(docRef, {"last_odometer": model.value.finalOdometer});
+          batch.set(vehicleRef, {
+            "last_odometer": model.value.finalOdometer,
+          }, SetOptions(merge: true));
         }
 
         await batch.commit();
@@ -241,7 +236,7 @@ class UpdateRouteController extends GetxController {
 
         Utils.showSnackBar(message: "route_updated".tr, success: true);
         if (Get.isRegistered<HomeController>()) {
-          Get.find<HomeController>().loadTimelineData(forceFetch: true);
+          Get.find<HomeController>().loadTimelineData();
         }
       } on FirebaseException catch (e) {
         Utils.getFirebaseException(e);
