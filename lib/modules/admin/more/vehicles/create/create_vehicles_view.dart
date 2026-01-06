@@ -634,16 +634,41 @@ class CreateVehiclesView extends GetView<CreateVehiclesController> {
                                   : Colors.white,
                             ),
                           ),
-                          child: Text(
-                            model.name,
-                            // overflow: TextOverflow.ellipsis,
-                            // maxLines: 2,
-                            style: Utils.getTextStyle(
-                              baseSize: 16,
-                              isBold: false,
-                              color: Colors.black,
-                              isUrdu: controller.isUrdu,
-                            ),
+                          child: Row(
+                            children: [
+                              Image.asset(
+                                model.logoUrl,
+                                height: 40,
+                                width: 40,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Container(
+                                    height: 40,
+                                    width: 40,
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey.shade200,
+                                      borderRadius: BorderRadius.circular(4),
+                                    ),
+                                    child: Icon(
+                                      Icons.business,
+                                      color: Colors.grey.shade400,
+                                      size: 24,
+                                    ),
+                                  );
+                                },
+                              ),
+                              const SizedBox(width: 10),
+                              Text(
+                                model.name,
+                                // overflow: TextOverflow.ellipsis,
+                                // maxLines: 2,
+                                style: Utils.getTextStyle(
+                                  baseSize: 16,
+                                  isBold: false,
+                                  color: Colors.black,
+                                  isUrdu: controller.isUrdu,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       );

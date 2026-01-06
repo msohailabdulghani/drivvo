@@ -529,5 +529,6 @@
   "user_vehicles": "صارف کی گاڑیاں",
   "start_date:": "آغاز کی تاریخ:",
   "add_your_first": "اپنا پہلا شامل کریں",
-  "select_your_driver": "اپنا ڈرائیور منتخب کریں"
+  "select_your_driver": "اپنا ڈرائیور منتخب کریں",
+  "image_upload_failed": "تصویر اپ لوڈ نہیں ہو سکی"
 }

@@ -532,5 +532,6 @@
   "user_vehicles": "User vehicles",
   "start_date:": "Start date:",
   "add_your_first": "Add your first",
-  "select_your_driver": "Select your driver"
+  "select_your_driver": "Select your driver",
+  "image_upload_failed": "Image upload failed"
 }

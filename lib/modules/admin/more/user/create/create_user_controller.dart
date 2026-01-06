@@ -1,13 +1,14 @@
-import 'package:cloud_functions/cloud_functions.dart';
+import 'dart:convert';
+
 import 'package:drivvo/model/app_user.dart';
 import 'package:drivvo/model/onboarding_model.dart';
 import 'package:drivvo/services/app_service.dart';
 import 'package:drivvo/utils/constants.dart';
 import 'package:drivvo/utils/utils.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 
 class CreateUserController extends GetxController {
   late AppService appService;
@@ -22,6 +23,10 @@ class CreateUserController extends GetxController {
   // Loading state
   var isLoading = false.obs;
   var model = AppUser();
+
+  // Cloud Function URL
+  static const String _functionUrl =
+      'https://us-central1-drivoo-b5d4e.cloudfunctions.net/createUser';
 
   @override
   void onInit() {
@@ -57,88 +62,78 @@ class CreateUserController extends GetxController {
   }
 
   Future<void> saveUser() async {
+    debugPrint('=== saveUser() called ===');
+    debugPrint('Form validation: ${formStateKey.currentState?.validate()}');
+
     if (formStateKey.currentState?.validate() == true) {
       formStateKey.currentState?.save();
+
+      debugPrint('Form validated and saved');
+      debugPrint('Email: ${model.email}');
+      debugPrint('Password length: ${passwordController.text.length}');
+      debugPrint('FirstName: ${model.firstName}');
+      debugPrint('LastName: ${model.lastName}');
+      debugPrint('UserType: ${model.userType}');
+      debugPrint('AdminId: ${appService.appUser.value.id}');
 
       Utils.showProgressDialog();
 
       try {
-        // Verify user is authenticated before calling Cloud Function
-        final currentUser = FirebaseAuth.instance.currentUser;
-        if (currentUser == null) {
-          Get.back();
-          Utils.showSnackBar(message: 'error_unauthenticated', success: false);
-          return;
-        }
-        // Force refresh the ID token to ensure it's valid
-        try {
-          await currentUser.getIdToken(true);
-        } catch (e) {
-          Get.back();
-          Utils.showSnackBar(
-            message: 'error_token_refresh_failed',
-            success: false,
-          );
-          return;
-        }
-        if (kDebugMode) {
-          print('User authenticated: ${currentUser.uid}');
-          print('Email: ${currentUser.email}');
-        }
+        debugPrint('=== Preparing HTTP request to Cloud Function ===');
+        debugPrint('URL: $_functionUrl');
 
-        // Call the Cloud Function to create user
-        // Specify the region explicitly for 2nd Gen Cloud Functions
-        final HttpsCallable callable = FirebaseFunctions.instanceFor(
-          region: 'us-central1',
-        ).httpsCallable('createUser');
-
-        final result = await callable.call<Map<String, dynamic>>({
+        final payload = {
           'email': model.email,
           'password': passwordController.text,
           'firstName': model.firstName,
           'lastName': model.lastName,
           'userType': model.userType,
           'adminId': appService.appUser.value.id,
-        });
+        };
 
-        final data = result.data;
+        debugPrint('Payload: $payload');
 
-        if (data['success'] == true) {
+        final response = await http.post(
+          Uri.parse(_functionUrl),
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode(payload),
+        );
+
+        debugPrint('=== Response received ===');
+        debugPrint('Status code: ${response.statusCode}');
+        debugPrint('Body: ${response.body}');
+
+        final data = jsonDecode(response.body) as Map<String, dynamic>;
+
+        if (response.statusCode == 200 && data['success'] == true) {
           passwordController.text = "";
           formStateKey.currentState?.reset();
           Get.back(closeOverlays: true);
           Utils.showSnackBar(message: "user_registered_success", success: true);
         } else {
           Get.back();
-          Utils.showSnackBar(
-            message: data['message'] ?? 'save_data_failed',
-            success: false,
-          );
-        }
-      } on FirebaseFunctionsException catch (e) {
-        Get.back();
-        // Handle specific error codes from the Cloud Function
-        switch (e.code) {
-          case 'already-exists':
+          final code = data['code'] ?? '';
+          if (code == 'already-exists') {
             Utils.showSnackBar(message: 'email_already_in_use', success: false);
-            break;
-          case 'invalid-argument':
+          } else {
             Utils.showSnackBar(
-              message: e.message ?? 'invalid_data',
+              message: data['message'] ?? 'save_data_failed',
               success: false,
             );
-            break;
-          case 'unauthenticated':
-            Utils.showSnackBar(message: e.message.toString(), success: false);
-            debugPrint(e.message);
-            break;
-          default:
-            Utils.showSnackBar(message: 'save_data_failed', success: false);
+          }
         }
-      } catch (e) {
+      } catch (e, stackTrace) {
+        if (kDebugMode) {
+          debugPrint('=== Exception ===');
+          debugPrint('Error: $e');
+          debugPrint('StackTrace: $stackTrace');
+        }
+
         Get.back();
-        Utils.showSnackBar(message: 'save_data_failed', success: false);
+        Utils.showSnackBar(message: 'network_error_message', success: false);
       }
+    } else {
+      debugPrint('Form validation FAILED');
     }
   }
 
