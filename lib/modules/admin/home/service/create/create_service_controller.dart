@@ -210,7 +210,9 @@ class CreateServiceController extends GetxController {
 
         await batch.commit();
 
-        await Utils.loadHomeAndReportData(snakBarMsg: "service_added".tr);
+        if (Get.isDialogOpen == true) Get.back();
+        Get.back();
+        Utils.showSnackBar(message: "service_added".tr, success: true);
       } on FirebaseException catch (e) {
         Utils.getFirebaseException(e);
       } catch (e) {

@@ -262,7 +262,9 @@ class UpdateRouteController extends GetxController {
           }
         });
 
-        await Utils.loadHomeAndReportData(snakBarMsg: "route_updated".tr);
+        if (Get.isDialogOpen == true) Get.back();
+        Get.back();
+        Utils.showSnackBar(message: "route_updated".tr, success: true);
       } on FirebaseException catch (e) {
         Utils.getFirebaseException(e);
       } catch (e) {

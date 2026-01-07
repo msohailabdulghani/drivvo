@@ -326,7 +326,9 @@ class HomeController extends GetxController {
         });
       });
 
-      await loadTimelineData();
+      // Future.delayed(Duration(milliseconds: 2000), () async {
+      //   await loadTimelineData();
+      // });
 
       if (Get.isRegistered<ReportsController>()) {
         await Get.find<ReportsController>().calculateAllReports();

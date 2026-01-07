@@ -328,7 +328,9 @@ class CreateRefuelingController extends GetxController {
 
         await batch.commit();
 
-        await Utils.loadHomeAndReportData(snakBarMsg: "refueling_added".tr);
+        if (Get.isDialogOpen == true) Get.back();
+        Get.back();
+        Utils.showSnackBar(message: "refueling_added".tr, success: true);
       } on FirebaseException catch (e) {
         Utils.getFirebaseException(e);
       } catch (e) {

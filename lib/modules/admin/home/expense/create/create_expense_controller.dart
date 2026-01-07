@@ -205,7 +205,9 @@ class CreateExpenseController extends GetxController {
 
         await batch.commit();
 
-        await Utils.loadHomeAndReportData(snakBarMsg: "expense_added".tr);
+        if (Get.isDialogOpen == true) Get.back();
+        Get.back();
+        Utils.showSnackBar(message: "expense_added".tr, success: true);
       } on FirebaseException catch (e) {
         Utils.getFirebaseException(e);
       } catch (e) {

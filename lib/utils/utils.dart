@@ -4,9 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drivvo/model/date_range_model.dart';
 import 'package:drivvo/model/general_model.dart';
 import 'package:drivvo/model/onboarding_model.dart';
-import 'package:drivvo/modules/admin/home/home_controller.dart';
-import 'package:drivvo/modules/admin/reports/reports_controller.dart';
-import 'package:drivvo/modules/driver/home/driver_home_controller.dart';
 import 'package:drivvo/services/app_service.dart';
 import 'package:drivvo/utils/constants.dart';
 import 'package:drivvo/utils/database_tables.dart';
@@ -102,30 +99,6 @@ class Utils {
     } else {
       Utils.showSnackBar(message: "something_wrong".tr, success: false);
     }
-  }
-
-  static Future<void> loadHomeAndReportData({
-    required String snakBarMsg,
-  }) async {
-    final appService = Get.find<AppService>();
-
-    if (appService.appUser.value.userType == Constants.ADMIN) {
-      if (Get.isRegistered<HomeController>()) {
-        await Get.find<HomeController>().loadTimelineData();
-      }
-
-      if (Get.isRegistered<ReportsController>()) {
-        await Get.find<ReportsController>().calculateAllReports();
-      }
-    } else {
-      if (Get.isRegistered<DriverHomeController>()) {
-        await Get.find<DriverHomeController>().loadTimelineData();
-      }
-    }
-
-    if (Get.isDialogOpen == true) Get.back();
-    Get.back();
-    Utils.showSnackBar(message: snakBarMsg, success: true);
   }
 
   // Format date as "dd MMM" (e.g., "17 dec")

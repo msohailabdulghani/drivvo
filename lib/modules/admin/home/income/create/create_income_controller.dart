@@ -194,7 +194,9 @@ class CreateIncomeController extends GetxController {
 
         await batch.commit();
 
-        await Utils.loadHomeAndReportData(snakBarMsg: "income_added".tr);
+        if (Get.isDialogOpen == true) Get.back();
+        Get.back();
+        Utils.showSnackBar(message: "income_added".tr, success: true);
       } on FirebaseException catch (e) {
         Utils.getFirebaseException(e);
       } catch (e) {

@@ -190,11 +190,11 @@ class UpdateExpenseController extends GetxController {
         "expense_types": expenseTypesList.map((e) => e.toJson()).toList(),
       };
 
-      final lastRecordMap = {
-        "type": "expense",
-        "date": model.value.date,
-        "odometer": model.value.odometer,
-      };
+      // final lastRecordMap = {
+      //   "type": "expense",
+      //   "date": model.value.date,
+      //   "odometer": model.value.odometer,
+      // };
 
       try {
         final adminId = isAdmin
@@ -211,9 +211,9 @@ class UpdateExpenseController extends GetxController {
             .collection(DatabaseTables.VEHICLES)
             .doc(vehicleId);
 
-        final userRef = FirebaseFirestore.instance
-            .collection(DatabaseTables.USER_PROFILE)
-            .doc(appService.appUser.value.id);
+        // final userRef = FirebaseFirestore.instance
+        //     .collection(DatabaseTables.USER_PROFILE)
+        //     .doc(appService.appUser.value.id);
 
         await FirebaseFirestore.instance.runTransaction((transaction) async {
           transaction.update(vehicleRef, {
@@ -230,12 +230,14 @@ class UpdateExpenseController extends GetxController {
             });
           }
 
-          transaction.set(userRef, {
-            "last_record": lastRecordMap,
-          }, SetOptions(merge: true));
+          // transaction.set(userRef, {
+          //   "last_record": lastRecordMap,
+          // }, SetOptions(merge: true));
         });
 
-        await Utils.loadHomeAndReportData(snakBarMsg: "expense_updated".tr);
+        if (Get.isDialogOpen == true) Get.back();
+        Get.back();
+        Utils.showSnackBar(message: "expense_updated".tr, success: true);
       } on FirebaseException catch (e) {
         Utils.getFirebaseException(e);
       } catch (e) {

@@ -332,7 +332,9 @@ class UpdateRefuelingController extends GetxController {
           }
         });
 
-        await Utils.loadHomeAndReportData(snakBarMsg: "refueling_updated".tr);
+        if (Get.isDialogOpen == true) Get.back();
+        Get.back();
+        Utils.showSnackBar(message: "refueling_updated".tr, success: true);
       } on FirebaseException catch (e) {
         Utils.getFirebaseException(e);
       } catch (e) {

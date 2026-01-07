@@ -219,7 +219,9 @@ class UpdateServiceController extends GetxController {
           }
         });
 
-        await Utils.loadHomeAndReportData(snakBarMsg: "service_updated".tr);
+        if (Get.isDialogOpen == true) Get.back();
+        Get.back();
+        Utils.showSnackBar(message: "service_updated".tr, success: true);
       } on FirebaseException catch (e) {
         Utils.getFirebaseException(e);
       } catch (e) {

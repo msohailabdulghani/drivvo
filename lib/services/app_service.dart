@@ -4,6 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drivvo/model/app_user.dart';
 import 'package:drivvo/model/date_range_model.dart';
 import 'package:drivvo/model/vehicle/vehicle_model.dart';
+import 'package:drivvo/modules/admin/home/home_controller.dart';
+import 'package:drivvo/modules/admin/reports/reports_controller.dart';
+import 'package:drivvo/modules/driver/home/driver_home_controller.dart';
 import 'package:drivvo/routes/app_routes.dart';
 import 'package:drivvo/utils/constants.dart';
 import 'package:drivvo/utils/database_tables.dart';
@@ -228,6 +231,13 @@ class AppService extends GetxService {
                     final vehicle = VehicleModel.fromJson(data);
                     await setVehicle(vehicle);
                   }
+                  if (Get.isRegistered<HomeController>()) {
+                    await Get.find<HomeController>().loadTimelineData();
+                  }
+
+                  if (Get.isRegistered<ReportsController>()) {
+                    await Get.find<ReportsController>().calculateAllReports();
+                  }
                 }
               } catch (e) {
                 debugPrint("Error processing vehicle snapshot: $e");
@@ -279,6 +289,10 @@ class AppService extends GetxService {
                   if (data != null) {
                     final vehicle = VehicleModel.fromJson(data);
                     await setDriverVehicle(vehicle);
+                  }
+
+                  if (Get.isRegistered<DriverHomeController>()) {
+                    await Get.find<DriverHomeController>().loadTimelineData();
                   }
                 }
               } catch (e) {

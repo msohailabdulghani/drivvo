@@ -254,7 +254,9 @@ class CreateRouteController extends GetxController {
 
         await batch.commit();
 
-        await Utils.loadHomeAndReportData(snakBarMsg: "route_added".tr);
+        if (Get.isDialogOpen == true) Get.back();
+        Get.back();
+        Utils.showSnackBar(message: "route_added".tr, success: true);
       } on FirebaseException catch (e) {
         Utils.getFirebaseException(e);
       } catch (e) {
