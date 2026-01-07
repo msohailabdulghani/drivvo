@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drivvo/model/last_record_model.dart';
 import 'package:drivvo/model/route/route_model.dart';
-import 'package:drivvo/modules/admin/home/home_controller.dart';
 import 'package:drivvo/services/app_service.dart';
 import 'package:drivvo/utils/constants.dart';
 import 'package:drivvo/utils/database_tables.dart';
@@ -60,7 +59,11 @@ class CreateRouteController extends GetxController {
     destinationController.text = "select_destination".tr;
     driverController.text = "select_your_driver".tr;
 
-    lastOdometer.value = appService.vehicleModel.value.lastOdometer;
+    lastOdometer.value =
+        appService.appUser.value.userType.toLowerCase() ==
+            Constants.ADMIN.toLowerCase()
+        ? appService.vehicleModel.value.lastOdometer
+        : appService.driverVehicleModel.value.lastOdometer;
     calculateTotal();
   }
 
@@ -211,6 +214,7 @@ class CreateRouteController extends GetxController {
         "file_path": filePath.value,
         "notes": model.value.notes,
         "image_path": model.value.imagePath,
+        "driver_id": appService.appUser.value.id,
       };
 
       final lastRecordMap = {
@@ -220,13 +224,23 @@ class CreateRouteController extends GetxController {
       };
 
       try {
+        final isAdmin = appService.appUser.value.userType == Constants.ADMIN;
+
+        final adminId = isAdmin
+            ? appService.appUser.value.id
+            : appService.appUser.value.adminId;
+
+        final vehicleId = isAdmin
+            ? appService.currentVehicleId.value
+            : appService.driverCurrentVehicleId.value;
+
         final batch = FirebaseFirestore.instance.batch();
 
         final vehicleRef = FirebaseFirestore.instance
             .collection(DatabaseTables.USER_PROFILE)
-            .doc(appService.appUser.value.id)
+            .doc(adminId)
             .collection(DatabaseTables.VEHICLES)
-            .doc(appService.currentVehicleId.value);
+            .doc(vehicleId);
 
         final userRef = FirebaseFirestore.instance
             .collection(DatabaseTables.USER_PROFILE)
@@ -240,16 +254,10 @@ class CreateRouteController extends GetxController {
         batch.set(userRef, {
           "last_record": lastRecordMap,
         }, SetOptions(merge: true));
+
         await batch.commit();
 
-        if (Get.isDialogOpen == true) Get.back();
-        Get.back();
-
-        Utils.showSnackBar(message: "route_added".tr, success: true);
-
-        if (Get.isRegistered<HomeController>()) {
-          Get.find<HomeController>().loadTimelineData();
-        }
+        await Utils.loadHomeAndReportData(snakBarMsg: "route_added".tr);
       } on FirebaseException catch (e) {
         Utils.getFirebaseException(e);
       } catch (e) {

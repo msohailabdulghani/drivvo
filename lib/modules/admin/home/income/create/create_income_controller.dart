@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drivvo/model/income/income_model.dart';
 import 'package:drivvo/model/last_record_model.dart';
-import 'package:drivvo/modules/admin/home/home_controller.dart';
-import 'package:drivvo/modules/admin/reports/reports_controller.dart';
 import 'package:drivvo/services/app_service.dart';
 import 'package:drivvo/utils/constants.dart';
 import 'package:drivvo/utils/database_tables.dart';
@@ -45,7 +43,11 @@ class CreateIncomeController extends GetxController {
     incomeTypeController.text = "select_income_type".tr;
     driverController.text = "select_your_driver".tr;
 
-    lastOdometer.value = appService.vehicleModel.value.lastOdometer;
+    lastOdometer.value =
+        appService.appUser.value.userType.toLowerCase() ==
+            Constants.ADMIN.toLowerCase()
+        ? appService.vehicleModel.value.lastOdometer
+        : appService.driverVehicleModel.value.lastOdometer;
   }
 
   @override
@@ -154,6 +156,7 @@ class CreateIncomeController extends GetxController {
         "file_path": filePath.value,
         "notes": model.value.notes,
         "image_path": model.value.imagePath,
+        "driver_id": appService.appUser.value.id,
       };
 
       final lastRecordMap = {
@@ -163,13 +166,25 @@ class CreateIncomeController extends GetxController {
       };
 
       try {
+        final isAdmin =
+            appService.appUser.value.userType.toLowerCase() ==
+            Constants.ADMIN.toLowerCase();
+
+        final adminId = isAdmin
+            ? appService.appUser.value.id
+            : appService.appUser.value.adminId;
+
+        final vehicleId = isAdmin
+            ? appService.currentVehicleId.value
+            : appService.driverCurrentVehicleId.value;
+
         final batch = FirebaseFirestore.instance.batch();
 
         final vehicleRef = FirebaseFirestore.instance
             .collection(DatabaseTables.USER_PROFILE)
-            .doc(appService.appUser.value.id)
+            .doc(adminId)
             .collection(DatabaseTables.VEHICLES)
-            .doc(appService.currentVehicleId.value);
+            .doc(vehicleId);
 
         final userRef = FirebaseFirestore.instance
             .collection(DatabaseTables.USER_PROFILE)
@@ -184,18 +199,7 @@ class CreateIncomeController extends GetxController {
 
         await batch.commit();
 
-        if (Get.isDialogOpen == true) Get.back();
-        Get.back();
-
-        Utils.showSnackBar(message: "income_added".tr, success: true);
-
-        if (Get.isRegistered<HomeController>()) {
-          Get.find<HomeController>().loadTimelineData();
-        }
-
-        if (Get.isRegistered<ReportsController>()) {
-          Get.find<ReportsController>().calculateAllReports();
-        }
+        await Utils.loadHomeAndReportData(snakBarMsg: "income_added".tr);
       } on FirebaseException catch (e) {
         Utils.getFirebaseException(e);
       } catch (e) {

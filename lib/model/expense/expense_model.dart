@@ -15,6 +15,7 @@ class ExpenseModel {
   late String filePath;
   late String notes;
   late String imagePath;
+  late String driverId;
   late List<ExpenseTypeModel> expenseTypes;
   Map<String, dynamic> rawMap = {};
 
@@ -32,6 +33,7 @@ class ExpenseModel {
     filePath = "";
     notes = "";
     imagePath = "";
+    driverId = "";
     expenseTypes = [];
   }
 
@@ -57,6 +59,7 @@ class ExpenseModel {
     filePath = json["file_path"] ?? "";
     notes = json["notes"] ?? "";
     imagePath = json["image_path"] ?? "";
+    driverId = json["driver_id"] ?? "";
     expenseTypes =
         (json["expense_types"] as List<dynamic>?)
             ?.map((e) => ExpenseTypeModel.fromJson(e as Map<String, dynamic>))
@@ -79,6 +82,7 @@ class ExpenseModel {
       "file_path": filePath,
       "notes": notes,
       "image_path": imagePath,
+      "driver_id": driverId,
       "expense_types": expenseTypes.map((e) => e.toJson()).toList(),
     };
   }

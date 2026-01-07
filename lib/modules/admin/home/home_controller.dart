@@ -283,40 +283,6 @@ class HomeController extends GetxController {
     return user?.metadata.creationTime ?? DateTime.now();
   }
 
-  DateTime getStartDate() {
-    if (allEntries.isNotEmpty) {
-      return allEntries.last.date;
-    } else {
-      return now;
-    }
-  }
-
-  DateTime getEndDate() {
-    if (allEntries.isNotEmpty) {
-      return allEntries.first.date;
-    } else {
-      return now;
-    }
-  }
-
-  int getFirstOdometer() {
-    if (allEntries.isNotEmpty) {
-      final odo = allEntries.last.odometer;
-      return odo;
-    } else {
-      return 0;
-    }
-  }
-
-  int getlastOdometer() {
-    if (allEntries.isNotEmpty) {
-      final odo = allEntries.first.odometer;
-      return odo;
-    } else {
-      return 0;
-    }
-  }
-
   Future<void> deleteEntry(TimelineEntry entry) async {
     try {
       if (entry.originalData == null) return;

@@ -18,6 +18,7 @@ class RefuelingModel {
   late String driverName;
   late String imagePath;
   late String filePath;
+  late String driverId;
   Map<String, dynamic> rawMap = {};
 
   RefuelingModel() {
@@ -38,6 +39,7 @@ class RefuelingModel {
     driverName = "";
     imagePath = "";
     filePath = "";
+    driverId = "";
   }
 
   RefuelingModel.fromJson(Map<String, dynamic> json) {
@@ -66,6 +68,7 @@ class RefuelingModel {
     driverName = json["driver_name"] ?? "";
     imagePath = json["image_path"] ?? "";
     filePath = json["file_path"] ?? "";
+    driverId = json["driver_id"] ?? "";
   }
 
   Map<String, dynamic> toJson() {
@@ -87,6 +90,7 @@ class RefuelingModel {
       "driver_name": driverName,
       "image_path": imagePath,
       "file_path": filePath,
+      "driver_id": driverId,
     };
   }
 }

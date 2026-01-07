@@ -36,6 +36,7 @@ class DriverHomeController extends GetxController {
   void onInit() {
     appService = Get.find<AppService>();
     super.onInit();
+
     loadTimelineData();
   }
 
@@ -82,12 +83,12 @@ class DriverHomeController extends GetxController {
     try {
       isLoading.value = true;
 
-      final vehicle = appService.vehicleModel.value;
+      final vehicle = appService.driverVehicleModel.value;
       final List<TimelineEntry> entries = [];
 
       if (appService.refuelingFilter.value) {
         for (var data in vehicle.refuelingList) {
-          if (data.vehicleId == appService.currentVehicleId.value) {
+          if (data.driverId == appService.appUser.value.id) {
             entries.add(
               TimelineEntry(
                 type: TimelineEntryType.refueling,
@@ -107,7 +108,7 @@ class DriverHomeController extends GetxController {
 
       if (appService.expenseFilter.value) {
         for (var data in vehicle.expenseList) {
-          if (data.vehicleId == appService.currentVehicleId.value) {
+          if (data.driverId == appService.appUser.value.id) {
             entries.add(
               TimelineEntry(
                 type: TimelineEntryType.expense,
@@ -127,7 +128,7 @@ class DriverHomeController extends GetxController {
 
       if (appService.serviceFilter.value) {
         for (var data in vehicle.serviceList) {
-          if (data.vehicleId == appService.currentVehicleId.value) {
+          if (data.driverId == appService.appUser.value.id) {
             entries.add(
               TimelineEntry(
                 type: TimelineEntryType.service,
@@ -147,7 +148,7 @@ class DriverHomeController extends GetxController {
 
       if (appService.incomeFilter.value) {
         for (var data in vehicle.incomeList) {
-          if (data.vehicleId == appService.currentVehicleId.value) {
+          if (data.driverId == appService.appUser.value.id) {
             entries.add(
               TimelineEntry(
                 type: TimelineEntryType.income,
@@ -169,7 +170,7 @@ class DriverHomeController extends GetxController {
 
       if (appService.routeFilter.value) {
         for (var data in vehicle.routeList) {
-          if (data.vehicleId == appService.currentVehicleId.value) {
+          if (data.driverId == appService.appUser.value.id) {
             entries.add(
               TimelineEntry(
                 type: TimelineEntryType.route,

@@ -1,10 +1,15 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drivvo/model/date_range_model.dart';
 import 'package:drivvo/model/general_model.dart';
 import 'package:drivvo/model/onboarding_model.dart';
+import 'package:drivvo/modules/admin/home/home_controller.dart';
+import 'package:drivvo/modules/admin/reports/reports_controller.dart';
+import 'package:drivvo/modules/driver/home/driver_home_controller.dart';
 import 'package:drivvo/services/app_service.dart';
 import 'package:drivvo/utils/constants.dart';
+import 'package:drivvo/utils/database_tables.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -97,6 +102,31 @@ class Utils {
     } else {
       Utils.showSnackBar(message: "something_wrong".tr, success: false);
     }
+  }
+
+  static Future<void> loadHomeAndReportData({
+    required String snakBarMsg,
+  }) async {
+    final appService = Get.find<AppService>();
+
+    if (appService.appUser.value.userType.toLowerCase() ==
+        Constants.ADMIN.toLowerCase()) {
+      if (Get.isRegistered<HomeController>()) {
+        await Get.find<HomeController>().loadTimelineData();
+      }
+
+      if (Get.isRegistered<ReportsController>()) {
+        await Get.find<ReportsController>().calculateAllReports();
+      }
+    } else {
+      if (Get.isRegistered<DriverHomeController>()) {
+        await Get.find<DriverHomeController>().loadTimelineData();
+      }
+    }
+
+    if (Get.isDialogOpen == true) Get.back();
+    Get.back();
+    Utils.showSnackBar(message: snakBarMsg, success: true);
   }
 
   // Format date as "dd MMM" (e.g., "17 dec")
@@ -1830,5 +1860,67 @@ class Utils {
       }
     }
     return list;
+  }
+
+  static Future<void> saveData({required String userDocId}) async {
+    String? collectionPath;
+    List<GeneralModel> generalList = [];
+
+    for (int i = 0; i < 6; i++) {
+      switch (i) {
+        case 0:
+          collectionPath = DatabaseTables.EXPENSE_TYPES;
+          break;
+        case 1:
+          collectionPath = DatabaseTables.INCOME_TYPES;
+          break;
+        case 2:
+          collectionPath = DatabaseTables.SERVICE_TYPES;
+          break;
+        case 3:
+          collectionPath = DatabaseTables.PAYMENT_METHOD;
+          break;
+        case 4:
+          collectionPath = DatabaseTables.REASONS;
+          break;
+        case 5:
+          collectionPath = DatabaseTables.FUEL;
+          break;
+        default:
+          debugPrint("Unknown title: $i");
+          return;
+      }
+      if (collectionPath.isNotEmpty) {
+        generalList.clear();
+        try {
+          final snapshot = await FirebaseFirestore.instance
+              .collection(collectionPath)
+              .get();
+
+          if (snapshot.docs.isNotEmpty) {
+            generalList = snapshot.docs.map((doc) {
+              return GeneralModel.fromJson(doc.data());
+            }).toList();
+
+            if (generalList.isNotEmpty) {
+              for (var e in generalList) {
+                final map = e.toJson();
+
+                await FirebaseFirestore.instance
+                    .collection(DatabaseTables.USER_PROFILE)
+                    .doc(userDocId)
+                    .collection(collectionPath)
+                    .doc()
+                    .set(map);
+              }
+            }
+          } else {
+            debugPrint("No data found in $collectionPath");
+          }
+        } catch (e) {
+          debugPrint("Error fetching $collectionPath: $e");
+        }
+      }
+    }
   }
 }

@@ -106,8 +106,19 @@ class CreateUserController extends GetxController {
         final data = jsonDecode(response.body) as Map<String, dynamic>;
 
         if (response.statusCode == 200 && data['success'] == true) {
+          final uid = data['uid'];
+          if (uid == null || uid.toString().isEmpty) {
+            Get.back();
+            Utils.showSnackBar(
+              message: 'user_registration_incomplete',
+              success: false,
+            );
+            return;
+          }
+          await Utils.saveData(userDocId: uid);
           passwordController.text = "";
           formStateKey.currentState?.reset();
+
           Get.back(closeOverlays: true);
           Utils.showSnackBar(message: "user_registered_success", success: true);
         } else {

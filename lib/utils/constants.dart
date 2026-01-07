@@ -78,6 +78,12 @@ class Constants {
   static const String DRIVER = "driver";
   // ignore: constant_identifier_names
   static const String ADMIN = "admin";
+  // ignore: constant_identifier_names
+  static const String DRIVER_CURRENT_VEHICLE_ID = "driverCurrentVehicleId";
+  // ignore: constant_identifier_names
+  static const String DRIVER_CURRENT_VEHICLE = "driverCurrentVehicle";
+  // ignore: constant_identifier_names
+  static const String DRIVER_VEHICLE = "driverVehicle";
 
   /// Google Maps API Key - Used for Places API requests
   // ignore: constant_identifier_names

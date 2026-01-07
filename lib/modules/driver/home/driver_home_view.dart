@@ -55,12 +55,13 @@ class DriverHomeView extends GetView<DriverHomeController> {
           Obx(
             () => HomeAppbar(
               isUrdu: controller.isUrdu,
+              isAdmin: false,
               hasActiveFilter: controller.hasActiveFilter,
               disabledFilterCount: controller.disabledFilterCount,
-              currentVehicleId: controller.appService.currentVehicleId.value,
-              currentVehicle: controller.appService.currentVehicle.value,
+              currentVehicleId: controller.appService.driverCurrentVehicleId.value,
+              currentVehicle: controller.appService.driverCurrentVehicle.value,
               lastOdometer:
-                  controller.appService.vehicleModel.value.lastOdometer,
+                  controller.appService.driverVehicleModel.value.lastOdometer,
             ),
           ),
 

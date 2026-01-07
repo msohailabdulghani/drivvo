@@ -76,6 +76,8 @@ import 'package:drivvo/modules/common/update-profile/update_profile_bindings.dar
 import 'package:drivvo/modules/common/update-profile/update_profile_view.dart';
 import 'package:drivvo/modules/driver/root/driver_root_bindings.dart';
 import 'package:drivvo/modules/driver/root/driver_root_view.dart';
+import 'package:drivvo/modules/driver/vehicle/driver_vehicles_bindings.dart';
+import 'package:drivvo/modules/driver/vehicle/driver_vehicles_view.dart';
 import 'package:drivvo/modules/splash_screen.dart';
 import 'package:drivvo/routes/app_routes.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
@@ -317,6 +319,12 @@ class AppPages {
       name: AppRoutes.DRIVER_ROOT_VIEW,
       page: () => const DriverRootView(),
       binding: DriverRootBindings(),
+    ),
+
+    GetPage(
+      name: AppRoutes.DRIVER_VEHICLE_VIEW,
+      page: () => const DriverVehiclesView(),
+      binding: DriverVehiclesBindings(),
     ),
   ];
 }

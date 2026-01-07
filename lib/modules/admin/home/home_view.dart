@@ -55,6 +55,7 @@ class HomeView extends GetView<HomeController> {
           Obx(
             () => HomeAppbar(
               isUrdu: controller.isUrdu,
+              isAdmin: true,
               hasActiveFilter: controller.hasActiveFilter,
               disabledFilterCount: controller.disabledFilterCount,
               currentVehicleId: controller.appService.currentVehicleId.value,

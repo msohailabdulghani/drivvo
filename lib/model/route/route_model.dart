@@ -18,6 +18,7 @@ class RouteModel {
   late String filePath;
   late String notes;
   late String imagePath;
+  late String driverId;
   Map<String, dynamic> rawMap = {};
 
   RouteModel() {
@@ -38,6 +39,7 @@ class RouteModel {
     filePath = "";
     notes = "";
     imagePath = "";
+    driverId = "";
   }
 
   RouteModel.fromJson(Map<String, dynamic> json) {
@@ -73,6 +75,7 @@ class RouteModel {
     filePath = json["file_path"] ?? "";
     notes = json["notes"] ?? "";
     imagePath = json["image_path"] ?? "";
+    driverId = json["driver_id"] ?? "";
   }
 
   Map<String, dynamic> toJson() {
@@ -94,6 +97,7 @@ class RouteModel {
       "file_path": filePath,
       "notes": notes,
       "image_path": imagePath,
+      "driver_id": driverId,
     };
   }
 }

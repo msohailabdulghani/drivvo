@@ -18,17 +18,18 @@ class AppService extends GetxService {
   late GetStorage _box;
   final appUser = AppUser().obs;
   final vehicleModel = VehicleModel().obs;
+  final driverVehicleModel = VehicleModel().obs;
 
   static AppService get to => Get.find();
 
   bool onBoarding = false;
   bool importData = false;
 
-  String email = "";
-  String password = "";
-
   var currentVehicleId = "".obs;
   var currentVehicle = "".obs;
+
+  var driverCurrentVehicleId = "".obs;
+  var driverCurrentVehicle = "".obs;
 
   var refuelingFilter = true.obs;
   var expenseFilter = true.obs;
@@ -39,6 +40,7 @@ class AppService extends GetxService {
   final FirebaseFirestore db = FirebaseFirestore.instance;
   StreamSubscription? _userSubscription;
   StreamSubscription? _vehicleSubscription;
+  StreamSubscription? _driverVehicleSubscription;
 
   String _languageCode = "";
   String _countryCode = "";
@@ -74,8 +76,10 @@ class AppService extends GetxService {
     gasUnit.value = _box.read<String>(Constants.GAS_UNIT) ?? "m³";
     currentVehicle.value = _box.read<String>(Constants.CURRENT_VEHICLE) ?? "";
 
-    email = _box.read<String>(Constants.EMAIL) ?? "";
-    password = _box.read<String>(Constants.PASSWORD) ?? "";
+    driverCurrentVehicleId.value =
+        _box.read<String>(Constants.DRIVER_CURRENT_VEHICLE_ID) ?? "";
+    driverCurrentVehicle.value =
+        _box.read<String>(Constants.DRIVER_CURRENT_VEHICLE) ?? "";
 
     onBoarding = _box.read<bool>(Constants.ONBOARDING) ?? false;
     importData = _box.read<bool>(Constants.IMPORT_DATA) ?? false;
@@ -119,6 +123,7 @@ class AppService extends GetxService {
     appUser.value = AppUser.fromJson(user);
     await getUserProfile();
     await getCurrentVehicle();
+    await getDriverCurrentVehicle();
   }
 
   Future<void> getUserProfile() async {
@@ -181,23 +186,59 @@ class AppService extends GetxService {
           .doc(currentVehicleId.value)
           .snapshots()
           .listen(
-            (docSnapshot) {
+            (docSnapshot) async {
               if (docSnapshot.exists) {
                 Map<String, dynamic>? data = docSnapshot.data();
                 if (data != null) {
                   final vehicle = VehicleModel.fromJson(data);
-                  setVehicle(vehicle);
+                  await setVehicle(vehicle);
                 }
               }
             },
             onError: (e) {
-              debugPrint("getUserProfile error: $e");
+              debugPrint("getCurrentVehicle  error: $e");
             },
           );
 
       return;
     } catch (e) {
-      debugPrint("getUserProfile error: $e");
+      debugPrint("getCurrentVehicle  error: $e");
+    }
+  }
+
+  Future<void> getDriverCurrentVehicle() async {
+    try {
+      if (driverCurrentVehicleId.value.isEmpty ||
+          appUser.value.adminId.isEmpty) {
+        return;
+      }
+
+      _driverVehicleSubscription?.cancel();
+
+      _driverVehicleSubscription = db
+          .collection(DatabaseTables.USER_PROFILE)
+          .doc(appUser.value.adminId)
+          .collection(DatabaseTables.VEHICLES)
+          .doc(driverCurrentVehicleId.value)
+          .snapshots()
+          .listen(
+            (docSnapshot) async {
+              if (docSnapshot.exists) {
+                Map<String, dynamic>? data = docSnapshot.data();
+                if (data != null) {
+                  final vehicle = VehicleModel.fromJson(data);
+                  await setDriverVehicle(vehicle);
+                }
+              }
+            },
+            onError: (e) {
+              debugPrint("getDriverCurrentVehicle error: $e");
+            },
+          );
+
+      return;
+    } catch (e) {
+      debugPrint("getDriverCurrentVehicle error: $e");
     }
   }
 
@@ -211,17 +252,14 @@ class AppService extends GetxService {
     await _box.write(Constants.Vehicle, vehicle.toJson(vehicle.id));
   }
 
+  Future<void> setDriverVehicle(VehicleModel vehicle) async {
+    driverVehicleModel.value = vehicle;
+    await _box.write(Constants.DRIVER_VEHICLE, vehicle.toJson(vehicle.id));
+  }
+
   Future<void> setDateFormat(String value) async {
     selectedDateFormat.value = value;
     await _box.write(Constants.DATE_FORMAT, value);
-  }
-
-  Future<void> setEmailAndPwd({
-    required String email,
-    required String pwd,
-  }) async {
-    await _box.write(Constants.EMAIL, email);
-    await _box.write(Constants.PASSWORD, pwd);
   }
 
   Future<void> setCurrencyFormat({
@@ -258,6 +296,16 @@ class AppService extends GetxService {
   Future<void> setCurrentVehicle(String name) async {
     currentVehicle.value = name;
     await _box.write(Constants.CURRENT_VEHICLE, name);
+  }
+
+  Future<void> setDriverCurrentVehicleId(String id) async {
+    driverCurrentVehicleId.value = id;
+    await _box.write(Constants.DRIVER_CURRENT_VEHICLE_ID, id);
+  }
+
+  Future<void> setDriverCurrentVehicle(String name) async {
+    driverCurrentVehicle.value = name;
+    await _box.write(Constants.DRIVER_CURRENT_VEHICLE, name);
   }
 
   Future<void> setOnboarding({required bool value}) async {
@@ -333,6 +381,7 @@ class AppService extends GetxService {
   void onClose() {
     _userSubscription?.cancel();
     _vehicleSubscription?.cancel();
+    _driverVehicleSubscription?.cancel();
     super.onClose();
   }
 }

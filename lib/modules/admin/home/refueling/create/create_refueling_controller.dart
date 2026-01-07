@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drivvo/model/last_record_model.dart';
 import 'package:drivvo/model/refueling/refueling_model.dart';
-import 'package:drivvo/modules/admin/home/home_controller.dart';
-import 'package:drivvo/modules/admin/reports/reports_controller.dart';
 import 'package:drivvo/services/app_service.dart';
 import 'package:drivvo/utils/constants.dart';
 import 'package:drivvo/utils/database_tables.dart';
@@ -61,7 +59,11 @@ class CreateRefuelingController extends GetxController {
     reasonController.text = "select_reason".tr;
     driverController.text = "select_your_driver".tr;
 
-    lastOdometer.value = appService.vehicleModel.value.lastOdometer;
+    lastOdometer.value =
+        appService.appUser.value.userType.toLowerCase() ==
+            Constants.ADMIN.toLowerCase()
+        ? appService.vehicleModel.value.lastOdometer
+        : appService.driverVehicleModel.value.lastOdometer;
   }
 
   @override
@@ -277,6 +279,7 @@ class CreateRefuelingController extends GetxController {
         "driver_name": model.value.driverName,
         "file_path": filePath.value,
         "image_path": model.value.imagePath,
+        "driver_id": appService.appUser.value.id,
       };
 
       final lastRecordMap = {
@@ -286,13 +289,23 @@ class CreateRefuelingController extends GetxController {
       };
 
       try {
+        final isAdmin = appService.appUser.value.userType == Constants.ADMIN;
+
+        final adminId = isAdmin
+            ? appService.appUser.value.id
+            : appService.appUser.value.adminId;
+
+        final vehicleId = isAdmin
+            ? appService.currentVehicleId.value
+            : appService.driverCurrentVehicleId.value;
+
         final batch = FirebaseFirestore.instance.batch();
 
         final vehicleRef = FirebaseFirestore.instance
             .collection(DatabaseTables.USER_PROFILE)
-            .doc(appService.appUser.value.id)
+            .doc(adminId)
             .collection(DatabaseTables.VEHICLES)
-            .doc(appService.currentVehicleId.value);
+            .doc(vehicleId);
 
         final userRef = FirebaseFirestore.instance
             .collection(DatabaseTables.USER_PROFILE)
@@ -307,18 +320,7 @@ class CreateRefuelingController extends GetxController {
 
         await batch.commit();
 
-        if (Get.isDialogOpen == true) Get.back();
-        Get.back();
-
-        Utils.showSnackBar(message: "refueling_added".tr, success: true);
-
-        if (Get.isRegistered<HomeController>()) {
-          Get.find<HomeController>().loadTimelineData();
-        }
-
-        if (Get.isRegistered<ReportsController>()) {
-          Get.find<ReportsController>().calculateAllReports();
-        }
+        await Utils.loadHomeAndReportData(snakBarMsg: "refueling_added".tr);
       } on FirebaseException catch (e) {
         Utils.getFirebaseException(e);
       } catch (e) {

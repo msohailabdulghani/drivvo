@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 class HomeAppbar extends StatelessWidget {
   final bool isUrdu;
+  final bool isAdmin;
   final bool hasActiveFilter;
   final int disabledFilterCount;
   final String currentVehicleId;
@@ -14,6 +15,7 @@ class HomeAppbar extends StatelessWidget {
   const HomeAppbar({
     super.key,
     required this.isUrdu,
+    required this.isAdmin,
     required this.hasActiveFilter,
     required this.disabledFilterCount,
     required this.currentVehicleId,
@@ -173,13 +175,17 @@ class HomeAppbar extends StatelessWidget {
                         Expanded(
                           child: GestureDetector(
                             onTap: () {
-                              Get.toNamed(
-                                AppRoutes.VEHICLES_VIEW,
-                                arguments: {
-                                  "is_from_home": true,
-                                  "is_from_user": false,
-                                },
-                              );
+                              if (isAdmin) {
+                                Get.toNamed(
+                                  AppRoutes.VEHICLES_VIEW,
+                                  arguments: {
+                                    "is_from_home": true,
+                                    "is_from_user": false,
+                                  },
+                                );
+                              } else {
+                                Get.toNamed(AppRoutes.DRIVER_VEHICLE_VIEW);
+                              }
                             },
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
