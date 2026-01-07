@@ -1,5 +1,6 @@
 import 'package:drivvo/custom-widget/button/custom_button.dart';
 import 'package:drivvo/custom-widget/common/icon_with_text.dart';
+import 'package:drivvo/custom-widget/common/profile_network_image.dart';
 import 'package:drivvo/custom-widget/reminder/custom_toggle_btn.dart';
 import 'package:drivvo/custom-widget/text-input-field/card_text_input_field.dart';
 import 'package:drivvo/custom-widget/text-input-field/form_label_text.dart';
@@ -636,25 +637,12 @@ class CreateVehiclesView extends GetView<CreateVehiclesController> {
                           ),
                           child: Row(
                             children: [
-                              Image.asset(
-                                model.logoUrl,
-                                height: 40,
-                                width: 40,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return Container(
-                                    height: 40,
-                                    width: 40,
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey.shade200,
-                                      borderRadius: BorderRadius.circular(4),
-                                    ),
-                                    child: Icon(
-                                      Icons.business,
-                                      color: Colors.grey.shade400,
-                                      size: 24,
-                                    ),
-                                  );
-                                },
+                              ProfileNetworkImage(
+                                imageUrl: model.logoUrl,
+                                width: 50,
+                                height: 30,
+                                borderRadius: 0,
+                                placeholder: "assets/images/car_placeholder.png",
                               ),
                               const SizedBox(width: 10),
                               Text(

@@ -25,8 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
         if (user != null) {
           if (appService.currentVehicleId.isNotEmpty) {
             if (appService.importData) {
-              if (appService.appUser.value.userType.toLowerCase() ==
-                  Constants.ADMIN) {
+              if (appService.appUser.value.userType == Constants.ADMIN) {
                 Get.offAllNamed(AppRoutes.ADMIN_ROOT_VIEW);
               } else {
                 Get.offAllNamed(AppRoutes.DRIVER_ROOT_VIEW);

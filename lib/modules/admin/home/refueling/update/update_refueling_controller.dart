@@ -44,9 +44,7 @@ class UpdateRefuelingController extends GetxController {
 
   bool get isUrdu => Get.locale?.languageCode == Constants.URDU_LANGUAGE_CODE;
 
-  bool get isAdmin =>
-      appService.appUser.value.userType.toLowerCase() ==
-      Constants.ADMIN.toLowerCase();
+  bool get isAdmin => appService.appUser.value.userType == Constants.ADMIN;
 
   @override
   void onInit() {
@@ -288,11 +286,12 @@ class UpdateRefuelingController extends GetxController {
         "payment_method": paymentMethodController.text.trim(),
         "notes": model.value.notes,
         "driver_name": model.value.driverName,
-        "driver_id": appService.appUser.value.id,
+        "driver_id": isAdmin
+            ? (oldRefuelingMap["driver_id"] ?? "")
+            : appService.appUser.value.id,
       };
 
       try {
-
         final adminId = isAdmin
             ? appService.appUser.value.id
             : appService.appUser.value.adminId;

@@ -38,6 +38,7 @@ class CreateRouteController extends GetxController {
   final driverController = TextEditingController();
 
   bool get isUrdu => Get.locale?.languageCode == Constants.URDU_LANGUAGE_CODE;
+  bool get isAdmin => appService.appUser.value.userType == Constants.ADMIN;
 
   @override
   void onInit() {
@@ -59,9 +60,7 @@ class CreateRouteController extends GetxController {
     destinationController.text = "select_destination".tr;
     driverController.text = "select_your_driver".tr;
 
-    lastOdometer.value =
-        appService.appUser.value.userType.toLowerCase() ==
-            Constants.ADMIN.toLowerCase()
+    lastOdometer.value = isAdmin
         ? appService.vehicleModel.value.lastOdometer
         : appService.driverVehicleModel.value.lastOdometer;
     calculateTotal();
@@ -214,7 +213,7 @@ class CreateRouteController extends GetxController {
         "file_path": filePath.value,
         "notes": model.value.notes,
         "image_path": model.value.imagePath,
-        "driver_id": appService.appUser.value.id,
+        "driver_id": isAdmin ? "" : appService.appUser.value.id,
       };
 
       final lastRecordMap = {
@@ -224,8 +223,6 @@ class CreateRouteController extends GetxController {
       };
 
       try {
-        final isAdmin = appService.appUser.value.userType == Constants.ADMIN;
-
         final adminId = isAdmin
             ? appService.appUser.value.id
             : appService.appUser.value.adminId;

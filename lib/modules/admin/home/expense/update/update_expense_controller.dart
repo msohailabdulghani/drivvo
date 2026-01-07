@@ -36,6 +36,7 @@ class UpdateExpenseController extends GetxController {
   late LastRecordModel lastRecord;
 
   bool get isUrdu => Get.locale?.languageCode == Constants.URDU_LANGUAGE_CODE;
+  bool get isAdmin => appService.appUser.value.userType == Constants.ADMIN;
 
   @override
   void onInit() {
@@ -62,9 +63,7 @@ class UpdateExpenseController extends GetxController {
       reasonController.text = expense.reason;
       driverController.text = expense.driverName;
 
-      lastOdometer.value =
-          appService.appUser.value.userType.toLowerCase() ==
-              Constants.ADMIN.toLowerCase()
+      lastOdometer.value = isAdmin
           ? appService.vehicleModel.value.lastOdometer
           : appService.driverVehicleModel.value.lastOdometer;
 
@@ -185,7 +184,9 @@ class UpdateExpenseController extends GetxController {
         "reason": reasonController.text.trim(),
         "file_path": filePath.value,
         "notes": model.value.notes,
-        "driver_id": appService.appUser.value.id,
+        "driver_id": isAdmin
+            ? (oldExpenseMap["driver_id"] ?? "")
+            : appService.appUser.value.id,
         "expense_types": expenseTypesList.map((e) => e.toJson()).toList(),
       };
 
@@ -196,10 +197,6 @@ class UpdateExpenseController extends GetxController {
       };
 
       try {
-        final isAdmin =
-            appService.appUser.value.userType.toLowerCase() ==
-            Constants.ADMIN.toLowerCase();
-
         final adminId = isAdmin
             ? appService.appUser.value.id
             : appService.appUser.value.adminId;

@@ -35,6 +35,7 @@ class UpdateServiceController extends GetxController {
   final driverController = TextEditingController();
 
   bool get isUrdu => Get.locale?.languageCode == Constants.URDU_LANGUAGE_CODE;
+  bool get isAdmin => appService.appUser.value.userType == Constants.ADMIN;
 
   @override
   void onInit() {
@@ -64,9 +65,7 @@ class UpdateServiceController extends GetxController {
       updateServiceTypeDisplay();
     }
 
-    lastOdometer.value =
-        appService.appUser.value.userType.toLowerCase() ==
-            Constants.ADMIN.toLowerCase()
+    lastOdometer.value = isAdmin
         ? appService.vehicleModel.value.lastOdometer
         : appService.driverVehicleModel.value.lastOdometer;
   }
@@ -183,13 +182,13 @@ class UpdateServiceController extends GetxController {
         "reason": reasonController.text.trim(),
         "file_path": filePath.value,
         "notes": model.value.notes,
-        "driver_id": appService.appUser.value.id,
+        "driver_id": isAdmin
+            ? (oldServiceMap["driver_id"] ?? "")
+            : appService.appUser.value.id,
         "expense_types": serviceTyesList.map((e) => e.toJson()).toList(),
       };
 
       try {
-        final isAdmin = appService.appUser.value.userType == Constants.ADMIN;
-
         final adminId = isAdmin
             ? appService.appUser.value.id
             : appService.appUser.value.adminId;

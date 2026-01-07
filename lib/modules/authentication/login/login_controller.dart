@@ -146,10 +146,10 @@ class LoginController extends GetxController {
         await appService.setProfile(userData);
 
         if (appService.importData) {
-          if (userData.userType.toLowerCase() == Constants.ADMIN) {
+          if (userData.userType == Constants.ADMIN) {
             Get.offAllNamed(AppRoutes.ADMIN_ROOT_VIEW);
           }
-          if (userData.userType.toLowerCase() == Constants.DRIVER) {
+          if (userData.userType == Constants.DRIVER) {
             Get.offAllNamed(AppRoutes.DRIVER_ROOT_VIEW);
           }
         } else {
@@ -224,6 +224,4 @@ class LoginController extends GetxController {
       }
     }
   }
-
-
 }
