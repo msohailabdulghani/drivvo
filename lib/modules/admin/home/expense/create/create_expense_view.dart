@@ -61,64 +61,84 @@ class CreateExpenseView extends GetView<CreateExpenseController> {
                           )
                         : SizedBox(),
                   ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: CardTextInputField(
-                          isRequired: true,
-                          isNext: true,
-                          obscureText: false,
-                          readOnly: true,
-                          controller: controller.dateController,
-                          isUrdu: controller.isUrdu,
-                          labelText: "date".tr,
-                          hintText: "select_date".tr,
-                          sufixIcon: Icon(
-                            Icons.date_range,
-                            color: Utils.appColor,
-                          ),
-                          onSaved: (value) {},
-                          onTap: () => controller.selectDate(),
-                          onValidate: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'date_required'.tr;
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: CardTextInputField(
-                          isRequired: true,
-                          isNext: true,
-                          obscureText: false,
-                          readOnly: true,
-                          controller: controller.timeController,
-                          isUrdu: controller.isUrdu,
-                          labelText: "time".tr,
-                          hintText: "select_time".tr,
-                          sufixIcon: Icon(
-                            Icons.av_timer,
-                            color: Utils.appColor,
-                          ),
-                          onSaved: (value) {},
-                          onTap: () => controller.selectTime(),
-                          onValidate: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'time_required'.tr;
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                    ],
+
+                  CardTextInputField(
+                    isRequired: true,
+                    isNext: true,
+                    obscureText: false,
+                    readOnly: true,
+                    controller: controller.dateController,
+                    isUrdu: controller.isUrdu,
+                    labelText: "date".tr,
+                    hintText: "select_date".tr,
+                    sufixIcon: Icon(Icons.date_range, color: Utils.appColor),
+                    onSaved: (value) {},
+                    onTap: () => controller.selectDate(),
+                    onValidate: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'date_required'.tr;
+                      }
+                      return null;
+                    },
                   ),
+                  // Row(
+                  //   children: [
+                  //     Expanded(
+                  //       child: CardTextInputField(
+                  //         isRequired: true,
+                  //         isNext: true,
+                  //         obscureText: false,
+                  //         readOnly: true,
+                  //         controller: controller.dateController,
+                  //         isUrdu: controller.isUrdu,
+                  //         labelText: "date".tr,
+                  //         hintText: "select_date".tr,
+                  //         sufixIcon: Icon(
+                  //           Icons.date_range,
+                  //           color: Utils.appColor,
+                  //         ),
+                  //         onSaved: (value) {},
+                  //         onTap: () => controller.selectDate(),
+                  //         onValidate: (value) {
+                  //           if (value == null || value.isEmpty) {
+                  //             return 'date_required'.tr;
+                  //           }
+                  //           return null;
+                  //         },
+                  //       ),
+                  //     ),
+                  //     const SizedBox(width: 16),
+                  //     Expanded(
+                  //       child: CardTextInputField(
+                  //         isRequired: true,
+                  //         isNext: true,
+                  //         obscureText: false,
+                  //         readOnly: true,
+                  //         controller: controller.timeController,
+                  //         isUrdu: controller.isUrdu,
+                  //         labelText: "time".tr,
+                  //         hintText: "select_time".tr,
+                  //         sufixIcon: Icon(
+                  //           Icons.av_timer,
+                  //           color: Utils.appColor,
+                  //         ),
+                  //         onSaved: (value) {},
+                  //         onTap: () => controller.selectTime(),
+                  //         onValidate: (value) {
+                  //           if (value == null || value.isEmpty) {
+                  //             return 'time_required'.tr;
+                  //           }
+                  //           return null;
+                  //         },
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
                   const SizedBox(height: 16),
                   Obx(
                     () => TextInputField(
                       isUrdu: controller.isUrdu,
-                      isRequired: true,
+                      isRequired: false,
                       isNext: true,
                       obscureText: false,
                       readOnly: false,
@@ -139,19 +159,6 @@ class CreateExpenseView extends GetView<CreateExpenseController> {
                         }
                       },
                       onValidate: (value) {
-                        if (value != null) {
-                          if (value.isNotEmpty) {
-                            final c = int.tryParse(value.replaceAll(',', ''));
-                            if (c == null) {
-                              return "invalid_odometer_value".tr;
-                            }
-                            if (c <= controller.lastOdometer.value) {
-                              return "odometer_greater_than_last".tr;
-                            }
-                          } else if (value.isEmpty) {
-                            return 'odometer_required'.tr;
-                          }
-                        }
                         return null;
                       },
                     ),

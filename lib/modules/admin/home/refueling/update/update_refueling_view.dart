@@ -284,13 +284,6 @@ class UpdateRefuelingView extends GetView<UpdateRefuelingController> {
                     ],
                   ),
                   const SizedBox(height: 28),
-                  _buildSwitchRow(
-                    icon: Icons.local_gas_station_outlined,
-                    label: 'are_you_filling_this_tank'.tr,
-                    value: controller.isFullTank,
-                    onChanged: (val) => controller.isFullTank.value = val,
-                  ),
-                  const SizedBox(height: 16),
                   CardTextInputField(
                     isUrdu: controller.isUrdu,
                     isRequired: false,
@@ -409,15 +402,6 @@ class UpdateRefuelingView extends GetView<UpdateRefuelingController> {
                                 onValidate: (value) => null,
                               ),
                               const SizedBox(height: 16),
-                              _buildSwitchRow(
-                                icon: Icons.local_gas_station_outlined,
-                                label: 'missed_previous_refueling'.tr,
-                                value: controller.missedPreviousRefueling,
-                                onChanged: (val) =>
-                                    controller.missedPreviousRefueling.value =
-                                        val,
-                              ),
-                              const SizedBox(height: 16),
                               LabelText(
                                 title: "attach_file".tr,
                                 isUrdu: controller.isUrdu,
@@ -532,52 +516,6 @@ class UpdateRefuelingView extends GetView<UpdateRefuelingController> {
               child: CustomButton(
                 title: "save".tr,
                 onTap: () => controller.updateRefueling(),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSwitchRow({
-    required IconData icon,
-    required String label,
-    required RxBool value,
-    required ValueChanged<bool> onChanged,
-  }) {
-    return Container(
-      padding: controller.isUrdu
-          ? const EdgeInsets.only(right: 10)
-          : const EdgeInsets.only(left: 10),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: Colors.grey.shade400),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Row(
-        children: [
-          Icon(icon, color: Colors.grey[600], size: 22),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              label,
-              style: Utils.getTextStyle(
-                baseSize: 14,
-                isBold: false,
-                color: Colors.black87,
-                isUrdu: controller.isUrdu,
-              ),
-            ),
-          ),
-          Obx(
-            () => Transform.scale(
-              scale: 0.8,
-              child: Switch(
-                value: value.value,
-                onChanged: onChanged,
-                activeThumbColor: Utils.appColor,
-                activeTrackColor: Utils.appColor.withValues(alpha: 0.2),
               ),
             ),
           ),

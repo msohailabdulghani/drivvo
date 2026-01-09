@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 class HomeAppbar extends StatelessWidget {
   final bool isUrdu;
   final bool isAdmin;
+  final bool isSubscribed;
   final bool hasActiveFilter;
   final int disabledFilterCount;
   final String currentVehicleId;
@@ -18,6 +19,7 @@ class HomeAppbar extends StatelessWidget {
     super.key,
     required this.isUrdu,
     required this.isAdmin,
+    required this.isSubscribed,
     required this.hasActiveFilter,
     required this.disabledFilterCount,
     required this.currentVehicleId,
@@ -45,8 +47,9 @@ class HomeAppbar extends StatelessWidget {
           bottomRight: Radius.circular(24),
         ),
       ),
+      centerTitle: false,
       title: Text(
-        'history'.tr,
+        'home'.tr,
         style: Utils.getTextStyle(
           baseSize: 18,
           isBold: true,

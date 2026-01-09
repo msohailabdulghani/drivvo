@@ -154,6 +154,13 @@ class UpdateExpenseController extends GetxController {
         return;
       }
 
+      if (totalAmount.value == 0) {
+        Utils.showSnackBar(
+          message: "expense_detail_required".tr,
+          success: false,
+        );
+        return;
+      }
       Utils.showProgressDialog();
 
       String? uploadedImageUrl;

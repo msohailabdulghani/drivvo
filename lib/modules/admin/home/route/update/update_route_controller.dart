@@ -151,18 +151,34 @@ class UpdateRouteController extends GetxController {
     }
   }
 
-  void calculateTotal() {
+  // void calculateTotal() {
+  //   final initial = int.tryParse(initialOdometerController.text) ?? 0;
+  //   final finalOdo = int.tryParse(finalOdometerController.text) ?? 0;
+  //   final valuePerKm = int.tryParse(valuePerKmController.text) ?? 0;
+
+  //   if (finalOdo > initial) {
+  //     final total = (finalOdo - initial) * valuePerKm;
+  //     totalController.text = total.toString();
+  //     model.value.total = total;
+  //   } else {
+  //     totalController.text = "0";
+  //     model.value.total = 0;
+  //   }
+  // }
+
+  void calculateValuePerKm() {
     final initial = int.tryParse(initialOdometerController.text) ?? 0;
     final finalOdo = int.tryParse(finalOdometerController.text) ?? 0;
-    final valuePerKm = int.tryParse(valuePerKmController.text) ?? 0;
+    final total = int.tryParse(totalController.text) ?? 0;
 
     if (finalOdo > initial) {
-      final total = (finalOdo - initial) * valuePerKm;
-      totalController.text = total.toString();
-      model.value.total = total;
-    } else {
-      totalController.text = "0";
-      model.value.total = 0;
+      final distance = finalOdo - initial;
+      if (distance > 0) {
+        final valuePerKm = total ~/ distance;
+        valuePerKmController.text = valuePerKm.toString();
+        model.value.valuePerKm = valuePerKm;
+        model.value.total = total;
+      }
     }
   }
 

@@ -217,7 +217,7 @@ class UpdateRouteView extends GetView<UpdateRouteController> {
                       type: TextInputType.number,
                       controller: controller.initialOdometerController,
                       onTap: () {},
-                      onChange: (v) => controller.calculateTotal(),
+                      onChange: (v) => controller.calculateValuePerKm(),
                       onSaved: (value) {},
                       onValidate: (value) {
                         if (value == null || value.isEmpty) {
@@ -282,7 +282,7 @@ class UpdateRouteView extends GetView<UpdateRouteController> {
                     type: TextInputType.number,
                     controller: controller.finalOdometerController,
                     onTap: () {},
-                    onChange: (v) => controller.calculateTotal(),
+                    onChange: (v) => controller.calculateValuePerKm(),
                     onSaved: (value) {},
                     onValidate: (value) {
                       if (value == null || value.isEmpty) {
@@ -310,14 +310,14 @@ class UpdateRouteView extends GetView<UpdateRouteController> {
                           isRequired: true,
                           isNext: true,
                           obscureText: false,
-                          readOnly: false,
+                          readOnly: true,
                           labelText: "value_per_km".tr,
                           hintText: "100".tr,
                           inputAction: TextInputAction.next,
                           type: TextInputType.number,
                           controller: controller.valuePerKmController,
                           onTap: () {},
-                          onChange: (v) => controller.calculateTotal(),
+                          onChange: (v) => controller.calculateValuePerKm(),
                           onSaved: (value) {},
                           onValidate: (value) {
                             if (value == null || value.isEmpty) {
@@ -334,13 +334,14 @@ class UpdateRouteView extends GetView<UpdateRouteController> {
                           isRequired: true,
                           isNext: true,
                           obscureText: false,
-                          readOnly: true,
+                          readOnly: false,
                           labelText: "total".tr,
                           hintText: "100".tr,
                           inputAction: TextInputAction.next,
                           type: TextInputType.number,
                           controller: controller.totalController,
                           onTap: () {},
+                          onChange: (v) => controller.calculateValuePerKm(),
                           onSaved: (value) {},
                           onValidate: (value) {
                             if (value == null || value.isEmpty) {

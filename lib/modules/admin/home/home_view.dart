@@ -56,6 +56,7 @@ class HomeView extends GetView<HomeController> {
             () => HomeAppbar(
               isUrdu: controller.isUrdu,
               isAdmin: true,
+              isSubscribed: controller.appService.appUser.value.isSubscribed,
               logoUrl: controller.appService.vehicleModel.value.logoUrl,
               hasActiveFilter: controller.hasActiveFilter,
               disabledFilterCount: controller.disabledFilterCount,

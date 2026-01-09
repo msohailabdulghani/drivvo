@@ -56,6 +56,7 @@ class DriverHomeView extends GetView<DriverHomeController> {
             () => HomeAppbar(
               isUrdu: controller.isUrdu,
               isAdmin: false,
+              isSubscribed: controller.appService.appUser.value.isSubscribed,
               logoUrl: controller.appService.driverVehicleModel.value.logoUrl,
               hasActiveFilter: controller.hasActiveFilter,
               disabledFilterCount: controller.disabledFilterCount,

@@ -134,6 +134,14 @@ class CreateExpenseController extends GetxController {
         showConfilctingCard.value = true;
         return;
       }
+
+      if (totalAmount.value == 0) {
+        Utils.showSnackBar(
+          message: "please_add_expense_detail".tr,
+          success: false,
+        );
+        return;
+      }
       Utils.showProgressDialog();
 
       String? uploadedImageUrl;

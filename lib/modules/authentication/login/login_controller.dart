@@ -5,6 +5,7 @@ import 'package:drivvo/model/app_user.dart';
 import 'package:drivvo/model/general_model.dart';
 import 'package:drivvo/routes/app_routes.dart';
 import 'package:drivvo/services/app_service.dart';
+import 'package:drivvo/services/iap_service.dart';
 import 'package:drivvo/utils/constants.dart';
 import 'package:drivvo/utils/database_tables.dart';
 import 'package:drivvo/utils/utils.dart';
@@ -45,8 +46,6 @@ class LoginController extends GetxController {
 
         final user = auth.currentUser;
         if (user != null) {
-          // await IAPService.to.checkSubscriptionStatus();
-          // appService.setIsUserLogin(true);
           await naviagteToMain(user, false);
           await appService.getUserProfile();
         } else {
@@ -107,8 +106,6 @@ class LoginController extends GetxController {
 
         await naviagteToMain(user, true);
         await appService.getUserProfile();
-        // await IAPService.to.checkSubscriptionStatus();
-        // appService.setIsUserLogin(true);
 
         if (userCredential.additionalUserInfo?.isNewUser == true) {
           await saveData();
@@ -150,6 +147,14 @@ class LoginController extends GetxController {
         } catch (e) {
           debugPrint("Error fetching vehicle list: $e");
         }
+
+        try {
+          await IAPService.to.checkSubscriptionStatus();
+        } catch (e) {
+          // Log error but continue navigation
+          debugPrint('Failed to check subscription status: $e');
+        }
+
         if (appService.appUser.value.userType == Constants.ADMIN) {
           if (appService.allVehiclesCount.value > 0) {
             Get.offAllNamed(AppRoutes.ADMIN_ROOT_VIEW);
