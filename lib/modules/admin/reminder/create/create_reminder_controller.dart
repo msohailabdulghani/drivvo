@@ -22,6 +22,23 @@ class CreateReminderController extends GetxController {
   final endDateController = TextEditingController();
   final expenseController = TextEditingController();
   final serviceController = TextEditingController();
+  final targetOdometerController = TextEditingController();
+
+  // One Time Mode Observables
+  var oneTimeByDistance = false.obs;
+  var oneTimeByDate = true.obs; // Default to date enabled for basic one-time
+
+  // Repeat Mode Observables & Controllers
+  var repeatByDistance = false.obs;
+  final repeatDistanceIntervalController = TextEditingController();
+
+  var repeatByTime = false.obs;
+  final repeatTimeIntervalController = TextEditingController();
+  var repeatTimeUnit = "month".obs;
+
+  // To track last valid odometer and date for calculation
+  late int currentOdometer;
+  late DateTime currentDate;
 
   @override
   void onInit() {
@@ -36,6 +53,65 @@ class CreateReminderController extends GetxController {
     startDateController.text = Utils.formatDate(date: now);
 
     lastOdometer.value = appService.vehicleModel.value.lastOdometer;
+    currentOdometer = lastOdometer.value;
+    currentDate = now;
+
+    // Listeners for auto-calculation
+    repeatDistanceIntervalController.addListener(_calculateTargetOdometer);
+    repeatTimeIntervalController.addListener(_calculateTargetDate);
+
+    ever(repeatTimeUnit, (_) => _calculateTargetDate());
+    ever(repeatByTime, (_) => _calculateTargetDate());
+    ever(repeatByDistance, (_) => _calculateTargetOdometer());
+
+    // Initial value for target odometer (current + ?)
+    targetOdometerController.text = lastOdometer.value.toString();
+  }
+
+  void _calculateTargetOdometer() {
+    if (repeatByDistance.value &&
+        repeatDistanceIntervalController.text.isNotEmpty) {
+      final interval =
+          int.tryParse(
+            repeatDistanceIntervalController.text.replaceAll(',', ''),
+          ) ??
+          0;
+      if (interval > 0) {
+        model.value.odometer = currentOdometer + interval;
+        // Update UI or Model? The UI for odometer is a TextInputField, usually manual or auto.
+        // We might want to update a controller for the Target Odometer if we had one,
+        // but currently it uses TextInputField with initialValue or bindings.
+        // Let's assume we need to update the field if we want the user to see it.
+        // But the previous view didn't have a controller for odometer, just onSaved.
+        // I should probably add a controller for odometer to update it dynamically.
+        targetOdometerController.text = model.value.odometer.toString();
+      }
+    }
+  }
+
+  void _calculateTargetDate() {
+    if (repeatByTime.value && repeatTimeIntervalController.text.isNotEmpty) {
+      final interval = int.tryParse(repeatTimeIntervalController.text) ?? 0;
+      if (interval > 0) {
+        DateTime target = currentDate;
+        switch (repeatTimeUnit.value) {
+          case 'day':
+            target = target.add(Duration(days: interval));
+            break;
+          case 'week':
+            target = target.add(Duration(days: interval * 7));
+            break;
+          case 'month':
+            target = DateTime(target.year, target.month + interval, target.day);
+            break;
+          case 'year':
+            target = DateTime(target.year + interval, target.month, target.day);
+            break;
+        }
+        startDateController.text = Utils.formatDate(date: target);
+        model.value.startDate = target;
+      }
+    }
   }
 
   @override
@@ -44,6 +120,9 @@ class CreateReminderController extends GetxController {
     endDateController.dispose();
     serviceController.dispose();
     expenseController.dispose();
+    targetOdometerController.dispose();
+    repeatDistanceIntervalController.dispose();
+    repeatTimeIntervalController.dispose();
     super.onClose();
   }
 
@@ -103,13 +182,66 @@ class CreateReminderController extends GetxController {
         "sub_type": selectedType.value == "expense"
             ? expenseController.text.trim()
             : serviceController.text.trim(),
-        "odometer": model.value.odometer,
         "notes": model.value.notes,
         "one_time": selectedIndex.value == 0 ? true : false,
-        "start_date": model.value.startDate,
-        "end_date": model.value.endDate,
-        "period": model.value.period,
+
+        // One Time Logic
+        "odometer":
+            ((selectedIndex.value == 0 && oneTimeByDistance.value) ||
+                (selectedIndex.value == 1 && repeatByDistance.value))
+            ? int.tryParse(targetOdometerController.text.replaceAll(',', '')) ??
+                  0
+            : 0,
+        "start_date":
+            ((selectedIndex.value == 0 && oneTimeByDate.value) ||
+                (selectedIndex.value == 1 && repeatByTime.value))
+            ? model.value.startDate
+            : null,
+        "one_time_by_distance":
+            (selectedIndex.value == 0 && oneTimeByDistance.value),
+        "one_time_by_date": (selectedIndex.value == 0 && oneTimeByDate.value),
+
+        // Repeat Logic
+        "repeat_by_distance":
+            (selectedIndex.value == 1 && repeatByDistance.value),
+        "repeat_distance_interval":
+            (selectedIndex.value == 1 && repeatByDistance.value)
+            ? int.tryParse(
+                    repeatDistanceIntervalController.text.replaceAll(',', ''),
+                  ) ??
+                  0
+            : 0,
+
+        "repeat_by_time": (selectedIndex.value == 1 && repeatByTime.value),
+        "repeat_time_interval": (selectedIndex.value == 1 && repeatByTime.value)
+            ? int.tryParse(repeatTimeIntervalController.text) ?? 0
+            : 0,
+        "repeat_time_unit": (selectedIndex.value == 1 && repeatByTime.value)
+            ? repeatTimeUnit.value
+            : null,
+
+        // Legacy/Unused fields set to defaults or nulls where appropriate if not in use
+        "end_date": null,
+        "period": selectedIndex.value == 1
+            ? "custom"
+            : "", // Indicating custom repetition
       };
+
+      // Validation: At least one condition must be active
+      bool isValid = false;
+      if (selectedIndex.value == 0) {
+        if (oneTimeByDistance.value || oneTimeByDate.value) isValid = true;
+      } else {
+        if (repeatByDistance.value || repeatByTime.value) isValid = true;
+      }
+
+      if (!isValid) {
+        Utils.showSnackBar(
+          message: "select_condition".tr,
+          success: false,
+        ); // "Please select at least one condition"
+        return;
+      }
 
       try {
         await ref.doc(id).set(map);

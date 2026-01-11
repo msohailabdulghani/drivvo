@@ -14,7 +14,7 @@ class AppUser {
   late String signInMethod;
   late String password;
   late String confirmPassword;
-  late String notificationTime;
+  //late String notificationTime;
 
   late String adminId;
   late String userType;
@@ -39,7 +39,7 @@ class AppUser {
     signInMethod = "";
     password = "";
     confirmPassword = "";
-    notificationTime = "12:00 PM";
+    // notificationTime = "12:00 PM";
 
     adminId = "";
     userType = "";
@@ -70,7 +70,7 @@ class AppUser {
     productId = json["productId"] ?? "";
     purchaseToken = json["purchaseToken"] ?? "";
 
-    notificationTime = json["notification_time"] ?? "12:00 PM";
+    //    notificationTime = json["notification_time"] ?? "12:00 PM";
 
     userType = json["user_type"] ?? "";
     adminId = json["admin_id"] ?? "";

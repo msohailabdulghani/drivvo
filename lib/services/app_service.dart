@@ -48,6 +48,7 @@ class AppService extends GetxService {
   String _languageCode = "";
   String _countryCode = "";
   var savedLanguage = "";
+  var notificationTime = "".obs;
 
   var gasUnit = "m³".obs;
   var fuelUnit = "Liter (L)".obs;
@@ -124,6 +125,7 @@ class AppService extends GetxService {
         _box.read<String>(Constants.DATE_FORMAT) ?? "dd MMM yyyy";
     fuelUnit.value = _box.read<String>(Constants.FUEL_UNIT) ?? "Liter (L)";
     gasUnit.value = _box.read<String>(Constants.GAS_UNIT) ?? "m³";
+    notificationTime.value = _box.read<String>(Constants.NOTIFICATION_TIME) ?? "";
 
     // Load saved currency format
     selectedCurrencySymbol.value =
@@ -367,6 +369,11 @@ class AppService extends GetxService {
   Future<void> setDateFormat(String value) async {
     selectedDateFormat.value = value;
     await _box.write(Constants.DATE_FORMAT, value);
+  }
+
+  Future<void> setNotificationTime(String value) async {
+    notificationTime.value = value;
+    await _box.write(Constants.NOTIFICATION_TIME, value);
   }
 
   Future<void> setCurrencyFormat({

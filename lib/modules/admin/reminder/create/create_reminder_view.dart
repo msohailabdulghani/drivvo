@@ -179,167 +179,265 @@ class CreateReminderView extends GetView<CreateReminderController> {
                         ],
                       ),
                     ),
-                    if (controller.selectedIndex.value == 0)
+                    if (controller.selectedIndex.value == 0) ...[
                       const SizedBox(height: 20),
-                    if (controller.selectedIndex.value == 0)
-                      CardTextInputField(
-                        isRequired: true,
-                        isNext: true,
-                        obscureText: false,
-                        readOnly: true,
-                        controller: controller.startDateController,
-                        isUrdu: controller.isUrdu,
-                        labelText: "date".tr,
-                        hintText: "select_date".tr,
-                        sufixIcon: Icon(
-                          Icons.date_range,
-                          color: Utils.appColor,
-                        ),
-                        onSaved: (value) {},
-                        onTap: () => controller.selectDate(isStart: true),
-                        onValidate: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'date_required'.tr;
-                          }
-                          return null;
-                        },
-                      ),
-                    if (controller.selectedIndex.value == 1)
-                      SizedBox(height: 20),
-                    if (controller.selectedIndex.value == 1)
-                      Column(
+                      // One Time - By Odometer
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Column(
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              FormLabelText(
-                                title: 'period'.tr,
-                                isUrdu: controller.isUrdu,
-                              ),
-                              const SizedBox(height: 4),
-                              DropdownButtonFormField<String>(
-                                initialValue: "day",
-                                icon: const Icon(Icons.keyboard_arrow_down),
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                ),
-                                items: Utils.dayMonthList
-                                    .map<DropdownMenuItem<String>>((element) {
-                                      return DropdownMenuItem<String>(
-                                        value: element,
-                                        child: Text(
-                                          element.tr,
-                                          style: Utils.getTextStyle(
-                                            baseSize: 14,
-                                            isBold: false,
-                                            color: Colors.black,
-                                            isUrdu: controller.isUrdu,
-                                          ),
-                                        ),
-                                      );
-                                    })
-                                    .toList(),
-                                onChanged: (String? value) =>
-                                    controller.onSelectPeriod(value!),
-                                validator: (value) {
-                                  if (value == null || value == "") {
-                                    return "period_required".tr;
-                                  } else {
-                                    return null;
-                                  }
+                              Checkbox(
+                                value: controller.oneTimeByDistance.value,
+                                onChanged: (v) {
+                                  controller.oneTimeByDistance.value = v!;
                                 },
+                                activeColor: Utils.appColor,
+                              ),
+                              Text(
+                                "km".tr,
+                                style: Utils.getTextStyle(
+                                  baseSize: 14,
+                                  isBold: true,
+                                  isUrdu: controller.isUrdu,
+                                  color: Colors.black,
+                                ),
                               ),
                             ],
                           ),
-                          SizedBox(height: 16),
+                          const SizedBox(width: 30),
+                          Expanded(
+                            child: CardTextInputField(
+                              isUrdu: controller.isUrdu,
+                              isRequired: false,
+                              isNext: true,
+                              obscureText: false,
+                              readOnly: controller.oneTimeByDistance.value
+                                  ? false
+                                  : true,
+                              labelText: "".tr,
+                              hintText: "e.g. 150000",
+                              controller: controller.targetOdometerController,
+                              onSaved: (value) {},
+                              onValidate: (value) =>
+                                  controller.oneTimeByDistance.value &&
+                                      (value == null || value.isEmpty)
+                                  ? "required".tr
+                                  : null,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      // One Time - By Date
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Expanded(
-                                child: CardTextInputField(
-                                  isRequired: true,
-                                  isNext: true,
-                                  obscureText: false,
-                                  readOnly: true,
-                                  controller: controller.startDateController,
-                                  isUrdu: controller.isUrdu,
-                                  labelText: "start_date".tr,
-                                  hintText: "select_date".tr,
-                                  sufixIcon: Icon(
-                                    Icons.date_range,
-                                    color: Utils.appColor,
-                                  ),
-                                  onSaved: (value) {},
-                                  onTap: () =>
-                                      controller.selectDate(isStart: true),
-                                  onValidate: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'date_required'.tr;
-                                    }
-                                    return null;
-                                  },
-                                ),
+                              Checkbox(
+                                value: controller.oneTimeByDate.value,
+                                onChanged: (v) {
+                                  controller.oneTimeByDate.value = v!;
+                                },
+                                activeColor: Utils.appColor,
                               ),
-                              SizedBox(width: 16),
-                              Expanded(
-                                child: CardTextInputField(
-                                  isRequired: true,
-                                  isNext: true,
-                                  obscureText: false,
-                                  readOnly: true,
-                                  controller: controller.endDateController,
+                              Text(
+                                "date".tr,
+                                style: Utils.getTextStyle(
+                                  baseSize: 14,
+                                  isBold: true,
                                   isUrdu: controller.isUrdu,
-                                  labelText: "end_date".tr,
-                                  hintText: "select_date".tr,
-                                  sufixIcon: Icon(
-                                    Icons.date_range,
-                                    color: Utils.appColor,
-                                  ),
-                                  onSaved: (value) {},
-                                  onTap: () =>
-                                      controller.selectDate(isStart: false),
-                                  onValidate: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'date_required'.tr;
-                                    }
-                                    return null;
-                                  },
+                                  color: Colors.black,
                                 ),
                               ),
                             ],
+                          ),
+                          const SizedBox(width: 20),
+                          Expanded(
+                            child: CardTextInputField(
+                              isRequired: false,
+                              isNext: true,
+                              obscureText: false,
+                              readOnly: true,
+                              controller: controller.startDateController,
+                              isUrdu: controller.isUrdu,
+                              labelText: "".tr,
+                              hintText: "select_date".tr,
+                              sufixIcon: Icon(
+                                Icons.date_range,
+                                color: Utils.appColor,
+                              ),
+                              onSaved: (value) {},
+                              onTap: () => controller.oneTimeByDate.value
+                                  ? controller.selectDate(isStart: true)
+                                  : null,
+                              onValidate: (value) {
+                                if (controller.oneTimeByDate.value &&
+                                    (value == null || value.isEmpty)) {
+                                  return 'date_required'.tr;
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+
+                    if (controller.selectedIndex.value == 1) ...[
+                      const SizedBox(height: 20),
+                      // Repeat - By Distance
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Checkbox(
+                                value: controller.repeatByDistance.value,
+                                onChanged: (v) {
+                                  controller.repeatByDistance.value = v!;
+                                  if (!v) {
+                                    controller.repeatDistanceIntervalController
+                                        .clear();
+                                  }
+                                },
+                                activeColor: Utils.appColor,
+                              ),
+                              Text(
+                                "km".tr,
+                                style: Utils.getTextStyle(
+                                  baseSize: 14,
+                                  isBold: true,
+                                  isUrdu: controller.isUrdu,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(width: 40),
+                          Expanded(
+                            child: CardTextInputField(
+                              isUrdu: controller.isUrdu,
+                              isRequired: false,
+                              isNext: true,
+                              obscureText: false,
+                              readOnly: controller.repeatByDistance.value
+                                  ? false
+                                  : true,
+                              labelText: "".tr,
+                              hintText: "e.g. 5000",
+                              controller:
+                                  controller.repeatDistanceIntervalController,
+                              onSaved: (value) {},
+                              onValidate: (value) =>
+                                  controller.repeatByDistance.value &&
+                                      (value == null || value.isEmpty)
+                                  ? "required".tr
+                                  : null,
+                            ),
                           ),
                         ],
                       ),
 
-                    const SizedBox(height: 20),
-                    TextInputField(
-                      isUrdu: controller.isUrdu,
-                      isRequired: true,
-                      isNext: true,
-                      obscureText: false,
-                      readOnly: false,
-                      labelText: "odometer".tr,
-                      hintText:
-                          "${'last_odometer'.tr}: ${controller.lastOdometer.value} km",
-                      inputAction: TextInputAction.next,
-                      type: TextInputType.number,
-                      onTap: () {},
-                      onSaved: (value) {
-                        if (value != null && value.isNotEmpty) {
-                          final odometer = int.tryParse(
-                            value.replaceAll(',', ''),
-                          );
-                          if (odometer != null) {
-                            controller.model.value.odometer = odometer;
-                          }
-                        }
-                      },
-                      onValidate: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'odometer_required'.tr;
-                        }
-                        return null;
-                      },
-                    ),
+                      const SizedBox(height: 20),
+
+                      // Repeat - By Time
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Checkbox(
+                                value: controller.repeatByTime.value,
+                                onChanged: (v) {
+                                  controller.repeatByTime.value = v!;
+                                  if (!v) {
+                                    controller.repeatTimeIntervalController
+                                        .clear();
+                                  }
+                                },
+                                activeColor: Utils.appColor,
+                              ),
+                              Text(
+                                "time".tr,
+                                style: Utils.getTextStyle(
+                                  baseSize: 14,
+                                  isBold: true,
+                                  isUrdu: controller.isUrdu,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(width: 30),
+                          Expanded(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  flex: 2,
+                                  child: CardTextInputField(
+                                    isUrdu: controller.isUrdu,
+                                    isRequired: false,
+                                    isNext: true,
+                                    obscureText: false,
+                                    readOnly: controller.repeatByTime.value
+                                        ? false
+                                        : true,
+                                    labelText: "".tr,
+                                    hintText: "e.g. 3",
+                                    controller:
+                                        controller.repeatTimeIntervalController,
+                                    onSaved: (value) {},
+                                    onValidate: (value) =>
+                                        controller.repeatByTime.value &&
+                                            (value == null || value.isEmpty)
+                                        ? "required".tr
+                                        : null,
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  flex: 3,
+                                  child: DropdownButtonFormField<String>(
+                                    initialValue:
+                                        controller.repeatTimeUnit.value,
+                                    items: ['day', 'month', 'year'].map((
+                                      String value,
+                                    ) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(value.tr),
+                                      );
+                                    }).toList(),
+                                    onChanged: (newValue) {
+                                      if (newValue != null) {
+                                        controller.repeatTimeUnit.value =
+                                            newValue;
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                     const SizedBox(height: 20),
                     TextInputField(
                       isUrdu: controller.isUrdu,

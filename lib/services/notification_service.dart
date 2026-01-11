@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:drivvo/model/reminder/reminder_model.dart';
 import 'package:drivvo/services/app_service.dart';
-import 'package:drivvo/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 
@@ -74,26 +73,6 @@ class NotificationService {
     required String body,
     required DateTime time,
   }) async {
-    final appService = Get.find<AppService>();
-
-    final tim = appService.appUser.value.notificationTime;
-
-    final parts = tim.split(' ');
-    final timeParts = parts[0].split(':');
-
-    if (timeParts.length < 2) {
-      debugPrint('Invalid time format: $tim');
-      return;
-    }
-
-    final hour = int.tryParse(timeParts[0]);
-    final minute = int.tryParse(timeParts[1]);
-
-    if (hour == null || minute == null) {
-      debugPrint('Failed to parse time: $tim');
-      return;
-    }
-
     await AwesomeNotifications().createNotification(
       content: NotificationContent(
         id: id,
@@ -105,8 +84,8 @@ class NotificationService {
         year: time.year,
         month: time.month,
         day: time.day,
-        hour: hour,
-        minute: minute,
+        hour: time.hour,
+        minute: time.minute,
         second: 0,
         millisecond: 0,
         repeats: false,
@@ -126,8 +105,6 @@ class NotificationService {
       if (_schedulingCompleter != null) {
         await _schedulingCompleter!.future;
       }
-      // After waiting, check if we should proceed or skip
-      // If still scheduling, this call is redundant
       if (_isScheduling) {
         debugPrint("Skipping duplicate schedule request");
         return;
@@ -143,83 +120,82 @@ class NotificationService {
       debugPrint("Cancelled previous notifications");
 
       int id = 100; // starting ID
+      final appService = Get.find<AppService>();
+      final notifTimeStr = appService.notificationTime.value; // "09:00 PM"
+
+      int preferredHour = 9;
+      int preferredMinute = 0;
+
+      // Parse Notification Time
+      try {
+        final parts = notifTimeStr.split(' '); // ["09:00", "PM"]
+        final timeParts = parts[0].split(':');
+        int h = int.parse(timeParts[0]);
+        int m = int.parse(timeParts[1]);
+
+        if (parts.length > 1) {
+          if (parts[1].toUpperCase() == "PM" && h != 12) h += 12;
+          if (parts[1].toUpperCase() == "AM" && h == 12) h = 0;
+        }
+        preferredHour = h;
+        preferredMinute = m;
+      } catch (e) {
+        debugPrint("Error parsing notification time '$notifTimeStr': $e");
+      }
 
       for (var reminder in reminders) {
-        // We expect ReminderModel but use dynamic to avoid circular dependency if any,
-        // or just import it if it's safe. In this project it seems safe.
+        // Determine if it is a Daily Repeating reminder
+        bool isDaily = false;
 
-        final bool isOneTime = reminder.oneTime;
+        // New Logic Check
+        if (reminder.repeatByTime &&
+            reminder.repeatTimeUnit == 'day' &&
+            reminder.repeatTimeInterval == 1) {
+          isDaily = true;
+        }
+        // Legacy Logic Check
+        else if (!reminder.oneTime && reminder.period == 'day') {
+          isDaily = true;
+        }
 
-        if (isOneTime) {
-          final time = reminder.startDate;
-          if (time.isAfter(DateTime.now())) {
+        final subType = reminder.subType; // Title usually
+
+        if (isDaily) {
+          // Schedule Daily Repeated Notification
+          await scheduleDailyReminder(
+            id: id++,
+            title: "Reminder",
+            body: "$subType Reminder",
+            hour: preferredHour,
+            minute: preferredMinute,
+          );
+        } else {
+          // Schedule Single Notification at Next Due Date
+          // Covers: One-Time Reminders AND Recurring (Interval > 1 day or custom)
+
+          DateTime targetDate = reminder.startDate;
+
+          // Apply preferred time to the target date
+          final scheduledDateTime = DateTime(
+            targetDate.year,
+            targetDate.month,
+            targetDate.day,
+            preferredHour,
+            preferredMinute,
+          );
+
+          if (scheduledDateTime.isAfter(DateTime.now())) {
             await scheduleNotification(
               id: id++,
               title: "Reminder",
-              body: "${reminder.subType} Reminder",
-              time: time,
-            );
-          }
-        } else {
-          // Daily reminder
-          final startDate = reminder.startDate;
-          final endDate = reminder.endDate;
-
-          final subType = reminder.subType;
-          final period = reminder.period;
-
-          //!final dateList = Utils.getDatesBetween(start: startDate, end: endDate);
-          final months = Utils.getMonthsBetween(startDate, endDate);
-
-          if (period == "day") {
-            //! for (var date in dateList) {}
-            final appService = Get.find<AppService>();
-
-            final tim = appService.appUser.value.notificationTime;
-
-            final parts = tim.split(' ');
-            final timeParts = parts[0].split(':');
-
-            if (timeParts.length < 2) {
-              debugPrint('Invalid time format: $tim');
-              continue;
-            }
-
-            final hour = int.tryParse(timeParts[0]);
-            final minute = int.tryParse(timeParts[1]);
-
-            if (hour == null || minute == null) {
-              debugPrint('Failed to parse time: $tim');
-              continue;
-            }
-
-            await scheduleDailyReminder(
-              id: id++,
-              title: "Reminder",
               body: "$subType Reminder",
-              hour: hour,
-              minute: minute,
+              time: scheduledDateTime,
             );
-          } else {
-            for (var e in months) {
-              final int year = e['year']!;
-              final int month = e['month']!;
-
-              // Use day = 1 and time = 12:00 PM (safe for all months)
-              final DateTime time = DateTime(year, month, 1, 12);
-
-              await scheduleNotification(
-                id: id++,
-                title: "Reminder",
-                body: "$subType Reminder",
-                time: time,
-              );
-            }
           }
         }
       }
 
-      debugPrint("Successfully scheduled ${reminders.length} reminders");
+      debugPrint("Successfully scheduled reminders");
     } catch (e) {
       debugPrint("Error scheduling reminders: $e");
       rethrow;

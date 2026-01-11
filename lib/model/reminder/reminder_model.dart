@@ -11,6 +11,17 @@ class ReminderModel {
   late DateTime startDate;
   late DateTime endDate;
 
+  // New recurrence fields
+  late bool oneTimeByDistance;
+  late bool oneTimeByDate;
+
+  late bool repeatByDistance;
+  late int repeatDistanceInterval;
+
+  late bool repeatByTime;
+  late int repeatTimeInterval;
+  late String repeatTimeUnit; // 'day', 'week', 'month', 'year'
+
   ReminderModel() {
     id = "";
     type = "";
@@ -21,6 +32,16 @@ class ReminderModel {
     period = "";
     startDate = DateTime.now();
     endDate = DateTime.now();
+
+    oneTimeByDistance = false;
+    oneTimeByDate = true;
+
+    repeatByDistance = false;
+    repeatDistanceInterval = 0;
+
+    repeatByTime = false;
+    repeatTimeInterval = 0;
+    repeatTimeUnit = "month";
   }
 
   ReminderModel.fromJson(Map<String, dynamic> json) {
@@ -33,5 +54,15 @@ class ReminderModel {
     oneTime = json["one_time"] ?? false;
     startDate = (json["start_date"] as Timestamp?)?.toDate() ?? DateTime.now();
     endDate = (json["end_date"] as Timestamp?)?.toDate() ?? DateTime.now();
+
+    oneTimeByDistance = json["one_time_by_distance"] ?? false;
+    oneTimeByDate = json["one_time_by_date"] ?? true;
+
+    repeatByDistance = json["repeat_by_distance"] ?? false;
+    repeatDistanceInterval = json["repeat_distance_interval"] ?? 0;
+
+    repeatByTime = json["repeat_by_time"] ?? false;
+    repeatTimeInterval = json["repeat_time_interval"] ?? 0;
+    repeatTimeUnit = json["repeat_time_unit"] ?? "month";
   }
 }

@@ -48,8 +48,10 @@ class CardTextInputField extends StatelessWidget {
       children: [
         isRequired
             ? FormLabelText(title: labelText, isUrdu: isUrdu)
+            : labelText.isEmpty
+            ? const SizedBox.shrink()
             : LabelText(title: labelText, isUrdu: isUrdu),
-        const SizedBox(height: 4),  
+        const SizedBox(height: 4),
         TextFormField(
           controller: controller,
           readOnly: readOnly,

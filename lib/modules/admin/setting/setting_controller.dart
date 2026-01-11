@@ -40,7 +40,7 @@ class SettingController extends GetxController {
     selectedDateFormat.value = appService.selectedDateFormat.value;
     selectedFuelUnit.value = appService.fuelUnit.value;
     selectedGasUnit.value = appService.gasUnit.value;
-    bestTimeForNotifications.value = appService.appUser.value.notificationTime;
+    bestTimeForNotifications.value = appService.notificationTime.value;
 
     // Initialize currency format display value from AppService
     _initializeCurrencyFormat();
@@ -75,7 +75,7 @@ class SettingController extends GetxController {
     if (picked != null) {
       final time = picked.format(Get.context!);
       bestTimeForNotifications.value = picked.format(Get.context!);
-      appService.appUser.value.notificationTime = time;
+      appService.setNotificationTime(time);
     }
   }
 
