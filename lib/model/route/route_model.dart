@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:drivvo/model/app_user.dart';
 
 class RouteModel {
   late String userId;
@@ -13,13 +14,14 @@ class RouteModel {
   late int finalOdometer;
   late int valuePerKm;
   late int total;
-  late String driverName;
   late String reason;
   late String filePath;
   late String notes;
   late String imagePath;
   late String driverId;
   Map<String, dynamic> rawMap = {};
+
+  late AppUser driver;
 
   RouteModel() {
     userId = "";
@@ -34,12 +36,12 @@ class RouteModel {
     finalOdometer = 0;
     valuePerKm = 0;
     total = 0;
-    driverName = "";
     reason = "";
     filePath = "";
     notes = "";
     imagePath = "";
     driverId = "";
+    driver = AppUser();
   }
 
   RouteModel.fromJson(Map<String, dynamic> json) {
@@ -70,12 +72,18 @@ class RouteModel {
     finalOdometer = json["final_odometer"] ?? 0;
     valuePerKm = json["value_per_km"] ?? 0;
     total = json["total"] ?? 0;
-    driverName = json["driver_name"] ?? "";
     reason = json["reason"] ?? "";
     filePath = json["file_path"] ?? "";
     notes = json["notes"] ?? "";
     imagePath = json["image_path"] ?? "";
     driverId = json["driver_id"] ?? "";
+
+    final driverData = json["driver"];
+    if (driverData is Map<String, dynamic>) {
+      driver = AppUser.fromJson(driverData);
+    } else {
+      driver = AppUser();
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -92,7 +100,7 @@ class RouteModel {
       "final_odometer": finalOdometer,
       "value_per_km": valuePerKm,
       "total": total,
-      "driver_name": driverName,
+      "driver": driver.toJson(),
       "reason": reason,
       "file_path": filePath,
       "notes": notes,

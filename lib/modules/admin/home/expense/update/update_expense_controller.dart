@@ -61,7 +61,10 @@ class UpdateExpenseController extends GetxController {
       placeController.text = expense.place;
       paymentMethodController.text = expense.paymentMethod;
       reasonController.text = expense.reason;
-      driverController.text = expense.driverName;
+
+      driverController.text = expense.driver.firstName.isNotEmpty
+          ? '${expense.driver.firstName} ${expense.driver.lastName}'
+          : "";
 
       lastOdometer.value = isAdmin
           ? appService.vehicleModel.value.lastOdometer
@@ -161,6 +164,7 @@ class UpdateExpenseController extends GetxController {
         );
         return;
       }
+
       Utils.showProgressDialog();
 
       String? uploadedImageUrl;
@@ -186,7 +190,6 @@ class UpdateExpenseController extends GetxController {
         "odometer": model.value.odometer,
         "total_amount": totalAmount.value,
         "place": placeController.text.trim(),
-        "driver_name": model.value.driverName,
         "payment_method": paymentMethodController.text.trim(),
         "reason": reasonController.text.trim(),
         "file_path": filePath.value,
@@ -195,13 +198,18 @@ class UpdateExpenseController extends GetxController {
             ? (oldExpenseMap["driver_id"] ?? "")
             : appService.appUser.value.id,
         "expense_types": expenseTypesList.map((e) => e.toJson()).toList(),
+        "driver": isAdmin
+            ? model.value.driver.toJson()
+            : appService.appUser.value.toJson(),
       };
 
-      // final lastRecordMap = {
-      //   "type": "expense",
-      //   "date": model.value.date,
-      //   "odometer": model.value.odometer,
-      // };
+      final lastRecordMap = {
+        "type": "expense",
+        "date": model.value.date,
+        "odometer": model.value.odometer >= lastOdometer.value
+            ? model.value.odometer
+            : lastOdometer.value,
+      };
 
       try {
         final adminId = isAdmin
@@ -218,9 +226,9 @@ class UpdateExpenseController extends GetxController {
             .collection(DatabaseTables.VEHICLES)
             .doc(vehicleId);
 
-        // final userRef = FirebaseFirestore.instance
-        //     .collection(DatabaseTables.USER_PROFILE)
-        //     .doc(appService.appUser.value.id);
+        final userRef = FirebaseFirestore.instance
+            .collection(DatabaseTables.USER_PROFILE)
+            .doc(appService.appUser.value.id);
 
         await FirebaseFirestore.instance.runTransaction((transaction) async {
           transaction.update(vehicleRef, {
@@ -237,9 +245,9 @@ class UpdateExpenseController extends GetxController {
             });
           }
 
-          // transaction.set(userRef, {
-          //   "last_record": lastRecordMap,
-          // }, SetOptions(merge: true));
+          transaction.set(userRef, {
+            "last_record": lastRecordMap,
+          }, SetOptions(merge: true));
         });
 
         if (Get.isDialogOpen == true) Get.back();

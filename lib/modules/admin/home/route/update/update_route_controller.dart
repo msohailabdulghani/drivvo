@@ -67,9 +67,12 @@ class UpdateRouteController extends GetxController {
       valuePerKmController.text = route.valuePerKm.toString();
       totalController.text = route.total.toString();
 
-      driverController.text = route.driverName;
       notesController.text = route.notes;
       filePath.value = route.filePath;
+
+      driverController.text = route.driver.firstName.isNotEmpty
+          ? '${route.driver.firstName} ${route.driver.lastName}'
+          : "";
     }
 
     lastOdometer.value = isAdmin
@@ -202,6 +205,7 @@ class UpdateRouteController extends GetxController {
         showConfilctingCard.value = true;
         return;
       }
+
       Utils.showProgressDialog();
 
       String? uploadedImageUrl;
@@ -232,13 +236,23 @@ class UpdateRouteController extends GetxController {
         "final_odometer": int.tryParse(finalOdometerController.text) ?? 0,
         "value_per_km": int.tryParse(valuePerKmController.text) ?? 0,
         "total": int.tryParse(totalController.text) ?? 0,
-        "driver_name": driverController.text.trim(),
         "reason": reasonController.text.trim(),
         "file_path": filePath.value,
         "notes": notesController.text.trim(),
         "driver_id": isAdmin
             ? (oldRouteMap["driver_id"] ?? "")
             : appService.appUser.value.id,
+        "driver": isAdmin
+            ? model.value.driver.toJson()
+            : appService.appUser.value.toJson(),
+      };
+
+      final lastRecordMap = {
+        "type": "route",
+        "date": model.value.endDate,
+        "odometer": model.value.finalOdometer >= lastOdometer.value
+            ? model.value.finalOdometer
+            : lastOdometer.value,
       };
 
       final cc = int.tryParse(finalOdometerController.text.trim());
@@ -262,6 +276,10 @@ class UpdateRouteController extends GetxController {
             .collection(DatabaseTables.VEHICLES)
             .doc(vehicleId);
 
+        final userRef = FirebaseFirestore.instance
+            .collection(DatabaseTables.USER_PROFILE)
+            .doc(appService.appUser.value.id);
+
         await FirebaseFirestore.instance.runTransaction((transaction) async {
           transaction.update(vehicleRef, {
             'route_list': FieldValue.arrayRemove([oldRouteMap]),
@@ -276,6 +294,10 @@ class UpdateRouteController extends GetxController {
               "last_odometer": model.value.finalOdometer,
             });
           }
+
+          transaction.set(userRef, {
+            "last_record": lastRecordMap,
+          }, SetOptions(merge: true));
         });
 
         if (Get.isDialogOpen == true) Get.back();

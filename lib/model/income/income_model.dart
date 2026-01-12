@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:drivvo/model/app_user.dart';
 
 class IncomeModel {
   late String userId;
@@ -8,12 +9,12 @@ class IncomeModel {
   late int odometer;
   late String incomeType;
   late int value;
-  late String driverName;
   late String filePath;
   late String notes;
   late String imagePath;
   late String driverId;
   Map<String, dynamic> rawMap = {};
+  late AppUser driver;
 
   IncomeModel() {
     userId = "";
@@ -23,11 +24,11 @@ class IncomeModel {
     odometer = 0;
     incomeType = "";
     value = 0;
-    driverName = "";
     filePath = "";
     notes = "";
     imagePath = "";
     driverId = "";
+    driver = AppUser();
   }
 
   IncomeModel.fromJson(Map<String, dynamic> json) {
@@ -46,11 +47,17 @@ class IncomeModel {
     odometer = json["odometer"] ?? 0;
     incomeType = json["income_type"] ?? "";
     value = json["value"] ?? 0;
-    driverName = json["driver_name"] ?? "";
     filePath = json["file_path"] ?? "";
     notes = json["notes"] ?? "";
     imagePath = json["image_path"] ?? "";
     driverId = json["driver_id"] ?? "";
+
+    final driverData = json["driver"];
+    if (driverData is Map<String, dynamic>) {
+      driver = AppUser.fromJson(driverData);
+    } else {
+      driver = AppUser();
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -62,7 +69,7 @@ class IncomeModel {
       "odometer": odometer,
       "income_type": incomeType,
       "value": value,
-      "driver_name": driverName,
+      "driver": driver.toJson(),
       "file_path": filePath,
       "notes": notes,
       "image_path": imagePath,

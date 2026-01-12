@@ -11,16 +11,15 @@ class PlanView extends GetView<PlanController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-
       appBar: AppBar(
         backgroundColor: Utils.appColor,
         elevation: 0,
         automaticallyImplyLeading: false,
         surfaceTintColor: Colors.transparent,
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-        ),
+        // leading: IconButton(
+        //   onPressed: () => Navigator.pop(context),
+        //   icon: const Icon(Icons.arrow_back, color: Colors.white),
+        // ),
         title: Text(
           'premium_plans'.tr,
           style: Utils.getTextStyle(

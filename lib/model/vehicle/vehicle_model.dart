@@ -82,31 +82,36 @@ class VehicleModel {
 
     refuelingList =
         (json["refueling_list"] as List<dynamic>?)
-            ?.map((e) => RefuelingModel.fromJson(e as Map<String, dynamic>))
+            ?.where((e) => e != null)
+            .map((e) => RefuelingModel.fromJson(e as Map<String, dynamic>))
             .toList() ??
         [];
 
     expenseList =
         (json["expense_list"] as List<dynamic>?)
-            ?.map((e) => ExpenseModel.fromJson(e as Map<String, dynamic>))
+            ?.where((e) => e != null)
+            .map((e) => ExpenseModel.fromJson(e as Map<String, dynamic>))
             .toList() ??
         [];
 
     serviceList =
         (json["service_list"] as List<dynamic>?)
-            ?.map((e) => ServiceModel.fromJson(e as Map<String, dynamic>))
+            ?.where((e) => e != null)
+            .map((e) => ServiceModel.fromJson(e as Map<String, dynamic>))
             .toList() ??
         [];
 
     incomeList =
         (json["income_list"] as List<dynamic>?)
-            ?.map((e) => IncomeModel.fromJson(e as Map<String, dynamic>))
+            ?.where((e) => e != null)
+            .map((e) => IncomeModel.fromJson(e as Map<String, dynamic>))
             .toList() ??
         [];
 
     routeList =
         (json["route_list"] as List<dynamic>?)
-            ?.map((e) => RouteModel.fromJson(e as Map<String, dynamic>))
+            ?.where((e) => e != null)
+            .map((e) => RouteModel.fromJson(e as Map<String, dynamic>))
             .toList() ??
         [];
   }

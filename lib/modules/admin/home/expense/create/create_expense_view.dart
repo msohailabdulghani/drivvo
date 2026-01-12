@@ -375,40 +375,44 @@ class CreateExpenseView extends GetView<CreateExpenseController> {
                     onSaved: (value) {},
                     onValidate: (value) => null,
                   ),
-                  const SizedBox(height: 16),
-                  CardTextInputField(
-                    isUrdu: controller.isUrdu,
-                    isRequired: false,
-                    isNext: true,
-                    obscureText: false,
-                    readOnly: true,
-                    labelText: "driver".tr,
-                    hintText: "enter_driver_name".tr,
-                    controller: controller.driverController,
-                    sufixIcon: Icon(Icons.keyboard_arrow_down),
-                    onTap: () {
-                      controller.appService.appUser.value.isSubscribed
-                          ? Get.toNamed(
-                              AppRoutes.USER_VIEW,
-                              arguments: controller.driverController.text,
-                            )?.then((e) {
-                              if (e != null) {
-                                if (e is AppUser) {
-                                  final firstName = e.firstName;
-                                  final lastName = e.lastName;
-                                  final name = "$firstName $lastName".trim();
-                                  if (name.isNotEmpty) {
-                                    controller.driverController.text = name;
-                                    controller.model.value.driverName = name;
+
+                  if (controller.appService.appUser.value.userType ==
+                      Constants.ADMIN) ...[
+                    const SizedBox(height: 16),
+                    CardTextInputField(
+                      isUrdu: controller.isUrdu,
+                      isRequired: false,
+                      isNext: true,
+                      obscureText: false,
+                      readOnly: true,
+                      labelText: "driver".tr,
+                      hintText: "enter_driver_name".tr,
+                      controller: controller.driverController,
+                      sufixIcon: Icon(Icons.keyboard_arrow_down),
+                      onTap: () {
+                        controller.appService.appUser.value.isSubscribed
+                            ? Get.toNamed(
+                                AppRoutes.USER_VIEW,
+                                arguments: controller.driverController.text,
+                              )?.then((e) {
+                                if (e != null) {
+                                  if (e is AppUser) {
+                                    final firstName = e.firstName;
+                                    final lastName = e.lastName;
+                                    final name = "$firstName $lastName".trim();
+                                    if (name.isNotEmpty) {
+                                      controller.driverController.text = name;
+                                      controller.model.value.driver = e;
+                                    }
                                   }
                                 }
-                              }
-                            })
-                          : Get.toNamed(AppRoutes.PLAN_VIEW);
-                    },
-                    onSaved: (value) {},
-                    onValidate: (value) => null,
-                  ),
+                              })
+                            : Get.toNamed(AppRoutes.PLAN_VIEW);
+                      },
+                      onSaved: (value) {},
+                      onValidate: (value) => null,
+                    ),
+                  ],
                   const SizedBox(height: 16),
                   CardTextInputField(
                     isUrdu: controller.isUrdu,

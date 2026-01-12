@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:drivvo/custom-widget/button/custom_button.dart';
-import 'package:drivvo/custom-widget/button/more_option_button.dart';
 import 'package:drivvo/custom-widget/common/confilcting_crad.dart';
 import 'package:drivvo/custom-widget/common/label_text.dart';
 import 'package:drivvo/custom-widget/text-input-field/card_text_input_field.dart';
@@ -282,241 +281,197 @@ class CreateRefuelingView extends GetView<CreateRefuelingController> {
                       ),
                     ],
                   ),
-
-                  const SizedBox(height: 28),
+                  if (controller.appService.appUser.value.userType ==
+                      Constants.ADMIN) ...[
+                    const SizedBox(height: 28),
+                    CardTextInputField(
+                      isUrdu: controller.isUrdu,
+                      isRequired: false,
+                      isNext: true,
+                      obscureText: false,
+                      readOnly: true,
+                      labelText: "driver".tr,
+                      hintText: "enter_driver_name".tr,
+                      controller: controller.driverController,
+                      sufixIcon: Icon(Icons.keyboard_arrow_down),
+                      onTap: () {
+                        controller.appService.appUser.value.isSubscribed
+                            ? Get.toNamed(
+                                AppRoutes.USER_VIEW,
+                                arguments: controller.driverController.text,
+                              )?.then((e) {
+                                if (e != null) {
+                                  if (e is AppUser) {
+                                    final firstName = e.firstName;
+                                    final lastName = e.lastName;
+                                    final name = "$firstName $lastName".trim();
+                                    if (name.isNotEmpty) {
+                                      controller.driverController.text = name;
+                                      controller.model.value.driver = e;
+                                    }
+                                  }
+                                }
+                              })
+                            : Get.toNamed(AppRoutes.PLAN_VIEW);
+                      },
+                      onSaved: (value) {},
+                      onValidate: (value) => null,
+                    ),
+                  ],
+                  const SizedBox(height: 16),
                   CardTextInputField(
                     isUrdu: controller.isUrdu,
                     isRequired: false,
                     isNext: true,
                     obscureText: false,
                     readOnly: true,
-                    labelText: "driver".tr,
-                    hintText: "enter_driver_name".tr,
-                    controller: controller.driverController,
+                    labelText: "gas_station".tr,
+                    hintText: "select_gas_station".tr,
+                    controller: controller.gasStationCostController,
                     sufixIcon: Icon(Icons.keyboard_arrow_down),
                     onTap: () {
-                      controller.appService.appUser.value.isSubscribed
-                          ? Get.toNamed(
-                              AppRoutes.USER_VIEW,
-                              arguments: controller.driverController.text,
-                            )?.then((e) {
-                              if (e != null) {
-                                if (e is AppUser) {
-                                  final firstName = e.firstName;
-                                  final lastName = e.lastName;
-                                  final name = "$firstName $lastName".trim();
-                                  if (name.isNotEmpty) {
-                                    controller.driverController.text = name;
-                                    controller.model.value.driverName = name;
-                                  }
-                                }
-                              }
-                            })
-                          : Get.toNamed(AppRoutes.PLAN_VIEW);
+                      Get.toNamed(
+                        AppRoutes.GENERAL_VIEW,
+                        arguments: {
+                          "title": Constants.GAS_STATIONS,
+                          "selected_title":
+                              controller.gasStationCostController.text,
+                        },
+                      )?.then((e) {
+                        if (e != null) {
+                          controller.gasStationCostController.text = e;
+                        }
+                      });
                     },
                     onSaved: (value) {},
                     onValidate: (value) => null,
                   ),
-                  Obx(
-                    () => !controller.moreOptionsExpanded.value
-                        ? Column(
-                            children: [
-                              const SizedBox(height: 30),
-                              MoreOptionButton(
-                                isUrdu: controller.isUrdu,
-                                moreOptionsExpanded:
-                                    controller.moreOptionsExpanded.value,
-                                onTap: () => controller.toggleMoreOptions(),
-                              ),
-                            ],
-                          )
-                        : SizedBox(),
+                  const SizedBox(height: 16),
+                  CardTextInputField(
+                    isUrdu: controller.isUrdu,
+                    isRequired: false,
+                    isNext: true,
+                    obscureText: false,
+                    readOnly: true,
+                    labelText: "payment_method".tr,
+                    hintText: "select_payment_method".tr,
+                    controller: controller.paymentMethodController,
+                    sufixIcon: Icon(Icons.keyboard_arrow_down),
+                    onTap: () {
+                      Get.toNamed(
+                        AppRoutes.GENERAL_VIEW,
+                        arguments: {
+                          "title": Constants.PAYMENT_METHOD,
+                          "selected_title":
+                              controller.paymentMethodController.text,
+                        },
+                      )?.then((e) {
+                        if (e != null) {
+                          controller.paymentMethodController.text = e;
+                        }
+                      });
+                    },
+                    onSaved: (value) {},
+                    onValidate: (value) => null,
                   ),
-                  Obx(
-                    () => controller.moreOptionsExpanded.value
-                        ? Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const SizedBox(height: 16),
-                              CardTextInputField(
-                                isUrdu: controller.isUrdu,
-                                isRequired: false,
-                                isNext: true,
-                                obscureText: false,
-                                readOnly: true,
-                                labelText: "gas_station".tr,
-                                hintText: "select_gas_station".tr,
-                                controller: controller.gasStationCostController,
-                                sufixIcon: Icon(Icons.keyboard_arrow_down),
-                                onTap: () {
-                                  Get.toNamed(
-                                    AppRoutes.GENERAL_VIEW,
-                                    arguments: {
-                                      "title": Constants.GAS_STATIONS,
-                                      "selected_title": controller
-                                          .gasStationCostController
-                                          .text,
-                                    },
-                                  )?.then((e) {
-                                    if (e != null) {
-                                      controller.gasStationCostController.text =
-                                          e;
-                                    }
-                                  });
-                                },
-                                onSaved: (value) {},
-                                onValidate: (value) => null,
-                              ),
-                              const SizedBox(height: 16),
-                              CardTextInputField(
-                                isUrdu: controller.isUrdu,
-                                isRequired: false,
-                                isNext: true,
-                                obscureText: false,
-                                readOnly: true,
-                                labelText: "payment_method".tr,
-                                hintText: "select_payment_method".tr,
-                                controller: controller.paymentMethodController,
-                                sufixIcon: Icon(Icons.keyboard_arrow_down),
-                                onTap: () {
-                                  Get.toNamed(
-                                    AppRoutes.GENERAL_VIEW,
-                                    arguments: {
-                                      "title": Constants.PAYMENT_METHOD,
-                                      "selected_title": controller
-                                          .paymentMethodController
-                                          .text,
-                                    },
-                                  )?.then((e) {
-                                    if (e != null) {
-                                      controller.paymentMethodController.text =
-                                          e;
-                                    }
-                                  });
-                                },
-                                onSaved: (value) {},
-                                onValidate: (value) => null,
-                              ),
-                              const SizedBox(height: 16),
-                              CardTextInputField(
-                                isUrdu: controller.isUrdu,
-                                isRequired: false,
-                                isNext: true,
-                                obscureText: false,
-                                readOnly: true,
-                                labelText: "reason".tr,
-                                hintText: "select_reason".tr,
-                                controller: controller.reasonController,
-                                sufixIcon: Icon(Icons.keyboard_arrow_down),
-                                onTap: () {
-                                  Get.toNamed(
-                                    AppRoutes.GENERAL_VIEW,
-                                    arguments: {
-                                      "title": Constants.REASONS,
-                                      "selected_title":
-                                          controller.reasonController.text,
-                                    },
-                                  )?.then((e) {
-                                    if (e != null) {
-                                      controller.reasonController.text = e;
-                                    }
-                                  });
-                                },
-                                onSaved: (value) {},
-                                onValidate: (value) => null,
-                              ),
+                  const SizedBox(height: 16),
+                  CardTextInputField(
+                    isUrdu: controller.isUrdu,
+                    isRequired: false,
+                    isNext: true,
+                    obscureText: false,
+                    readOnly: true,
+                    labelText: "reason".tr,
+                    hintText: "select_reason".tr,
+                    controller: controller.reasonController,
+                    sufixIcon: Icon(Icons.keyboard_arrow_down),
+                    onTap: () {
+                      Get.toNamed(
+                        AppRoutes.GENERAL_VIEW,
+                        arguments: {
+                          "title": Constants.REASONS,
+                          "selected_title": controller.reasonController.text,
+                        },
+                      )?.then((e) {
+                        if (e != null) {
+                          controller.reasonController.text = e;
+                        }
+                      });
+                    },
+                    onSaved: (value) {},
+                    onValidate: (value) => null,
+                  ),
 
-                              const SizedBox(height: 16),
-                              LabelText(
-                                title: "attach_file".tr,
-                                isUrdu: controller.isUrdu,
-                              ),
-                              GestureDetector(
-                                onTap: () =>
-                                    controller
-                                        .appService
-                                        .appUser
-                                        .value
-                                        .isSubscribed
-                                    ? Utils.showImagePicker(
-                                        isUrdu: controller.isUrdu,
-                                        pickFile: (path) =>
-                                            controller.filePath.value = path,
-                                      )
-                                    : Get.toNamed(AppRoutes.PLAN_VIEW),
-                                child: Container(
-                                  width: double.maxFinite,
-                                  height: 200,
-                                  decoration: BoxDecoration(
-                                    color: Utils.appColor.withValues(
-                                      alpha: 0.1,
-                                    ),
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(10),
-                                    ),
-                                    border: Border.all(
-                                      color: Utils.appColor,
-                                      style: BorderStyle.solid,
-                                    ),
-                                  ),
-                                  child: Obx(
-                                    () => Stack(
-                                      alignment: Alignment.center,
-                                      children: [
-                                        const Icon(
-                                          Icons.add_a_photo,
-                                          color: Utils.appColor,
-                                        ),
-                                        if (controller
-                                            .filePath
-                                            .value
-                                            .isNotEmpty)
-                                          Image.file(
-                                            File(controller.filePath.value),
-                                          ),
-                                        if (controller
-                                            .filePath
-                                            .value
-                                            .isNotEmpty)
-                                          Align(
-                                            alignment: Alignment.topRight,
-                                            child: IconButton(
-                                              onPressed: () {
-                                                controller.filePath.value = "";
-                                              },
-                                              icon: const Icon(
-                                                Icons.cancel,
-                                                color: Colors.red,
-                                              ),
-                                            ),
-                                          ),
-                                      ],
-                                    ),
+                  const SizedBox(height: 16),
+                  LabelText(title: "attach_file".tr, isUrdu: controller.isUrdu),
+                  GestureDetector(
+                    onTap: () =>
+                        controller.appService.appUser.value.isSubscribed
+                        ? Utils.showImagePicker(
+                            isUrdu: controller.isUrdu,
+                            pickFile: (path) =>
+                                controller.filePath.value = path,
+                          )
+                        : Get.toNamed(AppRoutes.PLAN_VIEW),
+                    child: Container(
+                      width: double.maxFinite,
+                      height: 200,
+                      decoration: BoxDecoration(
+                        color: Utils.appColor.withValues(alpha: 0.1),
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                        border: Border.all(
+                          color: Utils.appColor,
+                          style: BorderStyle.solid,
+                        ),
+                      ),
+                      child: Obx(
+                        () => Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            const Icon(
+                              Icons.add_a_photo,
+                              color: Utils.appColor,
+                            ),
+                            if (controller.filePath.value.isNotEmpty)
+                              Image.file(File(controller.filePath.value)),
+                            if (controller.filePath.value.isNotEmpty)
+                              Align(
+                                alignment: Alignment.topRight,
+                                child: IconButton(
+                                  onPressed: () {
+                                    controller.filePath.value = "";
+                                  },
+                                  icon: const Icon(
+                                    Icons.cancel,
+                                    color: Colors.red,
                                   ),
                                 ),
                               ),
-                              const SizedBox(height: 16),
-                              TextInputField(
-                                isUrdu: controller.isUrdu,
-                                isRequired: false,
-                                isNext: false,
-                                obscureText: false,
-                                readOnly: false,
-                                maxLines: 4,
-                                maxLength: 250,
-                                labelText: "notes".tr,
-                                hintText: "enter_your_notes".tr,
-                                inputAction: TextInputAction.done,
-                                type: TextInputType.name,
-                                onTap: () {},
-                                onSaved: (value) {
-                                  controller.model.value.notes = value ?? '';
-                                },
-                                onValidate: (value) => null,
-                              ),
-                            ],
-                          )
-                        : SizedBox(),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextInputField(
+                    isUrdu: controller.isUrdu,
+                    isRequired: false,
+                    isNext: false,
+                    obscureText: false,
+                    readOnly: false,
+                    maxLines: 4,
+                    maxLength: 250,
+                    labelText: "notes".tr,
+                    hintText: "enter_your_notes".tr,
+                    inputAction: TextInputAction.done,
+                    type: TextInputType.name,
+                    onTap: () {},
+                    onSaved: (value) {
+                      controller.model.value.notes = value ?? '';
+                    },
+                    onValidate: (value) => null,
                   ),
                   const SizedBox(height: 80),
                 ],

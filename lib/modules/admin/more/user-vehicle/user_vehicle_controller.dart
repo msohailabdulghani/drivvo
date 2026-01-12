@@ -36,16 +36,15 @@ class UserVehicleController extends GetxController {
   @override
   void onClose() {
     _subscription?.cancel();
+    _subscription = null;
     searchInputController.dispose();
     super.onClose();
   }
 
   Future<void> getVehicleList() async {
     _subscription?.cancel();
+    _subscription = null;
     isLoading.value = true;
-
-    vehicleList.clear();
-    filterVehiclesList.clear();
 
     try {
       _subscription = FirebaseFirestore.instance

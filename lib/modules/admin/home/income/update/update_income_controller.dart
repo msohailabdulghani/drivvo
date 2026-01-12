@@ -46,11 +46,14 @@ class UpdateIncomeController extends GetxController {
       oldIncomeMap = income.rawMap;
 
       // Initialize controllers with existing data
-      driverController.text = income.driverName;
       dateController.text = Utils.formatDate(date: income.date);
       timeController.text = income.time;
       incomeTypeController.text = income.incomeType;
       filePath.value = income.filePath;
+
+      driverController.text = income.driver.firstName.isNotEmpty
+          ? '${income.driver.firstName} ${income.driver.lastName}'
+          : "";
     }
 
     lastOdometer.value = isAdmin
@@ -160,12 +163,22 @@ class UpdateIncomeController extends GetxController {
         "odometer": model.value.odometer,
         "income_type": incomeTypeController.text.trim(),
         "value": model.value.value,
-        "driver_name": model.value.driverName,
         "file_path": filePath.value,
         "notes": model.value.notes,
         "driver_id": isAdmin
             ? (oldIncomeMap["driver_id"] ?? "")
             : appService.appUser.value.id,
+        "driver": isAdmin
+            ? model.value.driver.toJson()
+            : appService.appUser.value.toJson(),
+      };
+
+      final lastRecordMap = {
+        "type": "income",
+        "date": model.value.date,
+        "odometer": model.value.odometer >= lastOdometer.value
+            ? model.value.odometer
+            : lastOdometer.value,
       };
 
       try {
@@ -183,6 +196,10 @@ class UpdateIncomeController extends GetxController {
             .collection(DatabaseTables.VEHICLES)
             .doc(vehicleId);
 
+        final userRef = FirebaseFirestore.instance
+            .collection(DatabaseTables.USER_PROFILE)
+            .doc(appService.appUser.value.id);
+
         await FirebaseFirestore.instance.runTransaction((transaction) async {
           transaction.update(vehicleRef, {
             'income_list': FieldValue.arrayRemove([oldIncomeMap]),
@@ -197,6 +214,10 @@ class UpdateIncomeController extends GetxController {
               "last_odometer": model.value.odometer,
             });
           }
+
+          transaction.set(userRef, {
+            "last_record": lastRecordMap,
+          }, SetOptions(merge: true));
         });
 
         if (Get.isDialogOpen == true) Get.back();

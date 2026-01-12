@@ -115,6 +115,9 @@ class HomeController extends GetxController {
                 isIncome: false,
                 icon: Icons.local_gas_station,
                 iconBgColor: const Color(0xFFFB9601),
+                driveName: data.driverId.isNotEmpty
+                    ? "${data.driver.firstName} ${data.driver.lastName}"
+                    : "",
                 originalData: data,
               ),
             );
@@ -135,6 +138,9 @@ class HomeController extends GetxController {
                 isIncome: false,
                 icon: Icons.receipt_long,
                 iconBgColor: Colors.red,
+                driveName: data.driverId.isNotEmpty
+                    ? "${data.driver.firstName} ${data.driver.lastName}"
+                    : "",
                 originalData: data,
               ),
             );
@@ -155,6 +161,9 @@ class HomeController extends GetxController {
                 isIncome: false,
                 icon: Icons.build,
                 iconBgColor: Colors.brown,
+                driveName: data.driverId.isNotEmpty
+                    ? "${data.driver.firstName} ${data.driver.lastName}"
+                    : "",
                 originalData: data,
               ),
             );
@@ -177,6 +186,9 @@ class HomeController extends GetxController {
                 isIncome: true,
                 icon: Icons.attach_money,
                 iconBgColor: Colors.green,
+                driveName: data.driverId.isNotEmpty
+                    ? "${data.driver.firstName} ${data.driver.lastName}"
+                    : "",
                 originalData: data,
               ),
             );
@@ -202,6 +214,9 @@ class HomeController extends GetxController {
                 routeStartDate: data.startDate,
                 routeEndDate: data.endDate,
                 origin: data.origin,
+                driveName: data.driverId.isNotEmpty
+                    ? "${data.driver.firstName} ${data.driver.lastName}"
+                    : "",
                 originalData: data,
               ),
             );

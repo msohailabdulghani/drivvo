@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:drivvo/model/app_user.dart';
 import 'package:drivvo/model/expense/expense_type_model.dart';
 
 class ServiceModel {
@@ -16,13 +17,13 @@ class ServiceModel {
   late bool missedPrevious;
   late String paymentMethod;
   late String notes;
-  late String driverName;
   late List<ExpenseTypeModel> serviceTypes;
   late String filePath;
   late String place;
   late String reason;
   late String imagePath;
   late String driverId;
+  late AppUser driver;
   Map<String, dynamic> rawMap = {};
 
   ServiceModel() {
@@ -40,13 +41,13 @@ class ServiceModel {
     missedPrevious = false;
     paymentMethod = "";
     notes = "";
-    driverName = "";
     serviceTypes = [];
     filePath = "";
     place = "";
     reason = "";
     imagePath = "";
     driverId = "";
+    driver = AppUser();
   }
 
   ServiceModel.fromJson(Map<String, dynamic> json) {
@@ -72,7 +73,6 @@ class ServiceModel {
     missedPrevious = json["missed_previous"] ?? false;
     paymentMethod = json["payment_method"] ?? "";
     notes = json["notes"] ?? "";
-    driverName = json["driver_name"] ?? "";
     filePath = json["file_path"] ?? "";
     place = json["place"] ?? "";
     reason = json["reason"] ?? "";
@@ -83,6 +83,13 @@ class ServiceModel {
             ?.map((e) => ExpenseTypeModel.fromJson(e as Map<String, dynamic>))
             .toList() ??
         [];
+
+    final driverData = json["driver"];
+    if (driverData is Map<String, dynamic>) {
+      driver = AppUser.fromJson(driverData);
+    } else {
+      driver = AppUser();
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -101,7 +108,7 @@ class ServiceModel {
       "missed_previous": missedPrevious,
       "payment_method": paymentMethod,
       "notes": notes,
-      "driver_name": driverName,
+      "driver": driver.toJson(),
       "file_path": filePath,
       "place": place,
       "reason": reason,

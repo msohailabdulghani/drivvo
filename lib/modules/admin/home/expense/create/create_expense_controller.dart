@@ -167,7 +167,6 @@ class CreateExpenseController extends GetxController {
         "odometer": model.value.odometer,
         "total_amount": totalAmount.value,
         "place": placeController.text.trim(),
-        "driver_name": model.value.driverName,
         "payment_method": paymentMethodController.text.trim(),
         "reason": reasonController.text.trim(),
         "file_path": filePath.value,
@@ -175,6 +174,9 @@ class CreateExpenseController extends GetxController {
         "image_path": model.value.imagePath,
         "driver_id": isAdmin ? "" : appService.appUser.value.id,
         "expense_types": expenseTypesList.map((e) => e.toJson()).toList(),
+        "driver": isAdmin
+            ? model.value.driver.toJson()
+            : appService.appUser.value.toJson(),
       };
 
       final lastRecordMap = {

@@ -69,9 +69,11 @@ class UpdateRefuelingController extends GetxController {
       isFullTank.value = refueling.fullTank;
       missedPreviousRefueling.value = refueling.missedPrevious;
       fuelValue.value = refueling.fuelType;
-      driverController.text = refueling.driverName;
-
       filePath.value = model.value.filePath;
+
+      driverController.text = refueling.driver.firstName.isNotEmpty
+          ? '${refueling.driver.firstName} ${refueling.driver.lastName}'
+          : "";
     }
 
     lastOdometer.value = isAdmin
@@ -231,7 +233,6 @@ class UpdateRefuelingController extends GetxController {
   Future<void> updateRefueling() async {
     if (formKey.currentState?.validate() ?? false) {
       formKey.currentState?.save();
-
       DateTime modelDate = DateTime(
         model.value.date.year,
         model.value.date.month,
@@ -244,7 +245,7 @@ class UpdateRefuelingController extends GetxController {
       );
 
       if (modelDate.isBefore(lastDate)) {
-        debugPrint("Model date is before last date");
+        debugPrint("Last Date is bigger");
         showConflictingCard.value = true;
         return;
       }
@@ -295,10 +296,20 @@ class UpdateRefuelingController extends GetxController {
         "missed_previous": missedPreviousRefueling.value,
         "payment_method": paymentMethodController.text.trim(),
         "notes": model.value.notes,
-        "driver_name": model.value.driverName,
         "driver_id": isAdmin
             ? (oldRefuelingMap["driver_id"] ?? "")
             : appService.appUser.value.id,
+        "driver": isAdmin
+            ? model.value.driver.toJson()
+            : appService.appUser.value.toJson(),
+      };
+
+      final lastRecordMap = {
+        "type": "refueling",
+        "date": model.value.date,
+        "odometer": model.value.odometer >= lastOdometer.value
+            ? model.value.odometer
+            : lastOdometer.value,
       };
 
       try {
@@ -316,6 +327,10 @@ class UpdateRefuelingController extends GetxController {
             .collection(DatabaseTables.VEHICLES)
             .doc(vehicleId);
 
+        final userRef = FirebaseFirestore.instance
+            .collection(DatabaseTables.USER_PROFILE)
+            .doc(appService.appUser.value.id);
+
         await FirebaseFirestore.instance.runTransaction((transaction) async {
           transaction.update(vehicleRef, {
             'refueling_list': FieldValue.arrayRemove([oldRefuelingMap]),
@@ -330,6 +345,10 @@ class UpdateRefuelingController extends GetxController {
               "last_odometer": model.value.odometer,
             });
           }
+
+          transaction.set(userRef, {
+            "last_record": lastRecordMap,
+          }, SetOptions(merge: true));
         });
 
         if (Get.isDialogOpen == true) Get.back();

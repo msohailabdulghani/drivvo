@@ -32,11 +32,11 @@ class DriverHomeController extends GetxController {
   var currentVehicle = VehicleModel().obs;
 
   var initialSelection = "".obs;
+  
   @override
   void onInit() {
     appService = Get.find<AppService>();
     super.onInit();
-
     loadTimelineData();
   }
 

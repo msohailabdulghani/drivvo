@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:drivvo/model/app_user.dart';
 import 'package:drivvo/model/expense/expense_type_model.dart';
 
 class ExpenseModel {
@@ -9,7 +10,6 @@ class ExpenseModel {
   late int odometer;
   late int totalAmount;
   late String place;
-  late String driverName;
   late String paymentMethod;
   late String reason;
   late String filePath;
@@ -17,6 +17,8 @@ class ExpenseModel {
   late String imagePath;
   late String driverId;
   late List<ExpenseTypeModel> expenseTypes;
+  late AppUser driver;
+
   Map<String, dynamic> rawMap = {};
 
   ExpenseModel() {
@@ -27,7 +29,6 @@ class ExpenseModel {
     odometer = 0;
     totalAmount = 0;
     place = "";
-    driverName = "";
     paymentMethod = "";
     reason = "";
     filePath = "";
@@ -35,6 +36,7 @@ class ExpenseModel {
     imagePath = "";
     driverId = "";
     expenseTypes = [];
+    driver = AppUser();
   }
 
   ExpenseModel.fromJson(Map<String, dynamic> json) {
@@ -53,7 +55,6 @@ class ExpenseModel {
     odometer = json["odometer"] ?? 0;
     totalAmount = json["total_amount"] ?? 0;
     place = json["place"] ?? "";
-    driverName = json["driver_name"] ?? "";
     paymentMethod = json["payment_method"] ?? "";
     reason = json["reason"] ?? "";
     filePath = json["file_path"] ?? "";
@@ -65,6 +66,13 @@ class ExpenseModel {
             ?.map((e) => ExpenseTypeModel.fromJson(e as Map<String, dynamic>))
             .toList() ??
         [];
+
+    final driverData = json["driver"];
+    if (driverData is Map<String, dynamic>) {
+      driver = AppUser.fromJson(driverData);
+    } else {
+      driver = AppUser();
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -76,13 +84,13 @@ class ExpenseModel {
       "odometer": odometer,
       "total_amount": totalAmount,
       "place": place,
-      "driver_name": driverName,
       "payment_method": paymentMethod,
       "reason": reason,
       "file_path": filePath,
       "notes": notes,
       "image_path": imagePath,
       "driver_id": driverId,
+      "driver": driver.toJson(),
       "expense_types": expenseTypes.map((e) => e.toJson()).toList(),
     };
   }

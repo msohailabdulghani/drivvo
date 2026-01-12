@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:drivvo/model/app_user.dart';
 
 class RefuelingModel {
   late String userId;
@@ -15,11 +16,11 @@ class RefuelingModel {
   late bool missedPrevious;
   late String paymentMethod;
   late String notes;
-  late String driverName;
   late String imagePath;
   late String filePath;
   late String driverId;
   Map<String, dynamic> rawMap = {};
+  late AppUser driver;
 
   RefuelingModel() {
     userId = "";
@@ -36,10 +37,10 @@ class RefuelingModel {
     missedPrevious = false;
     paymentMethod = "";
     notes = "";
-    driverName = "";
     imagePath = "";
     filePath = "";
     driverId = "";
+    driver = AppUser();
   }
 
   RefuelingModel.fromJson(Map<String, dynamic> json) {
@@ -65,10 +66,16 @@ class RefuelingModel {
     missedPrevious = json["missed_previous"] ?? false;
     paymentMethod = json["payment_method"] ?? "";
     notes = json["notes"] ?? "";
-    driverName = json["driver_name"] ?? "";
     imagePath = json["image_path"] ?? "";
     filePath = json["file_path"] ?? "";
     driverId = json["driver_id"] ?? "";
+
+    final driverData = json["driver"];
+    if (driverData is Map<String, dynamic>) {
+      driver = AppUser.fromJson(driverData);
+    } else {
+      driver = AppUser();
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -87,7 +94,7 @@ class RefuelingModel {
       "missed_previous": missedPrevious,
       "payment_method": paymentMethod,
       "notes": notes,
-      "driver_name": driverName,
+      "driver": driver.toJson(),
       "image_path": imagePath,
       "file_path": filePath,
       "driver_id": driverId,

@@ -151,11 +151,13 @@ class CreateIncomeController extends GetxController {
         "odometer": model.value.odometer,
         "income_type": incomeTypeController.text.trim(),
         "value": model.value.value,
-        "driver_name": model.value.driverName,
         "file_path": filePath.value,
         "notes": model.value.notes,
         "image_path": model.value.imagePath,
         "driver_id": isAdmin ? "" : appService.appUser.value.id,
+        "driver": isAdmin
+            ? model.value.driver.toJson()
+            : appService.appUser.value.toJson(),
       };
 
       final lastRecordMap = {

@@ -12,6 +12,7 @@ class TimelineEntry {
   final bool isIncome;
   final IconData icon;
   final Color iconBgColor;
+  final String? driveName;
 
   //!For Routes
   final String? origin;
@@ -31,6 +32,7 @@ class TimelineEntry {
     required this.isIncome,
     required this.icon,
     required this.iconBgColor,
+    this.driveName,
     this.origin,
     this.routeOdometer,
     this.routeStartDate,

@@ -60,7 +60,9 @@ class UpdateServiceController extends GetxController {
       placeController.text = service.place;
       paymentMethodController.text = service.paymentMethod;
       reasonController.text = service.reason;
-      driverController.text = service.driverName;
+      driverController.text = service.driver.firstName.isNotEmpty
+          ? '${service.driver.firstName} ${service.driver.lastName}'
+          : "";
       // Update display text
       updateServiceTypeDisplay();
     }
@@ -177,7 +179,6 @@ class UpdateServiceController extends GetxController {
         "odometer": model.value.odometer,
         "total_amount": totalAmount.value,
         "place": placeController.text.trim(),
-        "driver_name": model.value.driverName,
         "payment_method": paymentMethodController.text.trim(),
         "reason": reasonController.text.trim(),
         "file_path": filePath.value,
@@ -186,6 +187,17 @@ class UpdateServiceController extends GetxController {
             ? (oldServiceMap["driver_id"] ?? "")
             : appService.appUser.value.id,
         "expense_types": serviceTyesList.map((e) => e.toJson()).toList(),
+        "driver": isAdmin
+            ? model.value.driver.toJson()
+            : appService.appUser.value.toJson(),
+      };
+
+      final lastRecordMap = {
+        "type": "service",
+        "date": model.value.date,
+        "odometer": model.value.odometer >= lastOdometer.value
+            ? model.value.odometer
+            : lastOdometer.value,
       };
 
       try {
@@ -203,6 +215,10 @@ class UpdateServiceController extends GetxController {
             .collection(DatabaseTables.VEHICLES)
             .doc(vehicleId);
 
+        final userRef = FirebaseFirestore.instance
+            .collection(DatabaseTables.USER_PROFILE)
+            .doc(appService.appUser.value.id);
+
         await FirebaseFirestore.instance.runTransaction((transaction) async {
           transaction.update(vehicleRef, {
             'service_list': FieldValue.arrayRemove([oldServiceMap]),
@@ -217,6 +233,10 @@ class UpdateServiceController extends GetxController {
               "last_odometer": model.value.odometer,
             });
           }
+
+          transaction.set(userRef, {
+            "last_record": lastRecordMap,
+          }, SetOptions(merge: true));
         });
 
         if (Get.isDialogOpen == true) Get.back();

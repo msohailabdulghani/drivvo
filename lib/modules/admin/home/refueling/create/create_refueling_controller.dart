@@ -19,7 +19,6 @@ class CreateRefuelingController extends GetxController {
   var filePath = "".obs;
   var isFullTank = false.obs;
   var model = RefuelingModel().obs;
-  var moreOptionsExpanded = false.obs;
   var missedPreviousRefueling = false.obs;
 
   var showConflictingCard = false.obs;
@@ -168,10 +167,6 @@ class CreateRefuelingController extends GetxController {
     }
   }
 
-  void toggleMoreOptions() {
-    moreOptionsExpanded.value = !moreOptionsExpanded.value;
-  }
-
   void onSelectFuelType(String? type) {
     if (type != null) {
       model.value.fuelType = type;
@@ -286,10 +281,12 @@ class CreateRefuelingController extends GetxController {
         "missed_previous": missedPreviousRefueling.value,
         "payment_method": paymentMethodController.text.trim(),
         "notes": model.value.notes,
-        "driver_name": model.value.driverName,
         "file_path": filePath.value,
         "image_path": model.value.imagePath,
         "driver_id": isAdmin ? "" : appService.appUser.value.id,
+        "driver": isAdmin
+            ? model.value.driver.toJson()
+            : appService.appUser.value.toJson(),
       };
 
       final lastRecordMap = {

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drivvo/model/app_user.dart';
 import 'package:drivvo/services/app_service.dart';
@@ -19,6 +21,8 @@ class UserController extends GetxController {
 
   var selectedUserName = "".obs;
 
+  StreamSubscription? userSubscription;
+
   @override
   void onInit() {
     appService = Get.find<AppService>();
@@ -34,23 +38,51 @@ class UserController extends GetxController {
   }
 
   Future<void> getUserList() async {
-    isLoading.value = true;
-    userList.clear();
-    userFilterList.clear();
     try {
-      final snapshot = await db
+      if (appService.appUser.value.id.isEmpty) {
+        await userSubscription?.cancel();
+        userSubscription = null;
+        return;
+      }
+
+      isLoading.value = true;
+      await userSubscription?.cancel();
+      userSubscription = null;
+
+      userSubscription = db
           .collection(DatabaseTables.USER_PROFILE)
           .where("admin_id", isEqualTo: appService.appUser.value.id)
-          .get();
-
-      if (snapshot.docs.isNotEmpty) {
-        userList.addAll(
-          snapshot.docs.map((doc) => AppUser.fromJson(doc.data())).toList(),
-        );
-        onSearchUser("");
-      }
-      isLoading.value = false;
+          .snapshots()
+          .listen(
+            (docSnapshot) async {
+              try {
+                userList.clear();
+                if (docSnapshot.docs.isNotEmpty) {
+                  userList.addAll(
+                    docSnapshot.docs
+                        .map((doc) => AppUser.fromJson(doc.data()))
+                        .toList(),
+                  );
+                  onSearchUser("");
+                }
+              } catch (e) {
+                debugPrint("Error processing driver vehicle snapshot: $e");
+              }
+              isLoading.value = false;
+            },
+            onError: (e) {
+              debugPrint("getUserList stream error: $e");
+              userSubscription?.cancel();
+              userSubscription = null;
+              isLoading.value = false;
+            },
+            cancelOnError: false, // We handle cancellation manually
+          );
+      return;
     } catch (e) {
+      debugPrint("getUserList error: $e");
+      await userSubscription?.cancel();
+      userSubscription = null;
       isLoading.value = false;
     }
   }
@@ -70,6 +102,8 @@ class UserController extends GetxController {
   @override
   void onClose() {
     searchInputController.dispose();
+    userSubscription?.cancel();
+    userSubscription = null;
     super.onClose();
   }
 }

@@ -225,12 +225,14 @@ class CreateRouteController extends GetxController {
         "final_odometer": int.tryParse(finalOdometerController.text) ?? 0,
         "value_per_km": int.tryParse(valuePerKmController.text) ?? 0,
         "total": int.tryParse(totalController.text) ?? 0,
-        "driver_name": model.value.driverName,
         "reason": reasonController.text.trim(),
         "file_path": filePath.value,
         "notes": model.value.notes,
         "image_path": model.value.imagePath,
         "driver_id": isAdmin ? "" : appService.appUser.value.id,
+        "driver": isAdmin
+            ? model.value.driver.toJson()
+            : appService.appUser.value.toJson(),
       };
 
       final lastRecordMap = {

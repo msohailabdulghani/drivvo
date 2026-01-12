@@ -125,7 +125,8 @@ class AppService extends GetxService {
         _box.read<String>(Constants.DATE_FORMAT) ?? "dd MMM yyyy";
     fuelUnit.value = _box.read<String>(Constants.FUEL_UNIT) ?? "Liter (L)";
     gasUnit.value = _box.read<String>(Constants.GAS_UNIT) ?? "m³";
-    notificationTime.value = _box.read<String>(Constants.NOTIFICATION_TIME) ?? "";
+    notificationTime.value =
+        _box.read<String>(Constants.NOTIFICATION_TIME) ?? "";
 
     // Load saved currency format
     selectedCurrencySymbol.value =
@@ -321,12 +322,17 @@ class AppService extends GetxService {
                 if (docSnapshot.exists) {
                   Map<String, dynamic>? data = docSnapshot.data();
                   if (data != null) {
-                    final vehicle = VehicleModel.fromJson(data);
-                    await setDriverVehicle(vehicle);
-                  }
+                    try {
+                      final vehicle = VehicleModel.fromJson(data);
+                      await setDriverVehicle(vehicle);
 
-                  if (Get.isRegistered<DriverHomeController>()) {
-                    await Get.find<DriverHomeController>().loadTimelineData();
+                      if (Get.isRegistered<DriverHomeController>()) {
+                        await Get.find<DriverHomeController>().loadTimelineData();
+                      }
+                    } catch (e, stackTrace) {
+                      debugPrint("Error parsing driver vehicle: $e");
+                      debugPrintStack(stackTrace: stackTrace);
+                    }
                   }
                 }
               } catch (e) {
@@ -341,7 +347,6 @@ class AppService extends GetxService {
             },
             cancelOnError: false, // We handle cancellation manually
           );
-
       return;
     } catch (e) {
       debugPrint("getDriverCurrentVehicle error: $e");
