@@ -121,6 +121,70 @@ class LoginController extends GetxController {
     return null;
   }
 
+ Future<User?> signInWithApple() async {
+  try {
+    Utils.showProgressDialog();
+
+    final appleProvider = AppleAuthProvider()
+      ..addScope('email')
+      ..addScope('name');
+
+    final userCredential =
+        await FirebaseAuth.instance.signInWithProvider(appleProvider);
+
+    final user = userCredential.user;
+    if (user == null) {
+      Get.back();
+      return null;
+    }
+
+    final id = user.uid;
+    final docRef = FirebaseFirestore.instance
+        .collection(DatabaseTables.USER_PROFILE)
+        .doc(id);
+
+    final snapshot = await docRef.get();
+    final map = <String, dynamic>{
+      "id": id,
+      "photoUrl": user.photoURL,
+    };
+
+    if (user.email != null) {
+      map["email"] = user.email;
+    }
+
+    if (user.displayName != null) {
+      map["name"] = user.displayName;
+    }
+
+    if (!snapshot.exists) {
+      map["sign_in_method"] = Constants.APPLE;
+      map["last_odometer"] = 0;
+      map["user_type"] = Constants.ADMIN;
+    }
+
+    await docRef.set(map, SetOptions(merge: true));
+
+    await naviagteToMain(user, true);
+    await appService.getUserProfile();
+
+    if (userCredential.additionalUserInfo?.isNewUser == true) {
+      await saveData();
+    }
+
+    return user;
+  } catch (e, stack) {
+    debugPrint("Apple Sign In Error: $e");
+    debugPrintStack(stackTrace: stack);
+    Get.back();
+    Utils.showSnackBar(
+      message: "apple_signin_failed",
+      success: false,
+    );
+    return null;
+  }
+}
+
   Future<void> naviagteToMain(User user, bool google) async {
     if (google) {
       final appUser = AppUser();
