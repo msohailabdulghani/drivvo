@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:drivvo/custom-widget/button/custom_button.dart';
 import 'package:drivvo/custom-widget/text-input-field/password_input_field.dart';
 import 'package:drivvo/custom-widget/text-input-field/text_input_field.dart';
@@ -186,35 +188,40 @@ class LoginView extends GetView<LoginController> {
                   ),
                 ),
                 const SizedBox(height: 30),
-                SizedBox(
-                  width: double.infinity,
-                  height: 56,
-                  child: OutlinedButton(
-                    onPressed: () => controller.signInWithApple(),
-                    style: OutlinedButton.styleFrom(
-                      side: const BorderSide(color: Colors.black87),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
+                if (Platform.isIOS)
+                  SizedBox(
+                    width: double.infinity,
+                    height: 56,
+                    child: OutlinedButton(
+                      onPressed: () => controller.signInWithApple(),
+                      style: OutlinedButton.styleFrom(
+                        side: const BorderSide(color: Colors.black87),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            Icons.apple,
+                            size: 30,
+                            color: Colors.black,
+                          ),
+                          const SizedBox(width: 12),
+                          Text(
+                            'sign_in_with_apple'.tr,
+                            style: Utils.getTextStyle(
+                              baseSize: 14,
+                              isBold: true,
+                              color: Colors.black87,
+                              isUrdu: controller.isUrdu,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(Icons.apple, size:30, color: Colors.black),
-                        const SizedBox(width: 12),
-                        Text(
-                          'sign_in_with_apple'.tr,
-                          style: Utils.getTextStyle(
-                            baseSize: 14,
-                            isBold: true,
-                            color: Colors.black87,
-                            isUrdu: controller.isUrdu,
-                          ),
-                        ),
-                      ],
-                    ),
                   ),
-                ),
                 const SizedBox(height: 40),
               ],
             ),

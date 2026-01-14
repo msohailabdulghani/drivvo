@@ -249,7 +249,7 @@ class DriverHomeController extends GetxController {
   }
 
   void checkVehicleAndNavigate({required String routeName}) {
-    if (appService.currentVehicleId.value.isEmpty) {
+    if (appService.driverCurrentVehicleId.value.isEmpty) {
       Utils.showSnackBar(
         message: "vehicle_must_be_selected_first".tr,
         success: false,

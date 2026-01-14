@@ -142,6 +142,7 @@ class CreateExpenseController extends GetxController {
         );
         return;
       }
+
       Utils.showProgressDialog();
 
       String? uploadedImageUrl;

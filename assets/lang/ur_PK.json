@@ -556,5 +556,8 @@
   "purchase_failed": "سبسکرپشن خریدنے میں ناکامی",
   "pro": "پرو",
   "get_pro": "پرو بنیں",
-  "manage_your_subscription": "اپنی سبسکرپشن کا انتظام کریں"
-}
+  "manage_your_subscription": "اپنی سبسکرپشن کا انتظام کریں",
+  "please_add_service_detail": "براہِ کرم سروس کی تفصیلات شامل کریں",
+  "please_add_expense_detail": "براہِ کرم خرچ کی تفصیلات شامل کریں",
+  "sign_in_with_apple": "ایپل کے ساتھ سائن ان کریں",
+  "next_refueling": "اگلا ایندھن بھرنا"}

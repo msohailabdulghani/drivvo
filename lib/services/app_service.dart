@@ -160,9 +160,9 @@ class AppService extends GetxService {
     }
     appUser.value = AppUser.fromJson(user);
     await getUserProfile();
-    await getCurrentVehicle();
-    await getDriverCurrentVehicle();
-    await getAllVehicleList();
+    // await getCurrentVehicle();
+    // await getDriverCurrentVehicle();
+    // await getAllVehicleList();
   }
 
   Future<void> getUserProfile() async {
@@ -193,7 +193,7 @@ class AppService extends GetxService {
           .doc(user.uid)
           .snapshots()
           .listen(
-            (docSnapshot) {
+            (docSnapshot) async {
               try {
                 if (docSnapshot.exists) {
                   Map<String, dynamic>? data = docSnapshot.data();
@@ -207,6 +207,10 @@ class AppService extends GetxService {
                   isCompleted = true;
                   completer.complete();
                   _isInitializingSubscriptions = false;
+
+                  await getCurrentVehicle();
+                  await getDriverCurrentVehicle();
+                  await getAllVehicleList();
                 }
               } catch (e) {
                 debugPrint("Error processing user profile snapshot: $e");
@@ -327,7 +331,8 @@ class AppService extends GetxService {
                       await setDriverVehicle(vehicle);
 
                       if (Get.isRegistered<DriverHomeController>()) {
-                        await Get.find<DriverHomeController>().loadTimelineData();
+                        await Get.find<DriverHomeController>()
+                            .loadTimelineData();
                       }
                     } catch (e, stackTrace) {
                       debugPrint("Error parsing driver vehicle: $e");

@@ -1,6 +1,7 @@
 import 'package:drivvo/custom-widget/home/home_add_btn.dart';
 import 'package:drivvo/custom-widget/home/home_appbar.dart';
 import 'package:drivvo/custom-widget/home/home_list_items.dart';
+import 'package:drivvo/custom-widget/home/home_next_refueling_card.dart';
 import 'package:drivvo/custom-widget/home/home_ready_to_start_card.dart';
 import 'package:drivvo/custom-widget/home/home_welcome_item.dart';
 import 'package:drivvo/modules/admin/home/home_controller.dart';
@@ -81,11 +82,9 @@ class HomeView extends GetView<HomeController> {
                             isUrdu: controller.isUrdu,
                             initialSelection: controller.initialSelection.value,
                             onTap: (label) {
-                              if (controller
-                                  .appService
-                                  .currentVehicleId
-                                  .value
-                                  .isEmpty) {
+                              final String vehicleId =
+                                  controller.appService.currentVehicleId.value;
+                              if (vehicleId.isEmpty) {
                                 Utils.showSnackBar(
                                   message: "vehicle_must_be_selected_first".tr,
                                   success: false,
@@ -103,23 +102,47 @@ class HomeView extends GetView<HomeController> {
                               }
                             },
                           )
-                        : HomeListItems(
-                            isUrdu: controller.isUrdu,
-                            isLoading: controller.isLoading.value,
-                            onTapRefresh: () => controller.refreshData(),
-                            allEntries: controller.allEntries,
-                            groupedEntries: controller.groupedEntries,
-                            isEntryExpanded: (entryKey) =>
-                                controller.isEntryExpanded(entryKey),
-                            toggleEntryExpansion: (entryKey) =>
-                                controller.toggleEntryExpansion(entryKey),
-                            selectedCurrencySymbol: controller
-                                .appService
-                                .selectedCurrencySymbol
-                                .value,
-                            onTapEdit: (model) => controller.editEntry(model),
-                            onTapdelete: (model) =>
-                                controller.deleteEntry(model),
+                        : Column(
+                            children: [
+                              if (controller.nextRefuelingOdometer.value >
+                                  0) ...[
+                                const SizedBox(height: 16),
+                                // Prediction Card
+                                HomeNextRefuelingCard(
+                                  isUrdu: controller.isUrdu,
+                                  nextRefuelingOdometer:
+                                      controller.nextRefuelingOdometer.value,
+                                  nextRefuelingDate:
+                                      controller.nextRefuelingDate.value,
+                                  avgConsumption:
+                                      controller.avgConsumption.value,
+                                  distanceUnit: controller
+                                      .appService
+                                      .vehicleModel
+                                      .value
+                                      .distanceUnit,
+                                ),
+                              ],
+                              HomeListItems(
+                                isUrdu: controller.isUrdu,
+                                isLoading: controller.isLoading.value,
+                                onTapRefresh: () => controller.refreshData(),
+                                allEntries: controller.allEntries,
+                                groupedEntries: controller.groupedEntries,
+                                isEntryExpanded: (entryKey) =>
+                                    controller.isEntryExpanded(entryKey),
+                                toggleEntryExpansion: (entryKey) =>
+                                    controller.toggleEntryExpansion(entryKey),
+                                selectedCurrencySymbol: controller
+                                    .appService
+                                    .selectedCurrencySymbol
+                                    .value,
+                                onTapEdit: (model) =>
+                                    controller.editEntry(model),
+                                onTapdelete: (model) =>
+                                    controller.deleteEntry(model),
+                              ),
+                            ],
                           ),
 
                     HomeWelcomeItem(

@@ -567,5 +567,9 @@
   "verification_login_required": "Please log in to verify your purchase.",
   "pro": "PRO",
   "get_pro": "Get PRO",
-   "manage_your_subscription": "Manage your subscription"
+  "manage_your_subscription": "Manage your subscription",
+  "please_add_service_detail": "Please add service details",
+  "please_add_expense_detail": "Please add expense details",
+  "sign_in_with_apple": "Sign in with Apple",
+  "next_refueling": "Next refueling"
 }

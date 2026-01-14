@@ -95,6 +95,11 @@ class HomeController extends GetxController {
     }
   }
 
+  // Prediction variables
+  var nextRefuelingOdometer = 0.obs;
+  var nextRefuelingDate = Rxn<DateTime>();
+  var avgConsumption = 0.0.obs;
+
   Future<void> loadTimelineData() async {
     try {
       isLoading.value = true;
@@ -268,6 +273,9 @@ class HomeController extends GetxController {
       }
       groupedEntries.value = grouped;
 
+      // Calculate predictions
+      calculateNextRefueling();
+
       isLoading.value = false;
     } catch (e) {
       debugPrint("Error loading timeline data: $e");
@@ -279,6 +287,100 @@ class HomeController extends GetxController {
     }
   }
 
+  void calculateNextRefueling() {
+    try {
+      final vehicle = appService.vehicleModel.value;
+      // Get refuelings for current vehicle
+      final refuelings = vehicle.refuelingList
+          .where((r) => r.vehicleId == appService.currentVehicleId.value)
+          .toList();
+
+      if (refuelings.isEmpty) {
+        nextRefuelingOdometer.value = 0;
+        nextRefuelingDate.value = null;
+        avgConsumption.value = 0.0;
+        return;
+      }
+
+      // Sort by odometer (ascending)
+      refuelings.sort((a, b) => a.odometer.compareTo(b.odometer));
+
+      var lastRefuel = refuelings.last;
+
+      // Default Fallbacks (matching observed Drivvo behavior)
+      double efficiency = 11.0;
+      double dailyDistance = 5.5;
+
+      if (refuelings.length > 1) {
+        // Calculate Total Distance
+        double totalDist =
+            (refuelings.last.odometer - refuelings.first.odometer).toDouble();
+
+        // Calculate Total Consumed Liters (Sum of all EXCEPT the last one)
+        double consumedLiters = 0;
+        for (int i = 0; i < refuelings.length - 1; i++) {
+          double l = refuelings[i].liter.toDouble();
+          // Fallback if liter is 0 (due to int type or empty) but we have cost info
+          if (l == 0 &&
+              refuelings[i].price > 0 &&
+              refuelings[i].totalCost > 0) {
+            l = refuelings[i].totalCost / refuelings[i].price;
+          }
+          consumedLiters += l;
+        }
+
+        // Calculate Total Days (Precise)
+        double totalDays =
+            refuelings.last.date.difference(refuelings.first.date).inMinutes /
+            1440.0;
+        if (totalDays <= 0) totalDays = 1.0;
+
+        if (consumedLiters > 0) {
+          efficiency = totalDist / consumedLiters;
+        }
+
+        if (totalDist > 0) {
+          dailyDistance = totalDist / totalDays;
+        }
+      }
+
+      avgConsumption.value = efficiency;
+
+      // Predict Next Refueling
+      double lastLiter = lastRefuel.liter.toDouble();
+      if (lastLiter == 0 && lastRefuel.price > 0 && lastRefuel.totalCost > 0) {
+        lastLiter = lastRefuel.totalCost / lastRefuel.price;
+      }
+
+      //! Skip prediction if we can't determine last refueling amount
+      if (lastLiter <= 0) {
+        nextRefuelingOdometer.value = 0;
+        nextRefuelingDate.value = null;
+        return;
+      }
+
+      // Prediction = Based on liters added in LAST refueling
+      double predictedRange = lastLiter * efficiency;
+
+      // Next Odo = Last Refuel Odo + Range
+      int nextOdo = lastRefuel.odometer + predictedRange.round();
+      nextRefuelingOdometer.value = nextOdo;
+      // Predict Date
+      // Base prediction on Last Refuel Date, not Now
+      if (dailyDistance > 0) {
+        // days = range / dailyDistance
+        int daysRemaining = (predictedRange / dailyDistance).round();
+        nextRefuelingDate.value = lastRefuel.date.add(
+          Duration(days: daysRemaining),
+        );
+      } else {
+        nextRefuelingDate.value = null;
+      }
+    } catch (e) {
+      debugPrint("Error calculating prediction: $e");
+    }
+  }
+
   void checkVehicleAndNavigate({required String routeName}) {
     if (appService.currentVehicleId.value.isEmpty) {
       Utils.showSnackBar(
@@ -286,9 +388,9 @@ class HomeController extends GetxController {
         success: false,
       );
       return;
-    } else {
-      Get.toNamed(routeName);
     }
+
+    Get.toNamed(routeName);
   }
 
   // Get the user's account creation date

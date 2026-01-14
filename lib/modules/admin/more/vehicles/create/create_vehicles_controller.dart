@@ -66,12 +66,13 @@ class CreateVehiclesController extends GetxController {
         await ref.doc(id).set(map);
 
         if (isFromImportdata.value) {
-          Get.offAllNamed(AppRoutes.ADMIN_ROOT_VIEW);
           appService.vehicleModel.value = model;
-          appService.setCurrentVehicleId(id);
+          await appService.setCurrentVehicleId(id);
+          await appService.getCurrentVehicle();
+          Get.back(); // Dismiss progress dialog
+          Get.offAllNamed(AppRoutes.ADMIN_ROOT_VIEW);
           return;
         }
-
         await appService.getAllVehicleList();
         Get.back(closeOverlays: true);
         Utils.showSnackBar(

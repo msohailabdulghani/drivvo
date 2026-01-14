@@ -139,6 +139,14 @@ class CreateServiceController extends GetxController {
         return;
       }
 
+      if (totalAmount.value == 0) {
+        Utils.showSnackBar(
+          message: "please_add_service_detail".tr,
+          success: false,
+        );
+        return;
+      }
+
       Utils.showProgressDialog();
 
       String? uploadedImageUrl;

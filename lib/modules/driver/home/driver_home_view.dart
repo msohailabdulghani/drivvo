@@ -85,7 +85,7 @@ class DriverHomeView extends GetView<DriverHomeController> {
                             onTap: (label) {
                               if (controller
                                   .appService
-                                  .currentVehicleId
+                                  .driverCurrentVehicleId
                                   .value
                                   .isEmpty) {
                                 Utils.showSnackBar(
