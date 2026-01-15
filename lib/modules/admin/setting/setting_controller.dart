@@ -9,7 +9,7 @@ class SettingController extends GetxController {
   bool get isUrdu => Get.locale?.languageCode == Constants.URDU_LANGUAGE_CODE;
 
   // Categories Section
-  var selectedTheme = 'Use system default'.obs;
+  var selectedTheme = 'Light'.obs;
   var selectedLanguage = 'English (United States)'.obs;
   var selectedDateFormat = ''.obs;
   var selectedCurrencyFormat = 'Pakistani Rupee (PKR) - Rs 1,000.00'.obs;
@@ -38,6 +38,7 @@ class SettingController extends GetxController {
     super.onInit();
 
     selectedDateFormat.value = appService.selectedDateFormat.value;
+    selectedTheme.value = appService.themeMode.value;
     selectedFuelUnit.value = appService.fuelUnit.value;
     selectedGasUnit.value = appService.gasUnit.value;
     bestTimeForNotifications.value = appService.notificationTime.value;
@@ -87,5 +88,10 @@ class SettingController extends GetxController {
       format: currency['format'] ?? 'Rs 1,000.00',
       name: currency['name'] ?? 'Pakistani Rupee',
     );
+  }
+
+  void changeTheme(String theme) {
+    selectedTheme.value = theme;
+    appService.setThemeMode(theme);
   }
 }

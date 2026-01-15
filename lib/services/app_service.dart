@@ -59,6 +59,8 @@ class AppService extends GetxService {
   var selectedCurrencyFormat = "Rs 1,000.00".obs;
   var selectedCurrencyName = "Pakistani Rupee".obs;
 
+  var themeMode = 'Light'.obs;
+
   final connected = false.obs;
   StreamSubscription<User?>? _authSubscription;
   StreamSubscription<List<ConnectivityResult>>? _connectionSubscription;
@@ -141,6 +143,7 @@ class AppService extends GetxService {
         _box.read<String>(Constants.CURRENCY_NAME) ?? "Pakistani Rupee";
 
     //for the needs in setting
+    themeMode.value = _box.read<String>(Constants.THEME_MODE) ?? 'Light';
     savedLanguage = _box.read<String>(Constants.LANGUAGE_CODE) ?? 'en';
 
     _languageCode =
@@ -478,6 +481,18 @@ class AppService extends GetxService {
     _box.write(Constants.LANGUAGE_CODE, langCode);
     _box.write(Constants.COUNTRY_CODE, country);
     Get.updateLocale(Locale(langCode, country));
+  }
+
+  ThemeMode get getThemeMode {
+    if (themeMode.value == 'Light') return ThemeMode.light;
+    if (themeMode.value == 'Dark') return ThemeMode.dark;
+    return ThemeMode.light;
+  }
+
+  void setThemeMode(String value) {
+    themeMode.value = value;
+    _box.write(Constants.THEME_MODE, value);
+    Get.changeThemeMode(getThemeMode);
   }
 
   @override

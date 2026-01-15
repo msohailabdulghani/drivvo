@@ -10,7 +10,7 @@ class SettingView extends GetView<SettingController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         backgroundColor: Utils.appColor,
         surfaceTintColor: Colors.transparent,
@@ -47,14 +47,16 @@ class SettingView extends GetView<SettingController> {
                 isUrdu: controller.isUrdu,
                 color: Utils.appColor,
               ),
-              _buildCard(
-                _buildSettingTile(
-                  icon: Icons.brightness_6_outlined,
-                  title: 'theme'.tr,
-                  subtitle: controller.selectedTheme.value,
-                  onTap: () => _showThemeDialog(),
-                ),
-              ),
+              // _buildCard(
+              //   context,
+              //   _buildSettingTile(
+              //     context,
+              //     icon: Icons.brightness_6_outlined,
+              //     title: 'theme'.tr,
+              //     subtitle: controller.selectedTheme.value,
+              //     onTap: () => _showThemeDialog(context),
+              //   ),
+              // ),
               // SizedBox(height: 10),
               // _buildCard(
               //   _buildSettingTile(
@@ -66,22 +68,27 @@ class SettingView extends GetView<SettingController> {
               // ),
               SizedBox(height: 10),
               _buildCard(
+                context,
                 Obx(
                   () => _buildSettingTile(
+                    context,
                     icon: Icons.calendar_today_outlined,
                     title: 'date_format'.tr,
                     subtitle: controller.selectedDateFormat.value,
-                    onTap: () => _showDateFormatDialog(),
+                    onTap: () => _showDateFormatDialog(context),
                   ),
                 ),
               ),
               SizedBox(height: 10),
               _buildCard(
+                context,
                 _buildSettingTile(
+                  context,
                   icon: Icons.attach_money_outlined,
                   title: 'currency_format'.tr,
                   subtitle: controller.selectedCurrencyFormat.value,
-                  onTap: () => _showCurrencySearchDialog(Utils.currencies),
+                  onTap: () =>
+                      _showCurrencySearchDialog(context, Utils.currencies),
                 ),
               ),
               // SizedBox(height: 10),
@@ -113,7 +120,9 @@ class SettingView extends GetView<SettingController> {
                 color: Utils.appColor,
               ),
               _buildCard(
+                context,
                 _buildSettingTile(
+                  context,
                   icon: Icons.straighten_outlined,
                   title: 'km_miles'.tr,
                   subtitle: controller.selectedDistanceUnit.value,
@@ -125,7 +134,7 @@ class SettingView extends GetView<SettingController> {
                       child: Container(
                         padding: const EdgeInsets.all(20),
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: Theme.of(context).cardTheme.color,
                           borderRadius: BorderRadius.circular(16),
                         ),
                         child: Column(
@@ -147,7 +156,9 @@ class SettingView extends GetView<SettingController> {
                               style: Utils.getTextStyle(
                                 baseSize: 14,
                                 isBold: false,
-                                color: Colors.black,
+                                color: Theme.of(
+                                  context,
+                                ).textTheme.bodyMedium!.color!,
                                 isUrdu: controller.isUrdu,
                               ),
                             ),
@@ -176,11 +187,13 @@ class SettingView extends GetView<SettingController> {
               ),
               SizedBox(height: 10),
               _buildCard(
+                context,
                 _buildSettingTile(
+                  context,
                   icon: Icons.local_gas_station_outlined,
                   title: 'unit'.tr,
                   subtitle: controller.selectedFuelUnit.value,
-                  onTap: () => _showFuelUnitDialog(),
+                  onTap: () => _showFuelUnitDialog(context),
                 ),
               ),
               // SizedBox(height: 10),
@@ -205,11 +218,13 @@ class SettingView extends GetView<SettingController> {
               // }
               SizedBox(height: 10),
               _buildCard(
+                context,
                 _buildSettingTile(
+                  context,
                   icon: Icons.local_gas_station_outlined,
                   title: 'unit'.tr,
                   subtitle: controller.selectedGasUnit.value,
-                  onTap: () => _showVolumeUnitDialog(),
+                  onTap: () => _showVolumeUnitDialog(context),
                 ),
               ),
               SizedBox(height: 10),
@@ -249,7 +264,9 @@ class SettingView extends GetView<SettingController> {
               // ),
               // SizedBox(height: 10),
               _buildCard(
+                context,
                 _buildSettingTile(
+                  context,
                   icon: Icons.access_time_outlined,
                   title: 'best_time_notifications'.tr,
                   subtitle: controller.bestTimeForNotifications.value,
@@ -258,7 +275,9 @@ class SettingView extends GetView<SettingController> {
               ),
               SizedBox(height: 10),
               _buildCard(
+                context,
                 _buildSettingTileWithCheckbox(
+                  context,
                   icon: Icons.local_gas_station_outlined,
                   title: 'refueling_notifications'.tr,
                   isChecked: controller.refuelingNotifications.value,
@@ -268,7 +287,9 @@ class SettingView extends GetView<SettingController> {
               ),
               SizedBox(height: 10),
               _buildCard(
+                context,
                 _buildSettingTileWithCheckbox(
+                  context,
                   icon: Icons.tire_repair_outlined,
                   title: 'tire_pressure_notifications'.tr,
                   isChecked: controller.tirePressureNotifications.value,
@@ -279,7 +300,9 @@ class SettingView extends GetView<SettingController> {
               ),
               SizedBox(height: 10),
               _buildCard(
+                context,
                 _buildSettingTileWithCheckbox(
+                  context,
                   icon: Icons.ev_station_outlined,
                   title: 'gas_station_notifications'.tr,
                   isChecked: controller.gasStationNotifications.value,
@@ -289,7 +312,9 @@ class SettingView extends GetView<SettingController> {
               ),
               SizedBox(height: 10),
               _buildCard(
+                context,
                 _buildSettingTileWithCheckbox(
+                  context,
                   icon: Icons.vibration_outlined,
                   title: 'vibrate_when_notifying'.tr,
                   isChecked: controller.vibrateWhenNotifying.value,
@@ -305,12 +330,12 @@ class SettingView extends GetView<SettingController> {
     );
   }
 
-  Widget _buildCard(Widget child) {
+  Widget _buildCard(BuildContext context, Widget child) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(0),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardTheme.color,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: Colors.grey.shade200),
       ),
@@ -318,7 +343,8 @@ class SettingView extends GetView<SettingController> {
     );
   }
 
-  Widget _buildSettingTile({
+  Widget _buildSettingTile(
+    BuildContext context, {
     required IconData icon,
     required String title,
     required String subtitle,
@@ -346,7 +372,7 @@ class SettingView extends GetView<SettingController> {
           style: Utils.getTextStyle(
             baseSize: 15,
             isBold: false,
-            color: Colors.black,
+            color: Theme.of(context).listTileTheme.textColor!,
             isUrdu: controller.isUrdu,
           ),
         ),
@@ -363,7 +389,8 @@ class SettingView extends GetView<SettingController> {
     );
   }
 
-  Widget _buildSettingTileWithCheckbox({
+  Widget _buildSettingTileWithCheckbox(
+    BuildContext context, {
     required IconData icon,
     required String title,
     required bool isChecked,
@@ -388,7 +415,7 @@ class SettingView extends GetView<SettingController> {
         style: Utils.getTextStyle(
           baseSize: 15,
           isBold: false,
-          color: Colors.black,
+          color: Theme.of(context).listTileTheme.textColor!,
           isUrdu: controller.isUrdu,
         ),
       ),
@@ -402,13 +429,14 @@ class SettingView extends GetView<SettingController> {
   }
 
   // Theme Dialog
-  void _showThemeDialog() {
-    final themes = ['Use system default', 'Light', 'Dark'];
+  void _showThemeDialog(BuildContext context) {
+    final themes = ['Light', 'Dark'];
     _showSelectionDialog(
+      context,
       title: 'theme'.tr,
       options: themes,
       selectedValue: controller.selectedTheme.value,
-      onSelected: (value) => controller.selectedTheme.value = value,
+      onSelected: (value) => controller.changeTheme(value),
     );
   }
 
@@ -427,7 +455,7 @@ class SettingView extends GetView<SettingController> {
   // }
 
   // Date Format Dialog
-  void _showDateFormatDialog() {
+  void _showDateFormatDialog(BuildContext context) {
     final formats = [
       'dd MMM yyyy',
       'MM/dd/yyyy',
@@ -436,6 +464,7 @@ class SettingView extends GetView<SettingController> {
       'MMM d, yyyy',
     ];
     _showSelectionDialog(
+      context,
       title: 'date_format'.tr,
       options: formats,
       selectedValue: controller.selectedDateFormat.value,
@@ -447,7 +476,10 @@ class SettingView extends GetView<SettingController> {
   }
 
   // Searchable Currency Dialog
-  void _showCurrencySearchDialog(List<Map<String, String>> currencies) {
+  void _showCurrencySearchDialog(
+    BuildContext context,
+    List<Map<String, String>> currencies,
+  ) {
     final searchController = TextEditingController();
     final filteredCurrencies = currencies.obs;
 
@@ -459,7 +491,7 @@ class SettingView extends GetView<SettingController> {
           height: Get.height * 0.7,
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Theme.of(context).cardTheme.color,
             borderRadius: BorderRadius.circular(16),
           ),
           child: Column(
@@ -471,7 +503,7 @@ class SettingView extends GetView<SettingController> {
                 style: Utils.getTextStyle(
                   baseSize: 18,
                   isBold: true,
-                  color: Colors.black,
+                  color: Theme.of(context).listTileTheme.textColor!,
                   isUrdu: controller.isUrdu,
                 ),
               ),
@@ -577,7 +609,9 @@ class SettingView extends GetView<SettingController> {
                                       style: Utils.getTextStyle(
                                         baseSize: 14,
                                         isBold: false,
-                                        color: Colors.black,
+                                        color: Theme.of(
+                                          context,
+                                        ).listTileTheme.textColor!,
                                         isUrdu: controller.isUrdu,
                                       ),
                                     ),
@@ -631,9 +665,10 @@ class SettingView extends GetView<SettingController> {
   }
 
   // Fuel Unit Dialog
-  void _showFuelUnitDialog() {
+  void _showFuelUnitDialog(BuildContext context) {
     final units = ['Liter (L)', 'Gallon US (Gal)', 'Gallon UK (Gal)'];
     _showSelectionDialog(
+      context,
       title: 'unit'.tr,
       options: units,
       selectedValue: controller.selectedFuelUnit.value,
@@ -645,9 +680,10 @@ class SettingView extends GetView<SettingController> {
   }
 
   // Volume Unit Dialog
-  void _showVolumeUnitDialog() {
+  void _showVolumeUnitDialog(BuildContext context) {
     final units = ['m³', 'kg', 'GGE'];
     _showSelectionDialog(
+      context,
       title: 'unit'.tr,
       options: units,
       selectedValue: controller.selectedGasUnit.value,
@@ -691,7 +727,8 @@ class SettingView extends GetView<SettingController> {
   // }
 
   // Generic Selection Dialog
-  void _showSelectionDialog({
+  void _showSelectionDialog(
+    BuildContext context, {
     required String title,
     required List<String> options,
     required String selectedValue,
@@ -703,7 +740,7 @@ class SettingView extends GetView<SettingController> {
         child: Container(
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Theme.of(context).cardTheme.color,
             borderRadius: BorderRadius.circular(16),
           ),
           child: Column(
@@ -715,7 +752,7 @@ class SettingView extends GetView<SettingController> {
                 style: Utils.getTextStyle(
                   baseSize: 18,
                   isBold: true,
-                  color: Colors.black,
+                  color: Theme.of(context).listTileTheme.textColor!,
                   isUrdu: controller.isUrdu,
                 ),
               ),
@@ -727,7 +764,7 @@ class SettingView extends GetView<SettingController> {
                     style: Utils.getTextStyle(
                       baseSize: 14,
                       isBold: false,
-                      color: Colors.black,
+                      color: Theme.of(context).listTileTheme.textColor!,
                       isUrdu: controller.isUrdu,
                     ),
                   ),

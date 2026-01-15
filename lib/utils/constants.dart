@@ -94,4 +94,6 @@ class Constants {
   static const String GOOGLE_MAPS_API_KEY = String.fromEnvironment(
     'DRIVVO_GOOGLE_MAPS_API_KEY',
   );
+  // ignore: constant_identifier_names
+  static const String THEME_MODE = "ThemeMode";
 }
