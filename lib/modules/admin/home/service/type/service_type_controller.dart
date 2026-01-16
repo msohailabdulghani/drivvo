@@ -102,6 +102,9 @@ class ServiceTypeController extends GetxController {
 
   @override
   void onClose() {
+    for (var element in generalList) {
+      element.focusNode.dispose();
+    }
     searchInputController.dispose();
     super.onClose();
   }

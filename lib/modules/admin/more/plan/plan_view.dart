@@ -83,7 +83,7 @@ class PlanView extends GetView<PlanController> {
                       Icons.color_lens,
                       "add_unlimited_drivers".tr,
                     ),
-                    _buildFeatureItem(Icons.category, "transfer_vehicles".tr),
+
                     _buildFeatureItem(
                       Icons.category,
                       "assign_vehicles_to_drivers".tr,

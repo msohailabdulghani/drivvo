@@ -45,7 +45,12 @@ class TextInputField extends StatelessWidget {
     this.maxLines,
     required this.isUrdu,
     this.controller,
+    this.focusNode,
+    this.onFieldSubmitted,
   });
+
+  final FocusNode? focusNode;
+  final Function(String)? onFieldSubmitted;
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +73,7 @@ class TextInputField extends StatelessWidget {
           maxLength: maxLength,
           initialValue: controller != null ? null : initialValue,
           controller: controller,
+          focusNode: focusNode,
           obscureText: obscureText,
           keyboardType: type,
           textInputAction: inputAction,
@@ -80,6 +86,13 @@ class TextInputField extends StatelessWidget {
           onTap: onTap != null ? () => onTap!() : null,
           onSaved: (value) => onSaved(value),
           validator: (value) => onValidate(value),
+          onFieldSubmitted:
+              onFieldSubmitted ??
+              (_) {
+                if (inputAction == TextInputAction.next) {
+                  FocusScope.of(context).nextFocus();
+                }
+              },
         ),
       ],
     );

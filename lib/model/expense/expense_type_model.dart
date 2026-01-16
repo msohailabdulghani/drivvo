@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ExpenseTypeModel {
@@ -5,6 +6,7 @@ class ExpenseTypeModel {
   final String name;
   final RxInt value;
   final RxBool isChecked;
+  final FocusNode focusNode = FocusNode();
 
   ExpenseTypeModel({
     required this.id,

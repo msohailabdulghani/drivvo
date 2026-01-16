@@ -2,6 +2,7 @@ import 'package:drivvo/custom-widget/button/custom_outline_button.dart';
 import 'package:drivvo/custom-widget/common/card_header_text.dart';
 import 'package:drivvo/modules/admin/more/more_controller.dart';
 import 'package:drivvo/routes/app_routes.dart';
+import 'package:drivvo/utils/common_function.dart';
 import 'package:drivvo/utils/constants.dart';
 import 'package:drivvo/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -329,7 +330,9 @@ class MoreView extends GetView<MoreController> {
                 imagePath: "assets/images/more/contact.png",
                 title: 'contact'.tr,
                 subtitle: 'contact_sub'.tr,
-                onTap: () {},
+                onTap: () {
+                  CommonFunction.sendMail();
+                },
               ),
               _buildDivider(),
               _buildTile(

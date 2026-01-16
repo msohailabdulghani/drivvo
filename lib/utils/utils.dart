@@ -570,11 +570,11 @@ class Utils {
       name: "Abarth",
       logoUrl: "https://www.carlogos.org/logo/Abarth-logo-1920x1080.png",
     ),
-    GeneralModel(
-      id: "4",
-      name: "Abbott-Detroit",
-      logoUrl: "https://www.carlogos.org/logo/Abbott-Detroit-logo-640x107.jpg",
-    ),
+    // GeneralModel(
+    //   id: "4",
+    //   name: "Abbott-Detroit",
+    //   logoUrl: "https://www.carlogos.org/logo/Abbott-Detroit-logo-640x107.jpg",
+    // ),
     GeneralModel(
       id: "5",
       name: "ABT",

@@ -171,7 +171,25 @@ class ExpenseTypeView extends GetView<ExpenseTypeController> {
                                         readOnly: false,
                                         labelText: "value".tr,
                                         hintText: "100".tr,
-                                        inputAction: TextInputAction.next,
+                                        inputAction:
+                                            index ==
+                                                controller.filterList.length - 1
+                                            ? TextInputAction.done
+                                            : TextInputAction.next,
+                                        focusNode: model.focusNode,
+                                        onFieldSubmitted: (_) {
+                                          if (index <
+                                              controller.filterList.length -
+                                                  1) {
+                                            FocusScope.of(context).requestFocus(
+                                              controller
+                                                  .filterList[index + 1]
+                                                  .focusNode,
+                                            );
+                                          } else {
+                                            FocusScope.of(context).unfocus();
+                                          }
+                                        },
                                         type: TextInputType.number,
                                         onTap: () {},
                                         onSaved: (value) {},

@@ -6,6 +6,7 @@ import 'package:drivvo/utils/database_tables.dart';
 import 'package:drivvo/utils/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CommonFunction {
   static final appService = AppService.to;
@@ -42,6 +43,12 @@ class CommonFunction {
       appService.isAdminSubscribed.value = false;
       return;
     }
+  }
+
+  static Future<void> sendMail() async {
+    String email = "msohailabdulghani@gmail.com";
+    Uri mail = Uri.parse("mailto:$email");
+    await launchUrl(mail);
   }
 
   static DateTime accountCreatedDate() {

@@ -640,7 +640,7 @@ class CreateVehiclesView extends GetView<CreateVehiclesController> {
                               ProfileNetworkImage(
                                 imageUrl: model.logoUrl,
                                 width: 50,
-                                height: 30,
+                                height: 50,
                                 borderRadius: 0,
                                 placeholder:
                                     "assets/images/car_placeholder.png",

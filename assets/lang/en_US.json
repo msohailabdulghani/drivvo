@@ -577,5 +577,6 @@
   "update_user_vehicle": "Update User Vehicle",
   "routes": "Routes",
   "all_the_time": "All the time",
-  "restore_purchase": "Restore Purchase"
+  "restore_purchase": "Restore Purchase",
+  "update_user": "Update User"
 }
