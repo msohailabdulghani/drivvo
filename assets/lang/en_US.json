@@ -578,5 +578,6 @@
   "routes": "Routes",
   "all_the_time": "All the time",
   "restore_purchase": "Restore Purchase",
-  "update_user": "Update User"
+  "update_user": "Update User",
+  "log_now": "Log Now"
 }

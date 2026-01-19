@@ -59,6 +59,7 @@ flutter:
     - assets/images/reports/
     - assets/images/more/
     - assets/images/logos/
+    - assets/images/plan/
 
   fonts:
     - family: D-FONT-R

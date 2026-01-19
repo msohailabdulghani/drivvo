@@ -42,7 +42,8 @@ class PlanView extends GetView<PlanController> {
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),
                 child: Column(
                   children: [
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
+
                     // Header Icon
                     Container(
                       padding: const EdgeInsets.all(12),
@@ -56,42 +57,7 @@ class PlanView extends GetView<PlanController> {
                         size: 32,
                       ),
                     ),
-                    const SizedBox(height: 24),
-
-                    // Title
-                    Text(
-                      "everything_included".tr,
-                      style: Utils.getTextStyle(
-                        baseSize: 20,
-                        isBold: true,
-                        color: Colors.black,
-                        isUrdu: controller.isUrdu,
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-
-                    // Features List
-                    _buildFeatureItem(
-                      Icons.flight_takeoff,
-                      "add_unlimited_vehicles".tr,
-                    ),
-                    _buildFeatureItem(
-                      Icons.account_balance,
-                      "upload_unlimited_pictures".tr,
-                    ),
-                    _buildFeatureItem(
-                      Icons.color_lens,
-                      "add_unlimited_drivers".tr,
-                    ),
-
-                    _buildFeatureItem(
-                      Icons.category,
-                      "assign_vehicles_to_drivers".tr,
-                    ),
-                    _buildFeatureItem(Icons.groups, "technical_support_24h".tr),
-                    const SizedBox(height: 32),
-
-                    // "Choose Your Plan" Header
+                    const SizedBox(height: 16),
                     Text(
                       "choose_your_plan".tr,
                       style: Utils.getTextStyle(
@@ -120,7 +86,43 @@ class PlanView extends GetView<PlanController> {
                         }).toList(),
                       );
                     }),
-                    const SizedBox(height: 20),
+
+                    const SizedBox(height: 24),
+
+                    // Title
+                    Text(
+                      "everything_included".tr,
+                      style: Utils.getTextStyle(
+                        baseSize: 20,
+                        isBold: true,
+                        color: Colors.black,
+                        isUrdu: controller.isUrdu,
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+
+                    // Features List
+                    _buildFeatureItem(
+                      "assets/images/plan/vehicles.png",
+                      "add_unlimited_vehicles".tr,
+                    ),
+                    _buildFeatureItem(
+                      "assets/images/plan/pictures.png",
+                      "upload_unlimited_pictures".tr,
+                    ),
+                    _buildFeatureItem(
+                      "assets/images/plan/unlimited_driver.png",
+                      "add_unlimited_drivers".tr,
+                    ),
+                    _buildFeatureItem(
+                      "assets/images/plan/vehicle_user.png",
+                      "assign_vehicles_to_drivers".tr,
+                    ),
+                    _buildFeatureItem(
+                      "assets/images/plan/24_7.png",
+                      "technical_support_24h".tr,
+                    ),
+                    const SizedBox(height: 32),
                   ],
                 ),
               ),
@@ -217,19 +219,12 @@ class PlanView extends GetView<PlanController> {
     );
   }
 
-  Widget _buildFeatureItem(IconData icon, String text) {
+  Widget _buildFeatureItem(String imagePath, String text) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16.0),
       child: Row(
         children: [
-          Container(
-            padding: const EdgeInsets.all(4),
-            decoration: BoxDecoration(
-              color: Utils.appColor.withValues(alpha: 0.2),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(icon, size: 16, color: Utils.appColor),
-          ),
+          Image.asset(imagePath, width: 36, height: 36),
           const SizedBox(width: 12),
           Text(
             text,

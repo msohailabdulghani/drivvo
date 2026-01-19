@@ -103,12 +103,12 @@ class NotificationService {
       debugPrint(
         "Permissions granted. Scheduling test notification in 5 seconds.",
       );
-      Timer(const Duration(seconds: 5), () {
-        showNotification(
-          title: "Test Notification",
-          body: "If you see this, notifications are working!",
-        );
-      });
+      // Timer(const Duration(seconds: 5), () {
+      //   showNotification(
+      //     title: "Test Notification",
+      //     body: "If you see this, notifications are working!",
+      //   );
+      // });
     } else {
       debugPrint(
         "Notifications not allowed, skipping test notification. User must enable permissions in Settings.",
