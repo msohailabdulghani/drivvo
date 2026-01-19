@@ -381,6 +381,7 @@ class HomeController extends GetxController {
   }
 
   void checkVehicleAndNavigate({required String routeName}) {
+    Get.back();
     if (appService.currentVehicleId.value.isEmpty) {
       Utils.showSnackBar(
         message: "vehicle_must_be_selected_first".tr,

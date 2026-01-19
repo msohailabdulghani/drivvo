@@ -32,7 +32,7 @@ class DriverHomeController extends GetxController {
   var currentVehicle = VehicleModel().obs;
 
   var initialSelection = "".obs;
-  
+
   @override
   void onInit() {
     appService = Get.find<AppService>();
@@ -249,6 +249,7 @@ class DriverHomeController extends GetxController {
   }
 
   void checkVehicleAndNavigate({required String routeName}) {
+    Get.back();
     if (appService.driverCurrentVehicleId.value.isEmpty) {
       Utils.showSnackBar(
         message: "vehicle_must_be_selected_first".tr,
