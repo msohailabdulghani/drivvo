@@ -568,5 +568,18 @@
   "all_the_time": "ہر وقت",
   "restore_purchase": "خریداری بحال کریں",
   "update_user": "صارف اپڈیٹ کریں",
-  "log_now": "ابھی لاگ کریں"
+  "log_now": "ابھی لاگ کریں",
+  "import_export_data": "ڈیٹا درآمد اور برآمد کریں",
+  "import_export_data_sub": "اپنے ڈیٹا کا بیک اپ لینے یا شیئر کرنے کے لیے آسانی سے درآمد یا برآمد کریں۔",
+  "export_data": "ڈیٹا برآمد کریں",
+  "export_data_sub": "بیک اپ یا ریکارڈ کے لیے اپنا ڈیٹا محفوظ طریقے سے ڈاؤن لوڈ کریں۔",
+  "select_backup": "بیک اپ منتخب کریں",
+  "no_backups_found": "کوئی بیک اپ موجود نہیں",
+  "failed_list_backups": "بیک اپ لوڈ کرنے میں ناکامی",
+  "backup_deleted_successfully": "بیک اپ کامیابی سے حذف کر دیا گیا",
+  "failed_delete_backup": "بیک اپ حذف کرنے میں ناکامی",
+  "invalid_json_format": "بیک اپ فائل کا فارمیٹ درست نہیں",
+  "data_imported_successfully": "ڈیٹا کامیابی سے درآمد ہو گیا",
+  "failed_import_data": "ڈیٹا درآمد کرنے میں ناکامی",
+  "confirm_export_data": "براہِ کرم اپنا انٹرنیٹ کنکشن چیک کریں"
 }

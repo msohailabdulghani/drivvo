@@ -61,14 +61,16 @@ class MoreView extends GetView<MoreController> {
               _buildDivider(),
               _buildTile(
                 imagePath: "assets/images/more/syncronize_data.png",
-                title: 'sync_data'.tr,
-                subtitle: 'sync_data_sub'.tr,
+                title: 'import_export_data'.tr,
+                subtitle: 'import_export_data_sub'.tr,
                 onTap: () {
-                  if (controller.appService.appUser.value.isSubscribed) {
-                    return;
-                  } else {
-                    Get.toNamed(AppRoutes.PLAN_VIEW);
-                  }
+                  // if (controller.appService.appUser.value.isSubscribed) {
+                  //   Get.toNamed(AppRoutes.IMPORT_DATA_VIEW, arguments: true);
+                  // } else {
+                  //   Get.toNamed(AppRoutes.PLAN_VIEW);
+                  // }
+
+                  Get.toNamed(AppRoutes.IMPORT_DATA_VIEW, arguments: true);
                 },
               ),
               // _buildDivider(),

@@ -821,3 +821,117 @@ exports.refreshAppStorePurchase = onCall(
     }
   },
 );
+
+/**
+ * Exports vehicle data for the authenticated user.
+ */
+exports.exportVehicleData = onCall(
+  { enforceAppCheck: false },
+  async (request) => {
+    if (!request.auth) {
+      throw new functions.https.HttpsError("unauthenticated", "Authentication required.");
+    }
+
+    const { vehicleId } = request.data;
+    if (!vehicleId) {
+      throw new functions.https.HttpsError("invalid-argument", "vehicleId is required.");
+    }
+
+    const uid = request.auth.uid;
+    console.log(`Exporting vehicle data for user: ${uid}, vehicle: ${vehicleId}`);
+
+    try {
+      const vehicleDoc = await admin.firestore()
+        .doc(`UserProfile/${uid}/Vehicles/${vehicleId}`)
+        .get();
+
+      if (!vehicleDoc.exists) {
+        throw new functions.https.HttpsError("not-found", "Vehicle not found.");
+      }
+
+      const vehicleData = vehicleDoc.data();
+
+      // Convert timestamps to ISO strings for better JSON portability
+      const processedData = JSON.parse(JSON.stringify(vehicleData, (key, value) => {
+        // Handle Firestore Timestamps (they come as objects with _seconds and _nanoseconds in some contexts, 
+        // or as strings in others depending on serialization, but here inside Cloud Functions they are objects)
+        // However, generic JSON.stringify might not handle them well if they are class instances.
+        // It's safer to just return the data and let client handle it, or do simple conversion.
+        // But the client expects JSON.
+        return value;
+      }));
+
+      return {
+        exportedAt: new Date().toISOString(),
+        vehicleId: vehicleId,
+        data: processedData
+      };
+    } catch (e) {
+      console.error("Error exporting vehicle data:", e);
+      throw new functions.https.HttpsError("internal", "Failed to export data.");
+    }
+  }
+);
+
+/**
+ * Imports vehicle data for the authenticated user.
+ */
+exports.importVehicleData = onCall(
+  { enforceAppCheck: false },
+  async (request) => {
+    if (!request.auth) {
+      throw new functions.https.HttpsError("unauthenticated", "Authentication required.");
+    }
+
+    const { vehicleId, data } = request.data;
+    if (!vehicleId || !data) {
+      throw new functions.https.HttpsError("invalid-argument", "Invalid import data format.");
+    }
+
+    const uid = request.auth.uid;
+    console.log(`Importing vehicle data for user: ${uid}, vehicle: ${vehicleId}`);
+
+    try {
+      const vehicleRef = admin.firestore()
+        .doc(`UserProfile/${uid}/Vehicles/${vehicleId}`);
+
+      // Basic check to see if vehicle already exists
+      const docSnap = await vehicleRef.get();
+      if (docSnap.exists) {
+        // Option: throw error or overwrite. For now, let's overwrite/merge
+        console.log(`Vehicle ${vehicleId} already exists. Overwriting.`);
+      }
+
+      // We need to restore Timestamps.
+      const restoreTimestamps = (obj) => {
+        if (obj === null || typeof obj !== 'object') {
+          return obj;
+        }
+
+        if (obj._seconds !== undefined && obj._nanoseconds !== undefined) {
+          return new admin.firestore.Timestamp(obj._seconds, obj._nanoseconds);
+        }
+
+        if (Array.isArray(obj)) {
+          return obj.map(restoreTimestamps);
+        }
+
+        const newObj = {};
+        for (const key in obj) {
+          newObj[key] = restoreTimestamps(obj[key]);
+        }
+        return newObj;
+      };
+
+      const restoredData = restoreTimestamps(data);
+
+      await vehicleRef.set(restoredData, { merge: true });
+
+      return { success: true, vehicleId: vehicleId };
+
+    } catch (e) {
+      console.error("Error importing vehicle data:", e);
+      throw new functions.https.HttpsError("internal", "Failed to import data.");
+    }
+  }
+);

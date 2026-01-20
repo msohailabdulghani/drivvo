@@ -81,6 +81,7 @@ class HomeView extends GetView<HomeController> {
               currentVehicle: controller.appService.vehicleModel.value.name,
               lastOdometer:
                   controller.appService.vehicleModel.value.lastOdometer,
+              onTapExport: () => CommonFunction.exportVehicleData(),
             ),
           ),
 

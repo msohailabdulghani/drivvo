@@ -538,6 +538,14 @@ class Utils {
     return DateFormat("MMM dd").format(date);
   }
 
+  static String formatDateWithTime({dynamic date}) {
+  if (date == null) {
+    return "--";
+  }
+  return DateFormat("dd MMM yyyy hh:mm a").format(date);
+}
+
+
   static String formatMonthYear({dynamic date, bool fullMonth = false}) {
     if (date == null) {
       return "--";

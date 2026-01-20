@@ -1,4 +1,5 @@
 import 'package:drivvo/modules/authentication/import-data/import_data_controller.dart';
+import 'package:drivvo/utils/common_function.dart';
 import 'package:drivvo/utils/constants.dart';
 import 'package:drivvo/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,9 @@ class ImportDataView extends GetView<ImportDataController> {
               ),
               const Spacer(flex: 1),
               Text(
-                'import_data_title'.tr,
+                controller.isFromSetting.value
+                    ? 'import_export_data'.tr
+                    : 'import_data_title'.tr,
                 style: Utils.getTextStyle(
                   baseSize: 22,
                   isBold: true,
@@ -51,26 +54,41 @@ class ImportDataView extends GetView<ImportDataController> {
                 imagePath: "assets/images/import_data.png",
                 title: 'import_yes'.tr,
                 subtitle: 'import_yes_sub'.tr,
-                onTap: () {},
+                onTap: () => controller.pickAndImportData(),
               ),
               const SizedBox(height: 16),
-              ImportOptionButton(
-                imagePath: "assets/images/fresh_start.png",
-                title: 'import_no'.tr,
-                subtitle: 'import_no_sub'.tr,
-                onTap: () => controller.navigateVehicleView(),
-              ),
+              controller.isFromSetting.value
+                  ? ImportOptionButton(
+                      imagePath: "assets/images/fresh_start.png",
+                      title: 'export_data'.tr,
+                      subtitle: 'export_data_sub'.tr,
+                      onTap: () => Utils.showAlertDialog(
+                        confirmMsg:
+                            "${"confirm_export_data".tr} \n${controller.appService.vehicleModel.value.name}-${controller.appService.vehicleModel.value.manufacturer}-${controller.appService.vehicleModel.value.modelYear} data?",
+                        onTapYes: () => CommonFunction.exportVehicleData(),
+                        isUrdu: controller.isUrdu,
+                      ),
+                    )
+                  : ImportOptionButton(
+                      imagePath: "assets/images/fresh_start.png",
+                      title: 'import_no'.tr,
+                      subtitle: 'import_no_sub'.tr,
+                      onTap: () => controller.navigateVehicleView(),
+                    ),
+
               const Spacer(flex: 3),
-              Text(
-                'import_later_note'.tr,
-                style: Utils.getTextStyle(
-                  baseSize: 14,
-                  isBold: false,
-                  color: Colors.black,
-                  isUrdu: controller.isUrdu,
+              if (!controller.isFromSetting.value) ...[
+                Text(
+                  'import_later_note'.tr,
+                  style: Utils.getTextStyle(
+                    baseSize: 14,
+                    isBold: false,
+                    color: Colors.black,
+                    isUrdu: controller.isUrdu,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 20),
+                const SizedBox(height: 20),
+              ],
             ],
           ),
         ),

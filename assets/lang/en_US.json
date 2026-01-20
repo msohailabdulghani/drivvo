@@ -579,5 +579,18 @@
   "all_the_time": "All the time",
   "restore_purchase": "Restore Purchase",
   "update_user": "Update User",
-  "log_now": "Log Now"
+  "log_now": "Log Now",
+  "import_export_data": "Import & Export Data",
+  "import_export_data_sub": "Easily import or export your data for backup and sharing.",
+  "export_data": "Export Data",
+  "export_data_sub": "Download your data securely for backup or records.",
+  "select_backup": "Select Backup",
+  "no_backups_found": "No backups found",
+  "failed_list_backups": "Failed to list backups",
+  "backup_deleted_successfully": "Backup deleted successfully",
+  "failed_delete_backup": "Failed to delete backup",
+  "invalid_json_format": "Invalid backup file format",
+  "data_imported_successfully": "Data imported successfully",
+  "failed_import_data": "Failed to import data",
+  "confirm_export_data": "Are you sure you want to export"
 }

@@ -449,12 +449,17 @@ class AppService extends GetxService {
         allVehiclesCount.value = snapshot.docs.length;
         await _box.write(Constants.ALL_VEHICLES_COUNT, snapshot.docs.length);
         return;
+      } else {
+        allVehiclesCount.value = 0;
+        await _box.write(Constants.ALL_VEHICLES_COUNT, 0);
+        return;
       }
     } catch (e) {
       debugPrint("getAllVehicleList error: $e");
+      allVehiclesCount.value = 0;
+      await _box.write(Constants.ALL_VEHICLES_COUNT, 0);
       return;
     }
-    return;
   }
 
   Future<void> logOut() async {

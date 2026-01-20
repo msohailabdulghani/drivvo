@@ -14,6 +14,7 @@ class HomeAppbar extends StatelessWidget {
   final String currentVehicle;
   final String logoUrl;
   final int lastOdometer;
+  final VoidCallback? onTapExport;
 
   const HomeAppbar({
     super.key,
@@ -26,6 +27,7 @@ class HomeAppbar extends StatelessWidget {
     required this.currentVehicle,
     required this.logoUrl,
     required this.lastOdometer,
+    this.onTapExport,
   });
 
   @override
@@ -64,7 +66,7 @@ class HomeAppbar extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
           ),
           child: IconButton(
-            onPressed: () {},
+            onPressed: onTapExport,
             icon: Icon(
               Icons.cloud_download_outlined,
               color: Colors.white,
