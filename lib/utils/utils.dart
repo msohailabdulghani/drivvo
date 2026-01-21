@@ -371,14 +371,14 @@ class Utils {
                 ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(50)),
                   child: Image.asset(
-                    "assets/images/main_logo.png",
-                    width: 40,
-                    height: 40,
+                    "assets/images/main_logo_2.png",
+                    width: 56,
+                    height: 56,
                   ),
                 ),
                 const SizedBox(
-                  height: 52,
-                  width: 52,
+                  height: 58,
+                  width: 58,
                   child: CircularProgressIndicator(
                     valueColor: AlwaysStoppedAnimation<Color>(Utils.appColor),
                     strokeWidth: 2,
@@ -539,12 +539,11 @@ class Utils {
   }
 
   static String formatDateWithTime({dynamic date}) {
-  if (date == null) {
-    return "--";
+    if (date == null) {
+      return "--";
+    }
+    return DateFormat("dd MMM yyyy hh:mm a").format(date);
   }
-  return DateFormat("dd MMM yyyy hh:mm a").format(date);
-}
-
 
   static String formatMonthYear({dynamic date, bool fullMonth = false}) {
     if (date == null) {

@@ -212,7 +212,7 @@ class LoginController extends GetxController {
           if (appService.allVehiclesCount.value > 0) {
             Get.offAllNamed(AppRoutes.ADMIN_ROOT_VIEW);
           } else {
-            Get.offAllNamed(AppRoutes.IMPORT_DATA_VIEW,arguments: false);
+            Get.offAllNamed(AppRoutes.IMPORT_DATA_VIEW, arguments: false);
             // Get.offAllNamed(AppRoutes.CREATE_VEHICLES_VIEW, arguments: true);
           }
         } else {

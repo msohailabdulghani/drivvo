@@ -67,17 +67,12 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Spacer(flex: 2),
-            const Text(
-              'LOQO',
-              style: TextStyle(
-                fontFamily: 'D-FONT-R',
-                fontSize: 50,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-                letterSpacing: -2.0,
-              ),
+            Image.asset(
+              'assets/images/main_logo_2.png',
+              width: 150,
+              height: 150,
             ),
-            const Spacer(flex: 1),
+            SizedBox(height: 20),
             const Text(
               'Drivvo',
               style: TextStyle(
