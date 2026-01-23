@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Drivvo',
+      title: 'CarLog',
       translations: translations,
       initialBinding: InitialAppBinding(),
       locale: Get.find<AppService>().locale,
