@@ -105,12 +105,12 @@ class LoginController extends GetxController {
             .doc(id)
             .set(map, SetOptions(merge: true));
 
-        await naviagteToMain(user, true);
-        await appService.getUserProfile();
-
         if (userCredential.additionalUserInfo?.isNewUser == true) {
           await saveData();
         }
+
+        await naviagteToMain(user, true);
+        await appService.getUserProfile();
       } else {
         Get.back();
       }
@@ -164,12 +164,12 @@ class LoginController extends GetxController {
 
       await docRef.set(map, SetOptions(merge: true));
 
-      await naviagteToMain(user, true);
-      await appService.getUserProfile();
-
       if (userCredential.additionalUserInfo?.isNewUser == true) {
         await saveData();
       }
+
+      await naviagteToMain(user, true);
+      await appService.getUserProfile();
 
       return user;
     } catch (e, stack) {

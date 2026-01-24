@@ -160,7 +160,7 @@ class HomeWelcomeItem extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            'Drivvo',
+                            'CarLog',
                             style: Utils.getTextStyle(
                               baseSize: 22,
                               isBold: true,

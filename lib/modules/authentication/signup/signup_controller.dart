@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drivvo/model/app_user.dart';
+import 'package:drivvo/model/general_model.dart';
 import 'package:drivvo/routes/app_routes.dart';
 import 'package:drivvo/services/app_service.dart';
 import 'package:drivvo/utils/constants.dart';
@@ -115,6 +116,7 @@ class SignupController extends GetxController {
 
           Utils.showSnackBar(message: "user_registered_success", success: true);
 
+          await saveData();
           Future.delayed(const Duration(milliseconds: 500), () {
             Get.offAllNamed(AppRoutes.LOGIN_VIEW);
           });
@@ -136,5 +138,65 @@ class SignupController extends GetxController {
     lastNameController.dispose();
     emailController.dispose();
     passwordController.dispose();
+  }
+
+  Future<void> saveData() async {
+    String? collectionPath;
+    List<GeneralModel> generalList = [];
+
+    for (int i = 0; i < 6; i++) {
+      switch (i) {
+        case 0:
+          collectionPath = DatabaseTables.EXPENSE_TYPES;
+          break;
+        case 1:
+          collectionPath = DatabaseTables.INCOME_TYPES;
+          break;
+        case 2:
+          collectionPath = DatabaseTables.SERVICE_TYPES;
+          break;
+        case 3:
+          collectionPath = DatabaseTables.PAYMENT_METHOD;
+          break;
+        case 4:
+          collectionPath = DatabaseTables.REASONS;
+          break;
+        case 5:
+          collectionPath = DatabaseTables.FUEL;
+          break;
+        default:
+          debugPrint("Unknown title: $i");
+          return;
+      }
+      if (collectionPath.isNotEmpty) {
+        generalList.clear();
+        try {
+          final snapshot = await db.collection(collectionPath).get();
+
+          if (snapshot.docs.isNotEmpty) {
+            generalList = snapshot.docs.map((doc) {
+              return GeneralModel.fromJson(doc.data());
+            }).toList();
+
+            if (generalList.isNotEmpty) {
+              for (var e in generalList) {
+                final map = e.toJson();
+
+                await FirebaseFirestore.instance
+                    .collection(DatabaseTables.USER_PROFILE)
+                    .doc(appService.appUser.value.id)
+                    .collection(collectionPath)
+                    .doc()
+                    .set(map);
+              }
+            }
+          } else {
+            debugPrint("No data found in $collectionPath");
+          }
+        } catch (e) {
+          debugPrint("Error fetching $collectionPath: $e");
+        }
+      }
+    }
   }
 }

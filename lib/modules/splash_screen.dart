@@ -74,7 +74,7 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
             SizedBox(height: 20),
             const Text(
-              'Drivvo',
+              'CarLog',
               style: TextStyle(
                 fontSize: 32,
                 fontFamily: 'D-FONT-R',
