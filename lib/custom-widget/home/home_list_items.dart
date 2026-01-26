@@ -1,6 +1,5 @@
 import 'package:drivvo/model/timeline_entry.dart';
 import 'package:drivvo/services/ads_service.dart';
-import 'package:drivvo/services/app_service.dart';
 import 'package:drivvo/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -18,6 +17,7 @@ class HomeListItems extends StatelessWidget {
   final void Function(TimelineEntry) onTapEdit;
   final void Function(TimelineEntry) onTapdelete;
   final bool loadAds;
+  final bool isAdminSubscribed;
 
   const HomeListItems({
     super.key,
@@ -32,6 +32,7 @@ class HomeListItems extends StatelessWidget {
     required this.onTapEdit,
     required this.onTapdelete,
     required this.loadAds,
+    required this.isAdminSubscribed,
   });
 
   @override
@@ -87,7 +88,7 @@ class HomeListItems extends StatelessWidget {
                         !nativeAdInserted &&
                         index == 3 &&
                         monthGroup.value.length > 3 &&
-                        !AppService.to.appUser.value.isSubscribed &&
+                        !isAdminSubscribed &&
                         loadAds &&
                         AdsService.nativeAd != null;
 

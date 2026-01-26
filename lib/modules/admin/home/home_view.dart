@@ -166,7 +166,7 @@ class HomeView extends GetView<HomeController> {
                             //   ),
                             HomeListItems(
                               isUrdu: controller.isUrdu,
-                              loadAds: AdsService.isNativeAdLoaded.value,
+
                               isLoading: controller.isLoading.value,
                               onTapRefresh: () => controller.refreshData(),
                               allEntries: controller.allEntries,
@@ -182,6 +182,12 @@ class HomeView extends GetView<HomeController> {
                               onTapEdit: (model) => controller.editEntry(model),
                               onTapdelete: (model) =>
                                   controller.deleteEntry(model),
+                              loadAds: AdsService.isNativeAdLoaded.value,
+                              isAdminSubscribed: controller
+                                  .appService
+                                  .appUser
+                                  .value
+                                  .isSubscribed,
                             ),
                           ],
                         ),

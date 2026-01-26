@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drivvo/model/timeline_entry.dart';
 import 'package:drivvo/model/vehicle/vehicle_model.dart';
 import 'package:drivvo/routes/app_routes.dart';
+import 'package:drivvo/services/ads_service.dart';
 import 'package:drivvo/services/app_service.dart';
 import 'package:drivvo/utils/constants.dart';
 import 'package:drivvo/utils/database_tables.dart';
@@ -38,6 +39,9 @@ class DriverHomeController extends GetxController {
     appService = Get.find<AppService>();
     super.onInit();
     loadTimelineData();
+
+    AdsService.loadInterstitialAd();
+    AdsService.loadNativeAd();
   }
 
   bool get isUrdu => Get.locale?.languageCode == Constants.URDU_LANGUAGE_CODE;
@@ -257,7 +261,15 @@ class DriverHomeController extends GetxController {
       );
       return;
     } else {
-      Get.toNamed(routeName);
+      if (appService.isAdminSubscribed.value) {
+        Get.toNamed(routeName);
+      } else {
+        Get.toNamed(routeName)?.then((e) {
+          appService.isAdminSubscribed.value
+              ? null
+              : AdsService.showInterstitialAd();
+        });
+      }
     }
   }
 

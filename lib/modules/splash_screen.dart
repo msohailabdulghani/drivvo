@@ -1,6 +1,7 @@
 import 'package:drivvo/routes/app_routes.dart';
 import 'package:drivvo/services/app_service.dart';
 import 'package:drivvo/services/iap_service.dart';
+import 'package:drivvo/utils/common_function.dart';
 import 'package:drivvo/utils/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -24,19 +25,26 @@ class _SplashScreenState extends State<SplashScreen> {
     Future.delayed(const Duration(milliseconds: 2000), () async {
       if (appService.onBoarding) {
         if (user != null) {
-          try {
-            await IAPService.to.checkSubscriptionStatus();
-          } catch (e) {
-            debugPrint('Failed to check subscription status (Splash): $e');
-          }
-
           if (appService.appUser.value.userType == Constants.ADMIN) {
+            try {
+              await IAPService.to.checkSubscriptionStatus();
+            } catch (e) {
+              debugPrint('Failed to check subscription status (Splash): $e');
+            }
+
             if (appService.allVehiclesCount.value > 0) {
               Get.offAllNamed(AppRoutes.ADMIN_ROOT_VIEW);
             } else {
               Get.offAllNamed(AppRoutes.IMPORT_DATA_VIEW, arguments: false);
             }
           } else {
+            try {
+              await CommonFunction.checkAdminSubscription(
+                adminId: appService.appUser.value.adminId,
+              );
+            } catch (e) {
+              debugPrint("Error: $e");
+            }
             Get.offAllNamed(AppRoutes.DRIVER_ROOT_VIEW);
           }
         } else {
