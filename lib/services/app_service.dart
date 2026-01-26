@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:advanced_in_app_review/advanced_in_app_review.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:drivvo/model/app_user.dart';
@@ -163,9 +164,13 @@ class AppService extends GetxService {
     }
     appUser.value = AppUser.fromJson(user);
     await getUserProfile();
-    // await getCurrentVehicle();
-    // await getDriverCurrentVehicle();
-    // await getAllVehicleList();
+
+    AdvancedInAppReview()
+        .setMinDaysBeforeRemind(7)
+        .setMinDaysAfterInstall(2)
+        .setMinLaunchTimes(5)
+        .setMinSecondsBeforeShowDialog(4)
+        .monitor();
   }
 
   Future<void> getUserProfile() async {
